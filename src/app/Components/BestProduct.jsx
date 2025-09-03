@@ -66,8 +66,8 @@ export default function BestProduct() {
 
             </div>
             <div className=' flex gap-[30px]'>
-                {products.map((product) => (<div> <div
-                    key={product.id}
+                {products.map((product) => (<div key={product.id}> <div
+
                     className=" flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px] "
 
                 >

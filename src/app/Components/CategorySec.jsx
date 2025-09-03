@@ -1,27 +1,44 @@
-import React from 'react'
+
+"use client"
+import React, { useState } from "react";
 import Image from 'next/image'
+import { Camera, Phone, Computer, GamePad, HeadPhone, Watch } from "./svg/svg";
+
+
 const Category = [
     {
         category: "Phones",
-        Icon: "/assets/icons/Category-CellPhone.svg"
+        Icon: Phone
     }, {
         category: "Computers",
-        Icon: "/assets/icons/Category-Computer.svg"
+        Icon: Computer
     }, {
         category: "SmartWatch",
-        Icon: "/assets/icons/Category-SmartWatch.svg"
+        Icon: Watch
     }, {
         category: "Camera",
-        Icon: "/assets/icons/Category-Camera.svg"
+        Icon: Camera
     }, {
         category: "HeadPhones",
-        Icon: "/assets/icons/Category-Headphone.svg"
+        Icon: HeadPhone
     }, {
         category: "Gaming",
-        Icon: "/assets/icons/Category-Gamepad.svg"
+        Icon: GamePad
     }
 ]
+
+
 export default function CategorySec() {
+    const [selected, setSelected] = useState(0);
+
+    const handlenext = () => {
+        setSelected((prev) => (prev + 1) % Category.length);
+    }
+    const handleprev = () => {
+        setSelected((prev) =>
+            prev === 0 ? Category.length - 1 : prev - 1
+        );
+    }
     return (
         <div className='mx-[135px] mt-[80px] flex flex-col gap-[40px]'>
             <div className=' flex   justify-between'>
@@ -33,19 +50,36 @@ export default function CategorySec() {
                     <h1 className='font-[Poppins] font-[600] text-[36px] leading-[48px] text-black'>Browse by Categories</h1>
                 </div>
                 <div className='flex gap-[8px]'>
-                    <button className='w-[46px] h-[46px] rounded-full justify-center items-center flex bg-[#F5F5F5] rotate-180' ><Image src="/assets/icons/BlackRightArrow.svg" className=" " width={24} height={24} /></button>
-                    <button className='w-[46px] h-[46px] bg-[#F5F5F5]  rounded-full justify-center items-center flex' ><Image src="/assets/icons/BlackRightArrow.svg" className="" width={24} height={24} /></button>
+                    <button onClick={handleprev} className='w-[46px] h-[46px] rounded-full justify-center items-center flex bg-[#F5F5F5] rotate-180' ><Image src="/assets/icons/BlackRightArrow.svg" className=" " alt="" width={24} height={24} /></button>
+                    <button onClick={handlenext} className='w-[46px] h-[46px] bg-[#F5F5F5]  rounded-full justify-center items-center flex' ><Image src="/assets/icons/BlackRightArrow.svg" className="" alt="" width={24} height={24} /></button>
                 </div>
 
             </div>
-            <div className=' flex gap-[30px]  w-full'>
-                {Category.map((cat, index) => (<div key={index} className='min-w-[170px] w-full min-h-[145px] h-full  gap-[16px] flex flex-col justify-center items-center rounded-[4px] border-[1px] border-[#0000004D]'>
-                    <Image src={cat.Icon} width={56} height={56} />
-                    <h1 className='font-[Poppins] font-[400] text-[16px] leading-[24px]
-                    '>{cat.category}</h1>
-                </div>))}
+            <div className="flex gap-[30px] w-full">
+                {Category.map((cat, index) => {
+                    const isActive = index === selected;
+                    return (
+                        <div
+                            key={index}
+                            onClick={() => setSelected(index)}
+                            className={`min-w-[170px] w-full min-h-[145px] h-full gap-[16px] flex flex-col justify-center items-center rounded-[4px] border-[1px] cursor-pointer transition
+                ${isActive
+                                    ? "bg-[#DB4444] text-white border-[#DB4444]"
+                                    : "bg-white text-black border-[#0000004D]"
+                                }`}
+                        >
+                            <cat.Icon />
+                            <h1 className="font-[Poppins] font-[400] text-[16px] leading-[24px]">
+                                {cat.category}
+                            </h1>
+                        </div>
+                    );
+                })}
             </div>
 
         </div>
+
+
+
     )
 }

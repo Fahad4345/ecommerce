@@ -23,7 +23,7 @@ export default function Banner() {
                 {banners.map((data, index) => (
                     <div key={index} className=' flex flex-col gap-[20px]'>
                         <div className='flex  items-center gap-[24px]'>
-                            <Image src={data.logo} width={40} height={49} />
+                            <Image alt="" src={data.logo} width={40} height={49} />
                             <h1 className='  font-[Poppins] font-[400] text-[16px] leading-[24px] text-white'>{data.label}</h1>
                         </div>
                         <h1 className='  font-[Poppins] font-[600] text-[48px] leading-[60px] tracking-[4%] text-white'>Up to 10% off Voucher</h1>
@@ -32,14 +32,14 @@ export default function Banner() {
                 ))} <div className="group  transition duration-300 cursor-pointer ">
                     <button className=" flex  gap-[8px]">
                         <p className='text-white  font-[Poppins] font-[400] text-[16px] leading-[24px]'>Shop Now</p>
-                        <Image src="/assets/icons/rightArrow.svg" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
+                        <Image alt="" src="/assets/icons/rightArrow.svg" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                     </button>
                     <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
                 </div>
 
             </div>
             <div className='pt-[16px]'>
-                <Image src="/assets/images/Phone.svg" width={496} height={352} className=' w-[496px] h-[352px]' />
+                <Image alt="" src="/assets/images/Phone.svg" width={496} height={352} className=' w-[496px] h-[352px]' />
             </div>
 
 

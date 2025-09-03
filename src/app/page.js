@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Poppins } from "next/font/google";
+
 import Header from "./Components/header";
 import Navbar from "./Components/navbar";
 import BannerSec from "./Components/banner/bannerSec";
@@ -8,11 +8,9 @@ import CategorySec from "./Components/CategorySec";
 import BestProduct from "./Components/BestProduct";
 import ExploreProduct from "./Components/ExploreProductSec";
 import Banner2 from "./Components/banner2";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
+import NewArivalSec from "./Components/NewArivalSec";
+import FeatureSec from "./Components/featureSec";
+import Footer from "./Components/footer";
 
 export default function Home() {
   return (
@@ -27,6 +25,9 @@ export default function Home() {
       <BestProduct />
       <Banner2 />
       <ExploreProduct />
+      <NewArivalSec />
+      <FeatureSec />
+      <Footer />
     </div>
   );
 }

@@ -88,7 +88,7 @@ const products = [
 
 export default function ExploreProduct() {
     return (
-        <div className='mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center  '>
+        <div className='mx-[135px] mt-[145px] flex flex-col gap-[60px] items-center  '>
             <div className=' flex  w-full justify-between '>
                 <div className=' flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>
@@ -98,14 +98,14 @@ export default function ExploreProduct() {
                     <h1 className='font-[Poppins] font-[600] text-[36px] leading-[48px] text-black'>Explore Our Products</h1>
                 </div>
                 <div className='flex gap-[8px]'>
-                    <button className='w-[46px] h-[46px] rounded-full justify-center items-center flex bg-[#F5F5F5] rotate-180' ><Image src="/assets/icons/BlackRightArrow.svg" className=" " width={24} height={24} /></button>
-                    <button className='w-[46px] h-[46px] bg-[#F5F5F5]  rounded-full justify-center items-center flex' ><Image src="/assets/icons/BlackRightArrow.svg" className="" width={24} height={24} /></button>
+                    <button className='w-[46px] h-[46px] rounded-full justify-center items-center flex bg-[#F5F5F5] rotate-180' ><Image src="/assets/icons/BlackRightArrow.svg" className=" " alt="" width={24} height={24} /></button>
+                    <button className='w-[46px] h-[46px] bg-[#F5F5F5]  rounded-full justify-center items-center flex' ><Image src="/assets/icons/BlackRightArrow.svg" className="" alt="" width={24} height={24} /></button>
                 </div>
 
             </div>
             <div className='  grid grid-cols-4 gap-x-[30px] gap-y-[60px]'>
-                {products.map((product) => (<div> <div
-                    key={product.id}
+                {products.map((product) => (<div key={product.id}> <div
+
                     className=" flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px] "
 
                 >
@@ -145,6 +145,27 @@ export default function ExploreProduct() {
                                 </span>
                             </div>
                         </div>
+                        <div className='  flex gap-[8px]'>
+                            <input
+                                type="radio"
+                                name="color"
+                                value="green"
+                                className=" ring:text-[#DB4444]  size-[20px] "
+                            />
+
+
+
+
+
+                            <input
+                                type="radio"
+                                name="color"
+                                value="blue"
+                                className=" focus:ring-[#DB4444] text-[#DB4444]  size-[20px]"
+
+                            />
+
+                        </div>
 
 
 
@@ -162,7 +183,10 @@ export default function ExploreProduct() {
                 </div>))}
             </div>
 
-
+            <button className=' rounded-[4px]  text-[#FAFAFA] w-fit font-[Poppins] font-[400] text-[16px] leading-[24px] px-[38px] py-[16px] cursor-pointer bg-[#DB4444]
+                    '>
+                View All Products
+            </button>
         </div>
     )
 }
