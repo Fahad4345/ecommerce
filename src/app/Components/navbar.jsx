@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function navbar() {
     return (
-        <div className=' mt-[40px] px-[135px] pb-[16px] gap-[148px] flex border-b-[1px]  w-full border-[#000000]/30'>
+        <div className=' mt-[40px] pb-[16px] gap-[148px] flex border-b-[1px]  w-full border-[#000000]/30'>
             <div className='flex gap-[190px] '><div>
                 <h1 className='  font-[Poppins] font-[700] text-[24px] leading-[24px] tracking-[3%] text-black'>Exclusive</h1>
             </div>
