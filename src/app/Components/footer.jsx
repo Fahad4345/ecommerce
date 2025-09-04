@@ -53,12 +53,7 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    <div className=' flex  gap-[24px] '>
-                        <Image src="/assets/icons/Facebook.svg" width={24} height={24} alt="App Store" className=' cursor-pointer' />
-                        <Image src="/assets/icons/Twitter.svg" width={24} height={24} alt="App Store" className=' cursor-pointer' />
-                        <Image src="/assets/icons/insta.svg" width={24} height={24} alt="App Store" className=' cursor-pointer' />
-                        <Image src="/assets/icons/linkdin.svg" width={24} height={24} alt="App Store" className=' cursor-pointer' />
-                    </div>
+
 
                 </div>
 

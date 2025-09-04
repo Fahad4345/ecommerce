@@ -9,7 +9,7 @@ export default function navbar() {
                 <h1 className='  font-[Poppins] font-[700] text-[24px] leading-[24px] tracking-[3%] text-black'>Exclusive</h1>
             </div>
                 <div className=' flex gap-[48px]'>
-                    {["Home", "Contact", "About", "Signup"].map((nav, index) => (
+                    {["Home", "Contact", "About", "Signup", "Account"].map((nav, index) => (
                         <Link key={index} href={`/Pages/${nav}`}>
                             <p className='font-[Poppins] text-black font-[400] text-[16px] leading-[24px] tracking-[0%]  cursor-pointer hover:underline'>{nav}</p>
                         </Link>
