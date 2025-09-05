@@ -25,7 +25,7 @@ export default function FeatureSec() {
         <div className=' flex gap-[88px]  mt-[140px] mx-[248px]'>
             {featureSec.map((feature, index) => (
                 <div key={index} className=' flex flex-col justify-center items-center gap-[24px] '>
-                    <div className=' w-[80px] h-[80px]  bg-[#2F2E30]/30 rounded-full p-[11px] flex '> <div className='w-[58px]  h-[58px] flex bg-black justify-center items-center rounded-full'> <Image src={feature.icon} width={40} height={40} alt={feature.title} /></div></div>
+                    <div className=' w-[80px] h-[80px]  bg-[#2F2E30]/30 rounded-full p-[11px] flex '> <div className='w-[58px]  h-[58px] flex bg-black cursor-pointer justify-center items-center rounded-full'> <Image src={feature.icon} width={40} height={40} alt={feature.title} /></div></div>
                     <div className='flex flex-col gap-[8px]'>
                         <h1 className='  font-[Poppins] font-[600] text-[20px] leading-[28px]'>{feature.title}</h1>
                         <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px]'>{feature.desc}</h1>

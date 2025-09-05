@@ -1,8 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import Header from '@/app/Components/header'
-import Navbar from '@/app/Components/navbar'
-import Footer from '@/app/Components/footer'
+import Navbar from "@/app/Components/navbar";
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronUp, ChevronDown } from "lucide-react";
@@ -18,9 +16,9 @@ export default function Cart() {
         setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
     return (
         <div className=' bg-white h-full'>
-            <Header />
-            <Navbar />
-            <div className=' max-w-[1170px] mx-[135px] '>
+            <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+
+            <div className=' max-w-[1170px] mx-[135px] mt-[80px]'>
 
                 <div className=' flex gap-[284px] px-[39px] py-[24px] shadow-[0px_1px_13px_0px_#0000000D]'>
                     <h1 className=' font-[400] text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>Product</h1>
@@ -47,13 +45,13 @@ export default function Cart() {
                             <div className="flex flex-col  ">
                                 <button
                                     onClick={increment}
-                                    className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100"
+                                    className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100 cursor-pointer"
                                 >
                                     <ChevronUp size={14} />
                                 </button>
                                 <button
                                     onClick={decrement}
-                                    className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100"
+                                    className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100 cursor-pointer"
                                 >
                                     <ChevronDown size={14} />
                                 </button>
@@ -65,9 +63,8 @@ export default function Cart() {
                 ))}
 
                 <div className=' flex justify-between mt-[24px]'>
-                    <button className='  font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px]'>Return To Shop</button>
-                    <button className='  font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px]'>Update Cart</button>
-
+                    <button className='  font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px] cursor-pointer'>Return To Shop</button>
+                    <button className='  font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px] cursor-pointer'>Update Cart</button>
                 </div>
                 <div className=' flex justify-between  mt-[80px]'>
                     <div className=' flex h-fit flex-row'>
@@ -76,7 +73,7 @@ export default function Cart() {
 
                         </div>
 
-                        <button className=' bg-[#DB4444] text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] ml-[24px]'>Apply Coupon</button>
+                        <button className=' bg-[#DB4444] text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] ml-[24px] cursor-pointer'>Apply Coupon</button>
                     </div>
 
                     <div className=' py-[32px] px-[24px] max-w-[470px] w-full border-[1px] rounded-[4px]'>
@@ -106,7 +103,7 @@ export default function Cart() {
 
                         <Link href="/Pages/Checkout">
                             <div className=' flex justify-center'>
-                                <button className=' bg-[#DB4444] text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] mt-[16px]'>Process to Checkout</button>
+                                <button className=' bg-[#DB4444] text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] mt-[16px] cursor-pointer'>Process to Checkout</button>
 
                             </div>
                         </Link>
@@ -117,8 +114,9 @@ export default function Cart() {
                 </div>
 
             </div>
-            <Footer />
+
 
         </div>
     )
 }
+

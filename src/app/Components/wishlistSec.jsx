@@ -98,7 +98,7 @@ export default function wishlistSec() {
                         <h1 className='font-[Poppins] font-[400] text-[20px] leading-[26px] text-black'>Wishlist</h1>
                     </div>
                     <div className='flex gap-[8px]'>
-                        <button className='  justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px]' >Move All To Bag</button>
+                        <button className='justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px] cursor-pointer' >Move All To Bag</button>
 
                     </div>
 
@@ -119,15 +119,15 @@ export default function wishlistSec() {
 
                             <div className="
                                         absolute top-[12px] right-[12px] flex flex-col gap-2  items-end justify-end">
-                                <button className=" w-[34px] h-[34px] bg-white rounded-full  justify-center items-center flex shadow hover:bg-gray-100">
+                                <button className="w-[34px] h-[34px] bg-white rounded-full  justify-center items-center flex shadow hover:bg-gray-100 cursor-pointer">
 
                                 </button>
-                                <button className=" w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100">
+                                <button className="w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100 cursor-pointer">
 
                                 </button>
                             </div>
-                            <div className='  '>
-                                <Image src="/assets/images/Led.png" width={172} height={129} alt="" />
+                            <div className=''>
+                                <Image src="/assets/images/Led.png" width={172} height={129} alt="" className="cursor-pointer" />
                             </div>
 
 
@@ -166,7 +166,7 @@ export default function wishlistSec() {
                         <h1 className='font-[Poppins] font-[400] text-[20px] leading-[26px] text-black'>For you</h1>
                     </div>
                     <div className='flex gap-[8px]'>
-                        <button className='  justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px]' >See All</button>
+                        <button className='justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px] cursor-pointer' >See All</button>
 
                     </div>
 
@@ -187,15 +187,15 @@ export default function wishlistSec() {
 
                             <div className="
                                         absolute top-[12px] right-[12px] flex flex-col gap-2  items-end justify-end">
-                                <button className=" w-[34px] h-[34px] bg-white rounded-full  justify-center items-center flex shadow hover:bg-gray-100">
+                                <button className="w-[34px] h-[34px] bg-white rounded-full  justify-center items-center flex shadow hover:bg-gray-100 cursor-pointer">
 
                                 </button>
-                                <button className=" w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100">
+                                <button className="w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100 cursor-pointer">
 
                                 </button>
                             </div>
-                            <div className='  '>
-                                <Image src="/assets/images/Led.png" width={172} height={129} alt="" />
+                            <div className=''>
+                                <Image src="/assets/images/Led.png" width={172} height={129} alt="" className="cursor-pointer" />
                             </div>
 
 

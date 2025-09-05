@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { Heart, Eye } from "lucide-react";
+import Link from 'next/link'
 
 const products = [
     {
@@ -49,7 +50,7 @@ const products = [
 
 export default function BestProduct() {
     return (
-        <div className='mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center  '>
+        <div className=' cursor-pointer mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center  '>
             <div className=' flex  w-full justify-between '>
                 <div className=' flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>
@@ -66,7 +67,7 @@ export default function BestProduct() {
 
             </div>
             <div className=' flex gap-[30px]'>
-                {products.map((product) => (<div key={product.id}> <div
+                {products.map((product) => (<Link key={product.id} href="/Pages/ProductDetail"> <div > <div
 
                     className=" flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px] "
 
@@ -123,7 +124,7 @@ export default function BestProduct() {
                 </div>
 
 
-                </div>))}
+                </div></Link>))}
             </div>
 
 

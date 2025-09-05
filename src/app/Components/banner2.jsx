@@ -44,7 +44,7 @@ export default function Banner2() {
 
 
 
-                <div className="group mt-[40px]   w-fit py-[16px] px-[48px] bg-[#00FF66] transition duration-300 cursor-pointer ">
+                <div className="group mt-[40px]   w-fit py-[16px] px-[48px] cursor-pointer bg-[#00FF66] transition duration-300 cursor-pointer ">
                     <button className=" flex  gap-[8px]">
                         <p className='text-white  font-[Poppins] font-[400] text-[16px] leading-[24px]'>Buy Now!</p>
 

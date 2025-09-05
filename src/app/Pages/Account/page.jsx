@@ -1,13 +1,10 @@
 import React from 'react'
-import Header from '@/app/Components/header'
-import Navbar from '@/app/Components/navbar'
-import Footer from '@/app/Components/footer'
-import Image from 'next/image'
+import Navbar from "@/app/Components/navbar";
 
 export default function AccountPage() {
     return (
-        <div> <Header />
-            <Navbar />
+        <div>
+            <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
             <div className=' flex flex-row mx-[135px] mt-[80px]'>
 
                 <div className="min-w-[220px] mr-[60px]">
@@ -68,8 +65,8 @@ export default function AccountPage() {
                             </div>
                         </div>
                         <div className="flex justify-end items-center gap-[24px] ">
-                            <button type="button" className="font-[400] text-[16px] font-[Poppins] text-[#000] bg-transparent">Cancel</button>
-                            <button type="submit" className="bg-[#DB4444] text-white px-[32px] py-[12px] rounded-[4px] font-[Poppins] font-[500] text-[16px]">Save Changes</button>
+                            <button type="button" className="font-[400] text-[16px] font-[Poppins] text-[#000] bg-transparent cursor-pointer">Cancel</button>
+                            <button type="submit" className="bg-[#DB4444] text-white px-[32px] py-[12px] rounded-[4px] font-[Poppins] font-[500] text-[16px] cursor-pointer">Save Changes</button>
                         </div>
                     </form>
                 </div>
@@ -77,7 +74,7 @@ export default function AccountPage() {
             </div>
 
 
-            <Footer />
+
         </div>
     )
 }

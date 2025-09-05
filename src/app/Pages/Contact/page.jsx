@@ -1,14 +1,12 @@
 import React from 'react'
-import Header from '@/app/Components/header'
-import Navbar from '@/app/Components/navbar'
-import Footer from '@/app/Components/footer'
+
 import Image from 'next/image'
+import Navbar from "@/app/Components/navbar";
 
 export default function Contact() {
     return (
         <div className=' bg-white h-full'>
-            <Header />
-            <Navbar />
+            <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
             <div className=' flex flex-row  gap-[30px] mt-[80px] mx-[135px]'>
                 <div className=' flex max-w-[340px] flex-col px-[35px] pt-[40px] pb-[51px] gap-[32px] shadow-[0px_1px_13px_0px_#0000000D]  '>
                     <div className=' flex flex-col  gap-[24px]  w-full '>
@@ -54,12 +52,12 @@ export default function Contact() {
                     <div>
                         <textarea name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]    ' ></textarea>
                     </div>
-                    <div className=' flex justify-end'><button className=' bg-[#DB4444] w-fit  text-white py-[16px] px-[48px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%]'>Send Message</button>
+                    <div className='  flex justify-end'><button className=' bg-[#DB4444] w-fit cursor-pointer text-white py-[16px] px-[48px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%]'>Send Message</button>
                     </div>
                 </div>
             </div>
 
-            <Footer />
+
         </div>
     )
 }

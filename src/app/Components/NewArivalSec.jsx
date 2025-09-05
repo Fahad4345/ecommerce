@@ -29,7 +29,7 @@ export default function NewArivalSec() {
 
                             <div className="group  transition duration-300 cursor-pointer ">
                                 <button className=" flex  gap-[8px]">
-                                    <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px]'>Shop Now</p>
+                                    <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                     <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                 </button>
                                 <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
@@ -56,7 +56,7 @@ export default function NewArivalSec() {
 
                                 <div className="group  transition duration-300 cursor-pointer ">
                                     <button className=" flex  gap-[8px]">
-                                        <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px]'>Shop Now</p>
+                                        <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                         <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                     </button>
                                     <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
@@ -83,7 +83,7 @@ export default function NewArivalSec() {
 
                                     <div className="group  transition duration-300 cursor-pointer ">
                                         <button className=" flex  gap-[8px]">
-                                            <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px]'>Shop Now</p>
+                                            <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                             <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                         </button>
                                         <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
@@ -113,7 +113,7 @@ export default function NewArivalSec() {
 
                                     <div className="group  transition duration-300 cursor-pointer ">
                                         <button className=" flex  gap-[8px]">
-                                            <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px]'>Shop Now</p>
+                                            <p className='text-white  font-[Poppins] font-[500] cursor-pointer text-[16px] leading-[24px]'>Shop Now</p>
                                             <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                         </button>
                                         <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>

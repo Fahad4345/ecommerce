@@ -1,14 +1,12 @@
 "use client"
 import React, { useState } from 'react'
-import Header from '@/app/Components/header'
-import Navbar from '@/app/Components/navbar'
-import Footer from '@/app/Components/footer'
+
 import FeatureSec from '@/app/Components/featureSec'
 import Image from 'next/image'
-import { Swiper, SwiperSlide } from "swiper/react";
+import Navbar from "@/app/Components/navbar";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+
 import { Shop, Bag, MoneyBag, Sale, Twitter, Insta, LinkedIn } from "@/app/Components/svg/svg";
 
 
@@ -60,8 +58,8 @@ export default function About() {
     const [selected, setSelected] = useState(0);
     return (
         <div className=' bg-white h-full'>
-            <Header />
-            <Navbar />
+            <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+
             <div>
                 <div className='  justify-center items-center flex flex-row gap-[75px]  mt-[42px]'>
                     <div className=' flex flex-col gap-[40px] ml-[135px] max-w-[525px] w-full'>
@@ -121,7 +119,7 @@ export default function About() {
                 })}
             </div>
             <FeatureSec />
-            <Footer />
+
 
         </div>
     )

@@ -1,0 +1,98 @@
+import React from 'react'
+import Navbar from "@/app/Components/navbar";
+import { Cat } from 'lucide-react';
+import CategorySec from '@/app/Components/CategorySec';
+import SaleSection from '@/app/Components/SaleSec';
+const products = [
+    {
+        id: 1,
+        name: "HAVIT HV-G92 Gamepad",
+        price: 120,
+        oldPrice: 160,
+        discount: "-40%",
+        image: "/assets/images/Led.png",
+        rating: 4.5,
+        reviews: 88,
+    },
+    {
+        id: 2,
+        name: "HAVIT HV-G92 Gamepad",
+        price: 960,
+        oldPrice: 1160,
+        discount: "-35%",
+        image: "/assets/images/Led.png",
+        rating: 4.7,
+        reviews: 75,
+    },
+    {
+        id: 3,
+        name: "IPS LCD Gaming Monitor",
+        price: 370,
+        oldPrice: 400,
+        discount: "-30%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+    {
+        id: 4,
+        name: "S-Series Comfort Chair",
+        price: 375,
+        oldPrice: 400,
+        discount: "-25%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+    {
+        id: 5,
+        name: "S-Series Comfort Chair",
+        price: 375,
+        oldPrice: 400,
+        discount: "-25%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+    {
+        id: 6,
+        name: "S-Series Comfort Chair",
+        price: 375,
+        oldPrice: 400,
+        discount: "-25%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+    {
+        id: 7,
+        name: "S-Series Comfort Chair",
+        price: 375,
+        oldPrice: 400,
+        discount: "-25%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+    {
+        id: 8,
+        name: "S-Series Comfort Chair",
+        price: 375,
+        oldPrice: 400,
+        discount: "-25%",
+        image: "/assets/images/Led.png",
+        rating: 4.8,
+        reviews: 99,
+    },
+];
+
+export default function AllProduct() {
+    return (
+        <div>
+            <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+            <CategorySec />
+            <SaleSection title="All Products" subtitle="Check out our all products" products={products} showNavigation={false} showViewAll={false} showSwiper={false} />
+
+        </div>
+    )
+}
