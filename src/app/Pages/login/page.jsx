@@ -1,10 +1,41 @@
-import React from 'react'
-
+"use client"
+import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from "@/app/Components/navbar";
 
-export default function Signup() {
+
+export default function Login() {
+    const [FormData, setFormdata] = useState({
+        email: "",
+        password: ""
+    });
+
+
+
+    const handleChange = async (e) => {
+        setFormdata({ ...FormData, [e.target.name]: e.target.value })
+    }
+    const handlesubmit = async () => {
+        try {
+            const res = await fetch("http://localhost:3001/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(FormData)
+
+            });
+            const data = res.json(FormData);
+            alert("Login Sucessfully")
+        }
+        catch (err) {
+            console.log(err);
+            alert(err);
+
+        }
+    }
+
     return (
         <div className=' bg-white h-full'>
             <Navbar />
@@ -19,23 +50,23 @@ export default function Signup() {
                         <h1 className=" font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]">Enter your details below</h1>
 
                     </div>
-                    <div className=' gap-[40px]   flex flex-col '>
+                    <form className=' gap-[40px]   flex flex-col '>
 
                         <div>
-                            <input className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Email or Phone Number' />
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Email or Phone Number' name="email" value={FormData.email} type="text" />
 
 
                         </div>
                         <div>
-                            <input className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Password' />
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Password' name="password" value={FormData.password} type="text" />
 
 
                         </div>
-                    </div>
+                    </form>
                 </div>
                     <div className=' flex flex-row gap-[87px]  justify-center items-center'>
 
-                        <button className=' cursor-pointer bg-[#DB4444] px-[48px] py-[16px]  rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%]'>Login</button>
+                        <button onClick={handlesubmit} className=' cursor-pointer bg-[#DB4444] px-[48px] py-[16px]  rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%]'>Login</button>
 
 
 

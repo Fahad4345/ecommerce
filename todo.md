@@ -10,5 +10,5 @@ Next:
 - Next step is functionalities with Backend
 - Minnor changes in Completed screen
 
-Loom : (https://www.loom.com/share/e0c6cb115c12467ea419833eae822f4b?sid=885e6617-6945-40db-840b-a9ea361adace)
+Loom : (https://www.loom.com/share/472c4978f6f1485482994e83f85eadb2?sid=cd3a9042-e9c1-4914-b838-92004d5aa39f)
 Preview : (https://ecommerce-three-delta-52.vercel.app/)

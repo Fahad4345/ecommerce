@@ -1,10 +1,51 @@
-import React from 'react'
-
+"use client"
+import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from "@/app/Components/navbar";
 
-export default function Login() {
+
+
+
+export default function Signup() {
+    const [FormData, setFormdata] = useState({
+        Firstname: "",
+        Lastname: "",
+        Addresse: "",
+        email: "",
+        password: ""
+    });
+
+
+    const handleChange = async (e) => {
+        setFormdata({ ...FormData, [e.target.name]: e.target.value })
+    }
+    const handlesubmit = async () => {
+        try {
+            const res = await fetch("http://localhost:3001/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(FormData)
+
+            });
+            const data = res.json(FormData);
+
+            if (!res.ok) {
+                throw new Error("Something went wrong");
+            }
+
+            else {
+                throw new Error("User Created Sucessfully");
+
+            }
+        }
+        catch (err) {
+            alert("Error: " + err.message);
+
+        }
+    }
     return (
         <div className=' bg-white h-full'>
             <Navbar />
@@ -18,26 +59,32 @@ export default function Login() {
                         <h1 className=" font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]">Enter your details below</h1>
 
                     </div>
-                    <div className=' gap-[40px]   flex flex-col '>
+                    <form className=' gap-[40px]   flex flex-col '>
                         <div>
-                            <input className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Name' />
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder=' First Name' name='Firstname' value={FormData.Firstname} type="text" />
 
 
                         </div>
                         <div>
-                            <input className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Email or Phone Number' />
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Last Name' name='Lastname' value={FormData.Lastname} type="text" />
+
+
+                        </div>
+
+                        <div>
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Email or Phone Number' name='email' value={FormData.email} type="text" />
 
 
                         </div> <div>
-                            <input className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Password' />
+                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' placeholder='Password' name='password' value={FormData.password} type="text" />
 
 
                         </div>
 
-                    </div>
+                    </form>
                     <div className=' flex flex-col gap-[16px] '>
 
-                        <button className=' bg-[#DB4444] px-[122px] py-[16px] cursor-pointer rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%]'>Create Account</button>
+                        <button className=' bg-[#DB4444] px-[122px] py-[16px] cursor-pointer rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%] ' onClick={handlesubmit}>Create Account</button>
                         <div className=' '>
 
                             <div className='  cursor-pointer flex  justify-center items-center mt-[32px] gap-[16px]'> <h1 className=' font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]'>Already have account?</h1> <Link href="/Pages/login"><h1 className='cursor-pointer font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] underline'>Log in</h1></Link></div>
