@@ -1,14 +1,15 @@
 Ecommerce:
 Integrated :
 
-- UI completed for screens for all screens
-- Added Hover effect in Nav bars
-- Added cursor pointer
+- Started Backend
+- Created backend for Protected route
+- Integrated Login , Signup , Protected route Api in Front end
+- Created Update profile api and integrated it in front end
+- Some error in updating new password
 
 Next:
 
-- Next step is functionalities with Backend
-- Minnor changes in Completed screen
+- Other functionalities
 
-Loom : (https://www.loom.com/share/472c4978f6f1485482994e83f85eadb2?sid=cd3a9042-e9c1-4914-b838-92004d5aa39f)
-Preview : (https://ecommerce-three-delta-52.vercel.app/)
+Loom : (https://www.loom.com/share/f03d276b2b3243b9b7b1d49aef9ea131?sid=2d4ea598-1411-4e96-9612-9fed4002fb66)
+Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend not deployed)
