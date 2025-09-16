@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import Link from "next/link";
+import { useWishlist } from "./../Api/wishlist"
 
 
 
@@ -19,20 +20,26 @@ export default function SaleSection({
     showViewAll = true,
     slidesPerView = 4,
 }) {
+    const { insertItem } = useWishlist();
 
 
     const swiperRef = useRef(null);
 
 
+
     function ProductCard({ product }) {
-        return (<Link key={product.id} href="/productDetail">
+
+        return (<Link key={product._id} href={`/productDetail/${product._id}`} >
             <div className={` flex flex-col cursor-pointer  ${showSwiper === true ? " w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] h-full gap-[16px]`}>
                 <div className="relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] flex justify-center items-center">
                     <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
-                        {product.discount}
+                        {`${product.discount} %`}
                     </span>
                     <div className="absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end">
-                        <button className="w-[34px] h-[34px] bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
+                        <button onClick={(e) => {
+                            insertItem(product._id); e.preventDefault();
+                            e.stopPropagation();
+                        }} className="w-[34px] h-[34px] bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
                             <Heart size={20} />
                         </button>
                         <button className="w-[34px] h-[34px] bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
@@ -41,11 +48,12 @@ export default function SaleSection({
                     </div>
 
                     <Image
-                        src={product.image}
+                        src={product.image[0]}
                         width={172}
                         height={129}
                         alt={product.name}
-                    />  <button
+                    />
+                    <button
                         className=" font-[Poppins]  font-[500] text-[16px] leading-[24px] absolute bottom-0 left-0 w-full bg-black text-white py-2 text-sm 
                  translate-y-full group-hover:translate-y-0 
                  transition-all duration-300"
@@ -64,14 +72,14 @@ export default function SaleSection({
                             ${product.price}
                         </span>
                         <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px] leading-[24px]">
-                            ${product.oldPrice}
+                            ${product.discountPrice}
                         </span>
                     </div>
                     <div className="flex items-center text-yellow-400 text-[20px]">
                         {"★".repeat(Math.round(product.rating))}
                         {"☆".repeat(5 - Math.round(product.rating))}
                         <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
-                            ({product.reviews})
+                            ({product.review})
                         </span>
                     </div>
                 </div>
@@ -142,8 +150,8 @@ export default function SaleSection({
                 </Swiper>
             ) : (
                 <div className="grid grid-cols-4 gap-[30px] w-fit ">
-                    {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                    {products.map((product, id) => (
+                        <ProductCard key={id} product={product} />
                     ))}
                 </div>
             )}

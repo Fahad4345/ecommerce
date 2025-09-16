@@ -2,14 +2,17 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Created backend for Protected route
-- Integrated Login , Signup , Protected route Api in Front end
-- Created Update profile api and integrated it in front end
-- Some error in updating new password
+- Integrated Wishlist inesrt,get,remove Api with Frontend
+- Integrated add to cart Api
+- Integrated get Cart Api
+- Created Api to update Cart but not integrated in frontend
 
 Next:
 
-- Other functionalities
+- Google Authentication
+- Integration of update Api
+- Use of Stripe
+- Implementation of Node mailer
 
-Loom : (https://www.loom.com/share/f03d276b2b3243b9b7b1d49aef9ea131?sid=2d4ea598-1411-4e96-9612-9fed4002fb66)
+Loom : (https://www.loom.com/share/8ab9277bf65a4b4a80354108c1848acd?sid=7904b247-f409-4af0-885d-ab3d54b79c54)
 Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend not deployed)

@@ -1,19 +1,52 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from "../../Components/NavBar";
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronUp, ChevronDown } from "lucide-react";
-const cart = [
-    { name: "LCD Monitor", price: 650, quantity: 1, subtotal: 650, image: "/assets/icons/lcd.svg" },
-]
+import { GetCart } from './../../Api/Cart/getCart';
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addItem } from "./../../store/productSlice";
 
 export default function Cart() {
-    const [quantity, setQuantity] = useState(1);
 
-    const increment = () => setQuantity((prev) => prev + 1);
-    const decrement = () =>
-        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+    const router = useRouter();
+    const [cart, setCart] = useState([]);
+    const dispatch = useDispatch();
+    const handleAddToCart = (item) => {
+        dispatch(addItem(item));
+        router.push("/productId/");
+    };
+    const increment = (index) => {
+        const newCart = [...cart];
+        newCart[index].quantity += 1;
+        setCart(newCart);
+    };
+
+    const decrement = (index) => {
+        const newCart = [...cart];
+        if (newCart[index].quantity > 1) {
+            newCart[index].quantity -= 1;
+            setCart(newCart);
+        }
+
+    }
+    useEffect(() => {
+        async function fetchCart() {
+            try {
+                const data = await GetCart();
+                if (data && data.cart) {
+                    setCart(data.cart);
+                }
+            } catch (err) {
+                console.error("Failed to load cart:", err);
+            }
+        }
+
+        fetchCart();
+    }, [])
+
     return (
         <div className=' bg-white h-full justify-center items-center flex flex-col'>
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
@@ -31,26 +64,26 @@ export default function Cart() {
                 </div>
                 {cart.map((item, index) => (
 
-                    <div key={index} className=' flex items-center  justify-between px-[39px] py-[24px] shadow-[0px_1px_13px_0px_#0000000D]'>
-                        <div className=' flex gap-[20px] items-center'><Image src={item.image} width={54} height={54} alt={item.name} />  <h1 className=' font-[400] text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>{item.name}</h1></div>
+                    <div key={index} onClick={() => handleAddToCart(item.itemId,)} className=' flex items-center  justify-between px-[39px] py-[24px] shadow-[0px_1px_13px_0px_#0000000D]'>
+                        <div className=' flex gap-[20px] items-center'><Image src={item.itemId.image[0]} width={54} height={54} alt="" />  <h1 className=' font-[400] text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>{item.name}</h1></div>
 
-                        <h1 className=' font-[400] text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>{item.price}</h1>
+                        <h1 className=' font-[400] text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>{item.itemId.price}</h1>
 
                         <div className="flex items-center border border-gray-300 rounded-md w-[70px] h-[35px] overflow-hidden">
 
                             <span className="flex-1 text-center text-[14px] font-medium">
-                                {quantity.toString().padStart(2, "0")}
+                                {item.quantity.toString().padStart(2, "0")}
                             </span>
 
-                            <div className="flex flex-col  ">
+                            <div className="flex flex-col" onClick={() => e.preventDefault()}>
                                 <button
-                                    onClick={increment}
+                                    onClick={() => increment(index)}
                                     className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100 cursor-pointer"
                                 >
                                     <ChevronUp size={14} />
                                 </button>
                                 <button
-                                    onClick={decrement}
+                                    onClick={() => decrement(index)}
                                     className="w-[20px] h-[17px] flex items-center justify-center hover:bg-gray-100 cursor-pointer"
                                 >
                                     <ChevronDown size={14} />

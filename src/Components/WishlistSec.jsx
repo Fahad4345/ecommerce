@@ -1,47 +1,8 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
+import { useWishlist } from './../Api/wishlist';
 
-const Wishlist = [
-    {
-        id: 1,
-        name: "HAVIT HV-G92 Gamepad",
-        price: 120,
-        oldPrice: 160,
-        discount: "-40%",
-        image: "/products/gamepad.png",
-        rating: 4.5,
-        reviews: 88,
-    },
-    {
-        id: 2,
-        name: "AK-900 Wired Keyboard",
-        price: 960,
-        oldPrice: 1160,
-        discount: "-35%",
-        image: "/products/keyboard.png",
-        rating: 4.7,
-        reviews: 75,
-    },
-    {
-        id: 3,
-        name: "IPS LCD Gaming Monitor",
-        price: 370,
-        oldPrice: 400,
-        discount: "-30%",
-        image: "/products/monitor.png",
-        rating: 4.8,
-        reviews: 99,
-    },
-    {
-        id: 4,
-        name: "IPS LCD Gaming Monitor",
-        price: 370,
-        oldPrice: 400,
-        discount: "-30%",
-        image: "/products/monitor.png",
-        rating: 4.8,
-        reviews: 99,
-    },]
 
 const Foryou = [
 
@@ -89,6 +50,28 @@ const Foryou = [
 
 
 export default function wishlistSec() {
+    const [Wishlist, setWishlist] = useState([]);
+    const { getItem, removeItem } = useWishlist();
+    useEffect(() => {
+        const fetchWishlist = async () => {
+            const data = await getItem();
+            if (data?.wishlist) {
+                setWishlist(data.wishlist);
+                console.log(data);
+            }
+        };
+        fetchWishlist();
+
+    }, []);
+    const handleRemove = async (id) => {
+        try {
+            await removeItem(id);
+            setWishlist(prev => prev.filter(item => item._id !== id));
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <div className=' flex flex-col gap-[80px] max-w-[1170px] w-full '>
             <div className=' mt-[80px] flex flex-col gap-[60px] items-center  '>
@@ -104,7 +87,7 @@ export default function wishlistSec() {
 
                 </div>
                 <div className='  grid grid-cols-4 gap-x-[30px] gap-y-[60px]'>
-                    {Wishlist.map((product) => (<div key={product.id}> <div
+                    {Wishlist.map((product, id) => (<div key={id}> <div
 
                         className=" flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px] "
 
@@ -120,12 +103,12 @@ export default function wishlistSec() {
                             <div className="
                                         absolute top-[12px] right-[12px] flex flex-col gap-2  items-end justify-end">
 
-                                <button className="w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100 cursor-pointer">
+                                <button onClick={() => handleRemove(product._id)} className="w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex  shadow hover:bg-gray-100 cursor-pointer">
                                     <Image src="/assets/icons/delete.svg" alt="" width={24} height={24} />
                                 </button>
                             </div>
                             <div className=''>
-                                <Image src="/assets/images/Led.png" width={172} height={129} alt="" className="cursor-pointer" />
+                                <Image src={product.image[0]} width={172} height={129} alt="" className="cursor-pointer" />
                             </div>
 
                             <button
@@ -147,11 +130,7 @@ export default function wishlistSec() {
 
 
 
-                            {/* Add to Cart Button (hover) */}
-                            {/* <button className="w-full  bg-black text-white py-2 rounded hover:bg-gray-800">
-                            Add To Cart
-                        </button>
-                     */}
+
                         </div>
 
 

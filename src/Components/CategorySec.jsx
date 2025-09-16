@@ -1,8 +1,11 @@
 
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from 'next/image'
 import { Camera, Phone, Computer, GamePad, HeadPhone, Watch } from "./svg/Svg";
+import { GetDataByCategory } from "./../Api/getData"
+
+
 
 
 const Category = [
@@ -28,14 +31,28 @@ const Category = [
 ]
 
 
-export default function CategorySec() {
-    const [selected, setSelected] = useState(0);
+export default function CategorySec({ onItemFetch }) {
+    const [SelectedIndex, setSelectedIndex] = useState(0);
+    const SelectedCategory = Category[SelectedIndex].category;
+
+
+    useEffect(() => {
+        async function fetchData() {
+            const data = await GetDataByCategory(SelectedCategory);
+            onItemFetch?.(data.item);
+
+        }
+
+        fetchData();
+        console.log("Fetching:", SelectedCategory);
+    }, [SelectedCategory])
+
 
     const handlenext = () => {
-        setSelected((prev) => (prev + 1) % Category.length);
+        setSelectedIndex((prev) => (prev + 1) % Category.length);
     }
     const handleprev = () => {
-        setSelected((prev) =>
+        setSelectedIndex((prev) =>
             prev === 0 ? Category.length - 1 : prev - 1
         );
     }
@@ -57,11 +74,11 @@ export default function CategorySec() {
             </div>
             <div className="flex gap-[30px] w-full">
                 {Category.map((cat, index) => {
-                    const isActive = index === selected;
+                    const isActive = index === SelectedIndex;
                     return (
                         <div
                             key={index}
-                            onClick={() => setSelected(index)}
+                            onClick={() => setSelectedIndex(index)}
                             className={`min-w-[170px] w-full min-h-[145px] h-full gap-[16px] flex flex-col justify-center items-center rounded-[4px] border-[1px] cursor-pointer transition
                 ${isActive
                                     ? "bg-[#DB4444] text-white border-[#DB4444]"

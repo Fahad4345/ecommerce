@@ -7,7 +7,7 @@ import { useAuth } from "../../Api/useAuth";
 
 
 export default function Login() {
-    const { login, } = useAuth();
+    const { login } = useAuth();
     const [FormData, setFormdata] = useState({
         email: "",
         password: ""
