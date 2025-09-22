@@ -2,17 +2,16 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Integrated Wishlist inesrt,get,remove Api with Frontend
-- Integrated add to cart Api
-- Integrated get Cart Api
-- Created Api to update Cart but not integrated in frontend
+- Added strip at checkout
+- Added timer in Flash Sale i Banner
+- Adjusted UI
+- Stored no of cart and no of wishlist of user in local storage
+- Added Missing routers
 
 Next:
 
-- Google Authentication
-- Integration of update Api
-- Use of Stripe
-- Implementation of Node mailer
+- Fixes of bugs and UI Bugs
+- Api for Cash on delivery and stripe
 
-Loom : (https://www.loom.com/share/8ab9277bf65a4b4a80354108c1848acd?sid=7904b247-f409-4af0-885d-ab3d54b79c54)
-Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend not deployed)
+Loom : (https://www.loom.com/share/46cb7bbe1ca647cca2ba6751059855a4?sid=2f4bdb3d-81d3-4221-851e-c6179816c201)
+Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend deployed but there are errors)

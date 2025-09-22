@@ -3,13 +3,20 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from "../../Components/NavBar";
-import { useAuth } from "../../Api/useAuth";
+import { useAuth } from "../../Api1/useAuth";
+import GoogleSignInButton from './../../Components/GoogleButton';
+
+import { useRouter } from 'next/navigation';
+
+
 
 
 
 
 export default function Signup() {
-    const { signup, user } = useAuth();
+    const router = useRouter();
+    const { signup } = useAuth();
+
     const [FormData, setFormdata] = useState({
         Firstname: "",
         Lastname: "",
@@ -30,6 +37,7 @@ export default function Signup() {
             email: FormData.email,
             password: FormData.password,
         });
+        router.push("/");
     };
 
     return (
@@ -71,6 +79,7 @@ export default function Signup() {
                     <div className=' flex flex-col gap-[16px] '>
 
                         <button className=' bg-[#DB4444] px-[122px] py-[16px] cursor-pointer rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%] ' onClick={handleSignup}>Create Account</button>
+                        <GoogleSignInButton />
                         <div className=' '>
 
                             <div className='  cursor-pointer flex  justify-center items-center mt-[32px] gap-[16px]'> <h1 className=' font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]'>Already have account?</h1> <Link href="/login"><h1 className='cursor-pointer font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%] underline'>Log in</h1></Link></div>

@@ -1,43 +1,19 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from "../../Components/NavBar";
-import { useAuth } from '../../Api/useAuth';
+import { useAuth } from '../../Api1/useAuth';
 import Link from 'next/link';
+import { MyContext } from '../../context/MyContext';
 
 export default function AccountPage() {
-    const [form, setForm] = useState({
-        Firstname: "",
-        Lastname: "",
-        email: "",
-        Addresse: "",
-    });
+    const { user, setuser } = useContext(MyContext);
+
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const { getDashboard, updateProfile } = useAuth();
     const [Account, setAccount] = useState(null);
-    useEffect(() => {
-        const fetchAccount = async () => {
-            const data = await getDashboard();
-            console.log(data);
-            if (data) {
-                setForm({
-                    Firstname: data.user.Firstname,
-                    Lastname: data.user.Lastname,
-                    email: data.user.email,
-                    Addresse: data.user.Addresse,
-                });
-                setAccount(data.user);
 
-            }
-
-        };
-        fetchAccount();
-
-
-
-
-    }, []);
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -54,14 +30,30 @@ export default function AccountPage() {
 
     }
 
+    const [form, setForm] = useState({
+        Firstname: "",
+        Lastname: "",
+        email: "",
+        Addresse: "",
+    });
 
+    useEffect(() => {
+        if (user) {
+            setForm({
+                Firstname: user.Firstname || "",
+                Lastname: user.Lastname || "",
+                email: user.email || "",
+                Addresse: user.Addresse || "",
+            });
+        }
+    }, [user]);
 
 
     return (
         <div className=' flex justify-center items-center flex-col'>
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
-            {Account ? (<div className='  max-w-[1170px] w-full flex justify-center items-center flex-row mx-[135px] mt-[80px]'>
+            {user ? (<div className='  max-w-[1170px] w-full flex justify-center items-center flex-row mx-[135px] mt-[80px]'>
 
                 <div className="min-w-[220px] mr-[60px]">
                     <div className="flex flex-col gap-6">
@@ -105,11 +97,11 @@ export default function AccountPage() {
                         <div className="flex gap-[32px]">
                             <div className="flex flex-col flex-1">
                                 <label className="font-[400] text-[16px] font-[Poppins] mb-[8px]">Email</label>
-                                <input type="email" readOnly value={Account.email} className="bg-[#F5F5F5] rounded-[4px] px-[16px] py-[12px] font-[Poppins] text-[16px] opacity-[50%] focus:outline-none focus:ring-0 focus:border-transparent " />
+                                <input type="email" readOnly value={form.email} className="bg-[#F5F5F5] rounded-[4px] px-[16px] py-[12px] font-[Poppins] text-[16px] opacity-[50%] focus:outline-none focus:ring-0 focus:border-transparent " />
                             </div>
                             <div className="flex flex-col flex-1">
                                 <label className="font-[400] text-[16px] font-[Poppins] mb-[8px]">Address</label>
-                                <input type="text" name="Addresse" value={Account.Addresse} onChange={handleChange} className="bg-[#F5F5F5] rounded-[4px] px-[16px] py-[12px] font-[Poppins] text-[16px] focus:outline-none focus:ring-0 focus:border-transparent" />
+                                <input type="text" name="Addresse" value={form.Addresse} onChange={handleChange} className="bg-[#F5F5F5] rounded-[4px] px-[16px] py-[12px] font-[Poppins] text-[16px] focus:outline-none focus:ring-0 focus:border-transparent" />
                             </div>
                         </div>
                         <div>

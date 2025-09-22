@@ -1,15 +1,15 @@
 export async function GetDataByCategory(Category) {
   try {
     const url = Category
-      ? `http://localhost:3001/api/auth/GetItem?Category=${encodeURIComponent(
+      ? `https://backend-production-7ad70.up.railway.app/api/auth/GetItem?Category=${encodeURIComponent(
           Category
         )}`
-      : `http://localhost:3001/api/auth/GetItem`;
+      : `https://backend-production-7ad70.up.railway.app/api/auth/GetItem`;
     const res = await fetch(url, {
       method: "GET",
     });
     const data = await res.json();
-
+    console.log(" Get Data", data);
     return data;
   } catch (err) {}
 }

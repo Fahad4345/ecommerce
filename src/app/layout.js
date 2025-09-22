@@ -4,6 +4,10 @@ import { Poppins, Inter } from "next/font/google";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import ReduxProvider from "../store/reduxProvider";
+import Script from "next/script";
+
+import MyProvider from "./../context/Myprovider";
+import SessionWrapper from "./../Components/SessionWrapper";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,12 +37,19 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {" "}
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="afterInteractive"
+        />
         <ReduxProvider>
-          {" "}
-          <Header />
-          {children}
-          <Footer />
-        </ReduxProvider>
+          <MyProvider>
+            {" "}
+            <Header />
+            {children}
+            <Footer />
+          </MyProvider>
+        </ReduxProvider>{" "}
       </body>
     </html>
   );

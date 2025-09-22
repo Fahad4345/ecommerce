@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import BannerFlashSaleTimer from './BannerFlashtimer'
 
 const banners = [
     {
@@ -31,12 +32,7 @@ export default function Banner2() {
 
                 ))}
                 <div className=' flex mt-[32px]  gap-[24px]'>
-                    <div className='  min-w-[62px] min-h-[62px]  bg-white  rounded-full flex flex-col  justify-center items-center'><h1 className='  font-[Poppins] font-[600] text-[16px] leading-[20px]'>23</h1> <h1 className='  font-[Poppins] font-[400] text-[11px] leading-[18px]'>Hours</h1></div>
-                    <div className='  min-w-[62px] min-h-[62px] bg-white  rounded-full flex flex-col  justify-center items-center'><h1 className='  font-[Poppins] font-[600] text-[16px] leading-[20px]'>05</h1> <h1 className='  font-[Poppins] font-[400] text-[11px] leading-[18px]'>Days</h1></div>
-
-                    <div className='   min-w-[62px] min-h-[62px] bg-white  rounded-full flex flex-col  justify-center items-center'><h1 className='  font-[Poppins] font-[600] text-[16px] leading-[20px]'>59</h1> <h1 className='  font-[Poppins] font-[400] text-[11px] leading-[18px]'>Minutes</h1></div>
-
-                    <div className='   min-w-[62px] min-h-[62px]  bg-white  rounded-full flex flex-col  justify-center items-center'><h1 className='  font-[Poppins] font-[600] text-[16px] leading-[20px]'>35</h1> <h1 className='  font-[Poppins] font-[400] text-[11px] leading-[18px]'>Seconds</h1></div>
+                    <BannerFlashSaleTimer />
 
                 </div>
 

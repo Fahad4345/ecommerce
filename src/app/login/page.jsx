@@ -1,25 +1,35 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from "../../Components/NavBar";
-import { useAuth } from "../../Api/useAuth";
+import { useAuth } from "./../../Api1/useAuth"
+import { MyContext } from '../../context/MyContext';
 
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const { setuser, setcartLength, setWishlistLength } = useContext(MyContext);
     const { login } = useAuth();
+
+    const router = useRouter();
+
     const [FormData, setFormdata] = useState({
         email: "",
         password: ""
     });
 
 
-
     const handleChange = async (e) => {
         setFormdata({ ...FormData, [e.target.name]: e.target.value })
     }
     const handleLogin = async () => {
-        await login(FormData.email, FormData.password)
+        const loginUser = await login(FormData.email, FormData.password);
+        setuser(loginUser);
+
+        console.log("LoginUser", loginUser);
+        router.push("/")
+
     }
 
 

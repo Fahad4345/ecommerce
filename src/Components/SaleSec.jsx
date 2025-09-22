@@ -1,14 +1,16 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import Image from "next/image";
 import { Heart, Eye } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import Link from "next/link";
-import { useWishlist } from "./../Api/wishlist"
-
-
+import { useWishlist } from "../Api1/wishlist"
+import FlashSaleTimer from "./FlashTimer";
+import { InsertCart } from '../Api1/Cart/insertCart';
+import { MyContext } from "../context/MyContext";
+import { GetCart } from '../Api1/Cart/getCart';
 
 export default function SaleSection({
     title = "",
@@ -19,92 +21,173 @@ export default function SaleSection({
     showNavigation = true,
     showViewAll = true,
     slidesPerView = 4,
+    showTimer = false,
 }) {
-    const { insertItem } = useWishlist();
-
+    const { insertItem, removeItem } = useWishlist();
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
 
     const swiperRef = useRef(null);
+    const [cartIds, setCartIds] = useState([]);
+
+    const syncCartItems = async () => {
+        try {
+            const data = await GetCart();
+            if (data && data.cart && Array.isArray(data.cart)) {
+                const itemIds = data.cart.map(item => item.itemId._id);
+                setCartIds(itemIds);
+                localStorage.setItem("CartItems", JSON.stringify(itemIds));
+            } else {
+                setCartIds([]);
+                localStorage.setItem("CartItems", JSON.stringify([]));
+            }
+        } catch (error) {
+            console.error("Error syncing cart items:", error);
+        }
+    };
+
+    useEffect(() => {
+        syncCartItems();
+    }, []);
 
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+
+                syncCartItems();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
+
+
+    const handleAddToCart = async (productId, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+            await InsertCart(productId);
+
+
+            if (!cartIds.includes(productId)) {
+                const updatedCartIds = [...cartIds, productId];
+                setCartIds(updatedCartIds);
+                localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+            }
+
+
+            setcartLength(cartLength + 1);
+
+            alert("Item Added Successfully");
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            alert("Failed to add item to cart");
+        }
+    };
 
     function ProductCard({ product }) {
+        const wishlisted = wishlistIds?.includes(product._id);
+        const inCart = cartIds?.includes(product._id);
 
-        return (<Link key={product._id} href={`/productDetail/${product._id}`} >
-            <div className={` flex flex-col cursor-pointer  ${showSwiper === true ? " w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] h-full gap-[16px]`}>
-                <div className="relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] flex justify-center items-center">
-                    <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
-                        {`${product.discount} %`}
-                    </span>
-                    <div className="absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end">
-                        <button onClick={(e) => {
-                            insertItem(product._id); e.preventDefault();
-                            e.stopPropagation();
-                        }} className="w-[34px] h-[34px] bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
-                            <Heart size={20} />
+        return (
+            <Link key={product._id} href={`/productDetail/${product._id}`}>
+                <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] h-full gap-[16px]`}>
+                    <div className="relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] flex justify-center items-center">
+                        <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
+                            {`${product.discount}%`}
+                        </span>
+                        <div className={`absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end`}>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    if (wishlisted) {
+                                        removeItem(product._id);
+                                        removeFromWishlist(product._id);
+                                    } else {
+                                        insertItem(product._id);
+                                        addToWishlist(product._id);
+                                    }
+                                }}
+                                className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100"
+                            >
+                                <Heart fill={wishlisted ? "red" : "none"} color={wishlisted ? "red" : "black"} size={20} />
+                            </button>
+                            <button className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
+                                <Eye size={20} />
+                            </button>
+                        </div>
+
+                        <Image
+                            src={product.image[0]}
+                            width={172}
+                            height={129}
+                            alt={product.name}
+                        />
+
+                        <button
+                            onClick={(e) => handleAddToCart(product._id, e)}
+                            disabled={inCart}
+                            className={`font-[Poppins] cursor-pointer font-[500] text-[16px] leading-[24px] absolute bottom-0 left-0 w-full py-2 text-sm translate-y-full group-hover:translate-y-0 transition-all duration-300 ${inCart
+                                ? "bg-green-600 text-white cursor-not-allowed"
+                                : "bg-black text-white hover:bg-gray-800"
+                                }`}
+                        >
+                            {inCart ? "Added to Cart" : "Add To Cart"}
                         </button>
-                        <button className="w-[34px] h-[34px] bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100">
-                            <Eye size={20} />
-                        </button>
                     </div>
 
-                    <Image
-                        src={product.image[0]}
-                        width={172}
-                        height={129}
-                        alt={product.name}
-                    />
-                    <button
-                        className=" font-[Poppins]  font-[500] text-[16px] leading-[24px] absolute bottom-0 left-0 w-full bg-black text-white py-2 text-sm 
-                 translate-y-full group-hover:translate-y-0 
-                 transition-all duration-300"
-                    >
-                        Add To Cart
-                    </button>
-
-                </div>
-
-                <div className="flex flex-col gap-[8px]">
-                    <h3 className="font-[Poppins] font-[500] text-[16px] leading-[24px]">
-                        {product.name}
-                    </h3>
-                    <div className="flex items-center gap-2">
-                        <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">
-                            ${product.price}
-                        </span>
-                        <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px] leading-[24px]">
-                            ${product.discountPrice}
-                        </span>
-                    </div>
-                    <div className="flex items-center text-yellow-400 text-[20px]">
-                        {"★".repeat(Math.round(product.rating))}
-                        {"☆".repeat(5 - Math.round(product.rating))}
-                        <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
-                            ({product.review})
-                        </span>
+                    <div className="flex flex-col gap-[8px]">
+                        <h3 className="font-[Poppins] font-[500] text-[16px] leading-[24px]">
+                            {product.name}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                            <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">
+                                ${product.price}
+                            </span>
+                            <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px] leading-[24px]">
+                                ${product.discountPrice}
+                            </span>
+                        </div>
+                        <div className="flex items-center text-yellow-400 text-[20px]">
+                            {"★".repeat(Math.round(product.rating))}
+                            {"☆".repeat(5 - Math.round(product.rating))}
+                            <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
+                                ({product.review})
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div></Link>
+            </Link>
         );
     }
 
     return (
-        <div className={` ${showSwiper === true ? " ml-[275px] " : "mx-[135px] max-w-[1170px]"}  ${className} overflow-hidden  w-full mt-[145px] flex flex-col gap-[40px] `}>
-
-            <div className="flex  justify-between items-center max-w-[1170px] w-full">
-                <div className="flex flex-col gap-[24px] ">
-                    <div className="flex items-center gap-[16px]">
-                        <div className="bg-[#DB4444] w-[20px] h-[40px] rounded-[4px]"></div>
-                        <h1 className="font-[Poppins] font-[600] text-[16px] leading-[20px] text-[#DB4444]">
-                            {subtitle}
+        <div className={`${showSwiper === true ? "ml-[275px]" : "mx-[135px] max-w-[1170px]"} ${className} overflow-hidden w-full mt-[145px] flex flex-col gap-[40px]`}>
+            <div className="flex items-end justify-between max-w-[1170px] w-full">
+                <div className="flex flex-row justify-end items-end gap-[87px]">
+                    <div className="flex flex-col gap-[24px]">
+                        <div className="flex items-center gap-[16px]">
+                            <div className="bg-[#DB4444] w-[20px] h-[40px] rounded-[4px]"></div>
+                            <h1 className="font-[Poppins] font-[600] text-[16px] leading-[20px] text-[#DB4444]">
+                                {subtitle}
+                            </h1>
+                        </div>
+                        <h1 className="font-[Poppins] font-[600] text-[36px] leading-[48px] text-black">
+                            {title}
                         </h1>
                     </div>
-                    <h1 className="font-[Poppins] font-[600] text-[36px] leading-[48px] text-black">
-                        {title}
-                    </h1>
+                    {showTimer && (<FlashSaleTimer />)}
                 </div>
 
                 {showNavigation && showSwiper && (
-                    <div className="flex gap-[8px] ">
+                    <div className="flex gap-[8px]">
                         <button
                             className="w-[46px] cursor-pointer h-[46px] rounded-full flex justify-center items-center bg-[#F5F5F5] rotate-180"
                             onClick={() => swiperRef.current?.slidePrev()}
@@ -117,7 +200,7 @@ export default function SaleSection({
                             />
                         </button>
                         <button
-                            className=" cursor-pointer w-[46px] h-[46px] rounded-full flex justify-center items-center bg-[#F5F5F5]"
+                            className="cursor-pointer w-[46px] h-[46px] rounded-full flex justify-center items-center bg-[#F5F5F5]"
                             onClick={() => swiperRef.current?.slideNext()}
                         >
                             <Image
@@ -143,13 +226,13 @@ export default function SaleSection({
                     className="w-full max-w-[1440px]"
                 >
                     {products.map((product) => (
-                        <SwiperSlide className=" max-w-[270px] w-full" key={product.id}>
+                        <SwiperSlide className="max-w-[270px] w-full" key={product._id}>
                             <ProductCard product={product} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
             ) : (
-                <div className="grid grid-cols-4 gap-[30px] w-fit ">
+                <div className="grid grid-cols-4 gap-[30px] w-fit">
                     {products.map((product, id) => (
                         <ProductCard key={id} product={product} />
                     ))}
@@ -157,15 +240,14 @@ export default function SaleSection({
             )}
 
             {showViewAll && (
-                <div className=" w-full items-center flex justify-center">
-                    <Link href="/allProduct"><div
-                        className="rounded-[4px] text-[#FAFAFA] w-fit font-[Poppins] font-[400] text-[16px] leading-[24px] px-[38px] py-[16px] cursor-pointer bg-[#DB4444] items-center"
-                    >
-                        View All Products
-                    </div></Link></div>
+                <div className="w-full items-center flex justify-center">
+                    <Link href="/allProduct?viewAll=true">
+                        <div className="rounded-[4px] text-[#FAFAFA] w-fit font-[Poppins] font-[400] text-[16px] leading-[24px] px-[38px] py-[16px] cursor-pointer bg-[#DB4444] items-center">
+                            View All Products
+                        </div>
+                    </Link>
+                </div>
             )}
         </div>
     );
 }
-
-

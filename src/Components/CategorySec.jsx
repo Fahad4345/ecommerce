@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from 'next/image'
 import { Camera, Phone, Computer, GamePad, HeadPhone, Watch } from "./svg/Svg";
-import { GetDataByCategory } from "./../Api/getData"
+import { GetDataByCategory } from "../Api1/getData"
 
 
 
@@ -44,7 +44,7 @@ export default function CategorySec({ onItemFetch }) {
         }
 
         fetchData();
-        console.log("Fetching:", SelectedCategory);
+
     }, [SelectedCategory])
 
 

@@ -9,10 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.5.0",
     "@reduxjs/toolkit": "^2.9.0",
+    "@stripe/stripe-js": "^7.9.0",
     "cors": "^2.8.5",
+    "google-auth-library": "^10.3.0",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.9.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-redux": "^9.2.0",
