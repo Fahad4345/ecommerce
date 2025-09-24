@@ -1,7 +1,11 @@
-import React from 'react'
+"use client";
+import { useEffect } from 'react'
 import Link from 'next/link'
 
 export default function page() {
+    useEffect(() => {
+        localStorage.removeItem("CartItems");
+    }, []);
     return (
         <div className=' flex flex-col justify-center items-center mt-[140px]'>
             <h1 className='font-[Inter] font-[500] text-[110px] leading-[115px] tracking-[3%] text-green-500'>Payment Sucsesfull!</h1>

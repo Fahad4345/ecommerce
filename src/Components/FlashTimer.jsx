@@ -26,10 +26,10 @@ export default function FlashSaleTimer() {
             setTime(`${days}:${hours}:${minutes}:${seconds}`);
         };
 
-        updateTimer(); // Run once immediately
-        const interval = setInterval(updateTimer, 1000); // Then update every second
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
 
-        return () => clearInterval(interval); // Clean up on unmount
+        return () => clearInterval(interval);
     }, []);
 
     const [days, hours, minutes, seconds] = time.split(":");

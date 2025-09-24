@@ -83,7 +83,7 @@ export default function BestProduct({ products }) {
     }, [products]);
 
     return (
-        <div className=' mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center'>
+        <div className=' w-full max-w-[1170px] mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center'>
             <div className='flex w-full justify-between'>
                 <div className='flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>

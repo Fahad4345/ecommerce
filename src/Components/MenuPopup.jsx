@@ -6,11 +6,14 @@ import { useAuth } from "../Api1/useAuth";
 import { MyContext } from "../context/MyContext";
 import { useContext } from "react";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function ProfileMenu({ closeMenu }) {
   const { user, setuser, setcartLength, setWishlistLength } = useContext(MyContext);
   const { Logout } = useAuth();
   const pathName = usePathname();
+  const router = useRouter();
+
 
   const handleLogout = async () => {
     try {
@@ -20,6 +23,7 @@ export default function ProfileMenu({ closeMenu }) {
       setuser(null);
       setcartLength(0);
       setWishlistLength(0);
+      router.push("/");
     } catch (err) {
       alert("Logout failed: " + err.message);
     }
@@ -38,12 +42,12 @@ export default function ProfileMenu({ closeMenu }) {
           <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">Manage My Account</span>
         </div>
       </Link>
-
-      <div className={`flex items-center gap-[16px] cursor-pointer ${hoverColor}`}>
-        <ShoppingBag size={24} />
-        <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">My Order</span>
-      </div>
-
+      <Link href="/myOrder">
+        <div className={`flex items-center gap-[16px] cursor-pointer ${hoverColor}`}>
+          <ShoppingBag size={24} />
+          <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">My Order</span>
+        </div>
+      </Link>
       <div className={`flex items-center gap-[16px] cursor-pointer ${hoverColor}`}>
         <XCircle size={24} />
         <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">My Cancellations</span>
@@ -54,9 +58,9 @@ export default function ProfileMenu({ closeMenu }) {
         <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">My Reviews</span>
       </div>
 
-      <div className={`flex items-center gap-[16px] cursor-pointer hover:text-red-400`} onClick={closeMenu}>
+      <div onClick={handleLogout} className={`flex items-center gap-[16px] cursor-pointer hover:text-red-400`}>
         <LogOut size={24} />
-        <span onClick={handleLogout} className="font-[Poppins] font-[400] text-[14px] leading-[21px]">
+        <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">
           Logout
         </span>
       </div>

@@ -1,8 +1,9 @@
+import { API_BASE_URL } from "./apiUrl";
 export async function GetDataByCategory(Category) {
   try {
-    const url = `https://backend-production-7ad70.up.railway.app/api/auth/GetItem?Category=${encodeURIComponent(
+    const url = ` ${API_BASE_URL}/${`api/auth/GetItem?Category=${encodeURIComponent(
       Category
-    )}`;
+    )}`}`;
 
     const res = await fetch(url, {
       method: "GET",

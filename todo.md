@@ -2,16 +2,16 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Added strip at checkout
-- Added timer in Flash Sale i Banner
+- Creted Api for cancel and refund Order
 - Adjusted UI
-- Stored no of cart and no of wishlist of user in local storage
-- Added Missing routers
+- Fix Strip now strip is creating order but still have error
+- Created My order page and display all order
+- Created api to Get all order by using userid
+- Create and integrated web hook of stripe but it have some error
 
 Next:
 
-- Fixes of bugs and UI Bugs
-- Api for Cash on delivery and stripe
+- Fixes for stripe
 
-Loom : (https://www.loom.com/share/46cb7bbe1ca647cca2ba6751059855a4?sid=2f4bdb3d-81d3-4221-851e-c6179816c201)
+Loom : ( NOt creted due to error)
 Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend deployed but there are errors)

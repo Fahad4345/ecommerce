@@ -38,8 +38,9 @@ export default function BannerFlashSaleTimer() {
         <div style={{ textAlign: "center", fontFamily: "sans-serif" }}>
 
             <div className=" flex justify-center gap-[24px]" >
-                <TimeBox label="Hours" value={hours} />
+
                 <TimeBox label="Days" value={days} />
+                <TimeBox label="Hours" value={hours} />
                 <TimeBox label="Minutes" value={minutes} />
                 <TimeBox label="Seconds" value={seconds} />
             </div>

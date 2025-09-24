@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Navbar from "../../../Components/NavBar";
 import { useSearchParams } from 'next/navigation';
 import getItem from "../../../Api1/getItem"
@@ -11,6 +11,11 @@ import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { UpdateCart } from '../../../Api1/Cart/updateCart';
 import { clearCart } from './../../../store/productSlice';
+import { GetDataByCategory } from './../../../Api1/getData';
+import { MyContext } from '../../../context/MyContext';
+import { GetCart } from './../../../Api1/Cart/getCart';
+import Link from 'next/link';
+import { Heart, Eye } from "lucide-react";
 
 export default function ProductDetail() {
     const Cartitem = useSelector(state => state.cart.items);
@@ -21,14 +26,37 @@ export default function ProductDetail() {
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
     const isCartItem = searchParams.get('cart')
+    const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+    const [products, setProducts] = useState([]);
+    const [cartIds, setCartIds] = useState([]);
+
 
     const { id } = useParams();
     const [item, setItem] = useState(null);
     const dispatch = useDispatch();
     const handleDecrement = () => setQuantity(prev => Math.max(1, prev - 1));
     const handleIncrement = () => setQuantity(prev => prev + 1);
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
+
+
+    const syncCartItems = async () => {
+        try {
+            const data = await GetCart();
+            if (data && data.cart && Array.isArray(data.cart)) {
+                const itemIds = data.cart.map(item => item.itemId._id);
+                setCartIds(itemIds);
+                localStorage.setItem("CartItems", JSON.stringify(itemIds));
+            } else {
+                setCartIds([]);
+                localStorage.setItem("CartItems", JSON.stringify([]));
+            }
+        } catch (error) {
+            console.error("Error syncing cart items:", error);
+        }
+    };
 
     useEffect(() => {
+        syncCartItems();
         const fetchItem = async () => {
             try {
                 const product = await getItem(id);
@@ -54,13 +82,37 @@ export default function ProductDetail() {
             fetchItem();
         }
     }, [Cartitem, id]);
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+
+
+                const product = await GetDataByCategory();
+                console.log("Product", product);
+
+                setProducts(product?.item.slice(0, 4) || []);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setIsLoadingProducts(false);
+            }
+        };
+        fetchData();
+
+
+    }, []);
 
     const smallImages = item?.image?.slice(1, 5);
 
-    if (!item) return <p className="text-center mt-10">Loading product...</p>;
+    if (!item) return <div className='max-w-[1170px] h-[500px]  flex justify-center items-center mx-[135px] mt-[80px]'>
+        <div className='flex justify-center items-center py-[100px]'>
+            <p className='font-[Poppins] text-[18px]'>Loading wishlist...</p>
+        </div>
+    </div>
 
     return (
-        <div className='flex justify-center items-center flex-col'>
+        <div className='flex justify-center items-center flex-col h-full' >
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
             <div className='mx-[135px] mt-[80px] max-w-[1170px] w-full'>
@@ -89,14 +141,14 @@ export default function ProductDetail() {
                                     ({item.review || 0} Reviews)
                                 </span>
                             </div>
-                            <div className='w-[1px] h-[16px] bg-[#000000]/50'></div>
-                            <h1 className='font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0px]'>In Stock</h1>
+                            <div className='w-[2px] h-[16px] bg-[#000000]/50'></div>
+                            <h1 className='font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0px] text-green-500'>InStock</h1>
                         </div>
 
                         <p className='mt-[24px] font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0px]'>{item.description}</p>
 
-
-                        <div className='flex gap-[8px] mt-[16px] items-center'>
+                        <div className=' rotate-180 w-full h-[1px] mt-[24px] bg-[#000000]/50'></div>
+                        <div className='flex gap-[8px] mt-[24px] items-center'>
                             <label className='font-[Poppins] font-[400] text-[20px] leading-[20px] tracking-[3%]'>Colors:</label>
                             <div className='flex gap-[8px]'>
                                 {item.color?.map((color, idx) => {
@@ -123,7 +175,8 @@ export default function ProductDetail() {
 
                         <div className='flex gap-[24px] mt-[16px] items-center'>
                             <label className='font-[Poppins] font-[400] text-[20px] leading-[20px] tracking-[3%]'>Size:</label>
-                            {item.sizes?.map((option, idx) => (
+
+                            <div className=' flex gap-[16px]'>{item.sizes?.map((option, idx) => (
                                 <div
                                     key={idx}
                                     onClick={() => setSize(option)}
@@ -132,7 +185,7 @@ export default function ProductDetail() {
                                 >
                                     {option}
                                 </div>
-                            ))}
+                            ))}</div>
                         </div>
 
 
@@ -140,12 +193,12 @@ export default function ProductDetail() {
                             <div className='flex border-[1px] border-[#00000080]'>
                                 <button onClick={handleDecrement} className='px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                                     <rect x="5" y="9" width="10" height="2" rx="1" fill="currentColor" />
-//                                                 </svg></button>
+                                </svg></button>
                                 <span className='py-[8px] px-[34px] border-l-[1px] border-r-[1px]'>{quantity}</span>
                                 <button onClick={handleIncrement} className='px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                                     <rect x="9" y="5" width="2" height="10" rx="1" fill="currentColor" />
                                     <rect x="5" y="9" width="10" height="2" rx="1" fill="currentColor" />
-//                                                 </svg></button>
+                                </svg></button>
                             </div>
 
                             <button
@@ -163,18 +216,112 @@ export default function ProductDetail() {
                                         InsertCart(item._id, size, selectedColor, quantity); router.push("/cart");
                                     }
                                 }}
-                                className='px-6 py-2 bg-[#DB4444] text-white rounded-[4px]'
+                                className='px-[48px] py-[10px] font-[500] text-[16px]  font-[Poppins] leading-[24px] bg-[#DB4444] text-white rounded-[4px]'
                             >
                                 {Cartitem ? "Add to Cart" : "Buy Now"}
                             </button>
 
-                            <div onClick={() => insertItem(item._id)} className='w-[40px] h-[40px] border flex justify-center items-center cursor-pointer'>
+                            <div onClick={() => insertItem(item._id)} className='w-[40px] h-[40px] border  border-[#00000080] rounded-[4px] flex justify-center items-center cursor-pointer'>
                                 <Image src="/assets/icons/Wishlist.svg" width={32} height={32} alt="" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {isLoadingProducts ? (
+                <div className=' flex justify-center items-center px-[1000px] py-[100px]'>
+                    <p className='font-[Poppins] text-[18px]'>Loading products...</p>
+                </div>
+            ) : (<div className=' mt-[140px]'><div className="flex flex-col gap-[24px]">
+                <div className="flex items-center gap-[16px]">
+                    <div className="bg-[#DB4444] w-[20px] h-[40px] rounded-[4px]"></div>
+                    <h1 className="font-[Poppins] font-[600] text-[16px] leading-[20px] text-[#DB4444]">
+                        Related Item
+                    </h1>
+                </div>
+
+            </div>
+                <div className='grid grid-cols-4 gap-x-[30px] gap-y-[60px] mt-[60px] '>
+
+                    {products.map((product) => {
+                        const wishlisted = wishlistIds?.includes(product._id);
+                        const inCart = cartIds?.includes(product._id);
+
+                        return (
+                            <Link key={product._id} href={`/productDetail/${product._id}`}>
+                                <div className="flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px]">
+                                    <div className='relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] h-full flex justify-center items-center'>
+                                        {product.discount && (
+                                            <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
+                                                {product.discount}
+                                            </span>
+                                        )}
+
+                                        <div className="absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end">
+                                            <button
+                                                onClick={(e) => handleWishlistToggle(product._id, e)}
+                                                className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100"
+                                            >
+                                                <Heart
+                                                    fill={wishlisted ? "red" : "none"}
+                                                    color={wishlisted ? "red" : "black"}
+                                                    size={20}
+                                                />
+                                            </button>
+                                            <button className="w-[34px] h-[34px] bg-white rounded-full justify-center items-center flex shadow hover:bg-gray-100 cursor-pointer">
+                                                <Eye size={20} />
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <Image
+                                                src={product.image[0] || "/assets/images/Led.png"}
+                                                width={172}
+                                                height={129}
+                                                alt=""
+                                                className="cursor-pointer"
+                                            />
+                                        </div>
+
+                                        <button
+                                            onClick={(e) => handleAddToCart(product._id, e)}
+                                            disabled={inCart}
+                                            className={`font-[Poppins] font-[500] text-[16px] leading-[24px] absolute bottom-0 left-0 w-full py-2 text-sm translate-y-full group-hover:translate-y-0 transition-all duration-300 ${inCart
+                                                ? "bg-green-600 text-white cursor-not-allowed"
+                                                : "bg-black text-white hover:bg-gray-800"
+                                                }`}
+                                        >
+                                            {inCart ? "Added to Cart" : "Add To Cart"}
+                                        </button>
+                                    </div>
+
+                                    <div className='gap-[8px] flex flex-col'>
+                                        <h3 className="font-[Poppins] font-[500] text-[16px] leading-[24px]">{product.name}</h3>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">${product.discountPrice}</span>
+                                            {product.oldPrice && (
+                                                <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px]">
+                                                    ${product.price}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {product.rating && (
+                                            <div className="flex items-center text-yellow-400 text-[16px]">
+                                                {"★".repeat(Math.round(product.rating))}
+                                                {"☆".repeat(5 - Math.round(product.rating))}
+                                                <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
+                                                    ({product.review})
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </div></div>
+            )}
         </div>
     )
 }

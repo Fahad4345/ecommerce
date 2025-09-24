@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from "./apiUrl";
 import { useContext, useState } from "react";
 import { MyContext } from "./../context/MyContext";
 
@@ -12,17 +13,14 @@ export function useWishlist() {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
 
-      const res = await fetch(
-        "https://backend-production-7ad70.up.railway.app/api/auth/InsertWishlist",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ itemId }),
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/${`api/auth/InsertWishlist`}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ itemId }),
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to insert wishlist");
@@ -47,16 +45,13 @@ export function useWishlist() {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
 
-      const res = await fetch(
-        "https://backend-production-7ad70.up.railway.app/api/auth/GetWishlist",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/${`api/auth/GetWishlist`}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch wishlist");
@@ -81,7 +76,7 @@ export function useWishlist() {
       if (!token) return null;
 
       const res = await fetch(
-        "https://backend-production-7ad70.up.railway.app/api/auth/RemoveItemWishlist",
+        `${API_BASE_URL}/${`api/auth/RemoveItemWishlist`}`,
         {
           method: "POST",
           headers: {

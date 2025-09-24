@@ -57,7 +57,7 @@ export default function CategorySec({ onItemFetch }) {
         );
     }
     return (
-        <div className=' cursor-pointer mx-[135px] mt-[80px] flex flex-col gap-[40px] max-w-[1170px] w-full'>
+        <div className='  mx-[135px] mt-[80px] flex flex-col gap-[40px] max-w-[1170px] w-full'>
             <div className=' flex   justify-between'>
                 <div className=' flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>

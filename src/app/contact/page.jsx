@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Navbar from "../../Components/NavBar";
 import { SendEmail } from '../../Api1/sendEmail';
@@ -9,6 +9,12 @@ export default function Contact() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        setEmail(user.email);
+        setName(user.name);
+
+    }, [])
 
 
     return (
@@ -52,12 +58,12 @@ export default function Contact() {
 
                 <div className=' flex flex-col gap-[32px] max-w-[800px] py-[40px] px-[31px] shadow-[0px_1px_13px_0px_#0000000D]'>
                     <div className=' gap-[16px] flex  '>
-                        <input onChange={(e) => setName(e.target.value)} type="text" placeholder='Your Name *' className=' w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' />
-                        <input onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Your Email *' className=' w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' />
-                        <input onChange={(e) => setPhone(e.target.value)} type="text" placeholder='Your Phone *' className='  w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]' />
+                        <input disabled={name ? true : false} onChange={(e) => setName(e.target.value)} type="text" placeholder={name ? name : "Your Name*"} className=' w-[235px] py-[13px] pl-[16px] pr-[16px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0' />
+                        <input disabled={email ? true : false} onChange={(e) => setEmail(e.target.value)} type="text" placeholder={email ? email : "Your Email*"} className=' w-[235px] py-[13px] pl-[16px] pr-[16px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
+                        <input onChange={(e) => setPhone(e.target.value)} type="text" placeholder='Your Phone *' className='  w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
                     </div>
                     <div>
-                        <textarea onChange={(e) => setMessage(e.target.value)} name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]    ' ></textarea>
+                        <textarea onChange={(e) => setMessage(e.target.value)} name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]   focus:outline-none focus:ring-0  ' ></textarea>
                     </div>
                     <div onClick={() => { SendEmail(name, email, message); }} className='  flex justify-end'><button className=' bg-[#DB4444] w-fit cursor-pointer text-white py-[16px] px-[48px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%]'>Send Message</button>
                     </div>

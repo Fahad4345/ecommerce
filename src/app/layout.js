@@ -5,7 +5,7 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import ReduxProvider from "../store/reduxProvider";
 import Script from "next/script";
-
+import { Toaster } from "react-hot-toast";
 import MyProvider from "./../context/Myprovider";
 import SessionWrapper from "./../Components/SessionWrapper";
 const geistSans = Geist({
@@ -47,6 +47,7 @@ export default function RootLayout({ children }) {
             {" "}
             <Header />
             {children}
+            <Toaster position="top-center" reverseOrder={false} />
             <Footer />
           </MyProvider>
         </ReduxProvider>{" "}

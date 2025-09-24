@@ -4,12 +4,14 @@ import Navbar from "../../Components/NavBar";
 import { GetCart } from "../../Api1/Cart/getCart";
 import PlaceOrder from "../../Api1/Order/PlaceOrder";
 import Image from "next/image";
-
+import { API_BASE_URL } from "./../../Api1/apiUrl";
 
 export default function CheckoutPage() {
     const [selected, setSelected] = useState(false);
     const [cart, setCart] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
 
     const [firstName, setFirstName] = useState("");
@@ -23,89 +25,156 @@ export default function CheckoutPage() {
     const handleToggle = () => setSelected((prev) => !prev);
 
     useEffect(() => {
-        async function fetchCart() {
-            try {
-                const data = await GetCart();
-                if (data && data.cart) {
-                    setCart(data.cart);
-                }
-            } catch (err) {
-                console.error("Failed to load cart:", err);
-            }
-        }
         fetchCart();
     }, []);
 
-    const handlePlaceOrder = async () => {
+    const fetchCart = async () => {
+        try {
+            const data = await GetCart();
+            if (data && data.cart) {
+                setCart(data.cart);
+            }
+        } catch (err) {
+            console.error("Failed to load cart:", err);
+            setError("Failed to load cart items");
+        }
+    };
+
+    const validateForm = () => {
+        setError("");
+
         if (!paymentMethod) {
-            alert("Please select a payment method!");
+            setError("Please select a payment method!");
+            return false;
+        }
+
+        if (!firstName.trim() || !street.trim() || !city.trim() || !phone.trim() || !email.trim()) {
+            setError("Please fill all required fields!");
+            return false;
+        }
+
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Please enter a valid email address!");
+            return false;
+        }
+
+
+        if (phone.length < 10) {
+            setError("Please enter a valid phone number!");
+            return false;
+        }
+
+        return true;
+    };
+
+    const calculateTotal = () => {
+        return cart.reduce((acc, item) => acc + (item.itemId.price * item.quantity), 0);
+    };
+
+    const handlePlaceOrder = async () => {
+        if (!validateForm()) {
             return;
         }
 
-        if (!firstName || !street || !city || !phone || !email) {
-            alert("Please fill all required fields!");
-            return;
-        }
-
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        const orderData = {
-            items: cart.map((item) => ({
-                productId: item.itemId._id,
-                name: item.itemId.name,
-                price: item.itemId.price,
-                quantity: item.quantity,
-            })),
-            total: cart.reduce(
-                (acc, item) => acc + item.itemId.price * item.quantity,
-                0
-            ),
-            paymentMethod: paymentMethod === "cod" ? "Cash on Delivery" : "Bank",
-            status: "Pending",
-            customer: {
-                userId: user?.id,
-                firstName,
-                company,
-                address: `${street}${apartment ? `, ${apartment}` : ""}, ${city}`,
-                phone,
-                email,
-            },
-        };
+        setIsLoading(true);
+        setError("");
 
         try {
+
+            let user = null;
+            try {
+                const userStr = localStorage.getItem("user");
+                user = userStr ? JSON.parse(userStr) : null;
+            } catch (parseError) {
+                console.warn("Failed to parse user from localStorage:", parseError);
+            }
+
+
+            const orderData = {
+                items: cart.map((item) => ({
+                    productId: item.itemId._id,
+                    name: item.itemId.name,
+                    price: Number(item.itemId.price),
+                    quantity: Number(item.quantity),
+                })),
+                total: calculateTotal(),
+                paymentMethod: paymentMethod === "cod" ? "Cash on Delivery" : "Card",
+                status: "Pending",
+                customer: {
+                    userId: user?.id || null,
+                    firstName: firstName.trim(),
+                    company: company.trim(),
+                    address: `${street.trim()}${apartment.trim() ? `, ${apartment.trim()}` : ""}, ${city.trim()}`,
+                    phone: phone.trim(),
+                    email: email.trim().toLowerCase(),
+                },
+            };
+
+            console.log("Order data being sent:", orderData);
+
             if (paymentMethod === "cod") {
-                // ✅ COD flow: Directly place order
+
                 const response = await PlaceOrder(orderData);
 
-                alert("Order placed successfully (Cash on Delivery)!");
-                console.log("Order response:", response);
-
-                // reset fields
-                resetForm();
+                if (response && response.success !== false) {
+                    alert("Order placed successfully (Cash on Delivery)!");
+                    resetForm();
+                } else {
+                    throw new Error("Failed to place order");
+                }
             } else {
-                // ✅ Bank flow: create Checkout Session
-                const res = await fetch(
-                    "http://localhost:3001/stripe/CreateSession",
+
+                const response = await fetch(
+                    `${API_BASE_URL}/${`stripe/CreateSession`}`,
                     {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: {
+                            "Content-Type": "application/json",
+
+                        },
                         body: JSON.stringify(orderData),
                     }
                 );
 
-                const data = await res.json();
-                console.log("Order response:", data.url);
+                console.log("Stripe response status:", response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error("Stripe API error response:", errorText);
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log("Stripe response data:", data);
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
 
                 if (data.url) {
-                    // redirect to Stripe checkout
+
                     window.location.href = data.url;
                 } else {
-                    alert("Failed to start payment session");
+                    throw new Error("No checkout URL received from server");
                 }
             }
         } catch (error) {
-            console.error(error);
-            alert("Something went wrong!");
+            console.error("Order placement error:", error);
+
+
+            if (error.message.includes("Server error: 400")) {
+                setError("Invalid order data. Please check your information and try again.");
+            } else if (error.message.includes("Server error: 500")) {
+                setError("Server error. Please try again later.");
+            } else if (error.message.includes("Failed to fetch")) {
+                setError("Network error. Please check your connection and try again.");
+            } else {
+                setError(error.message || "Something went wrong! Please try again.");
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -118,242 +187,269 @@ export default function CheckoutPage() {
         setPhone("");
         setEmail("");
         setPaymentMethod("");
+        setSelected(false);
+        setError("");
     };
 
+    if (cart.length === 0) {
+        return (
+            <div className="bg-white min-h-screen flex flex-col">
+                <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <p className="text-gray-600 text-lg mb-4">Your cart is empty</p>
+                        <button
+                            onClick={() => window.history.back()}
+                            className="bg-[#DB4444] text-white px-6 py-2 rounded hover:bg-red-600 transition-colors"
+                        >
+                            Continue Shopping
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="bg-white h-full flex flex-col justify-center items-center">
+        <div className="bg-white min-h-screen flex flex-col">
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
-            <div className="mx-[135px] mt-[80px] flex flex-row">
+            <div className="mx-auto  mt-[80px] flex flex-col lg:flex-row gap-[173px]">
 
-                <div>
-                    <h1 className="font-[500] text-[36px] leading-[30px] tracking-[4%] font-[Poppins]">
+                <div className="flex-1">
+                    <h1 className="font-[500] text-[36px] leading-[30px] tracking-[4%] font-[Poppins] mb-[48px]">
                         Billing Details
                     </h1>
-                    <div className="flex flex-col gap-[32px] mt-[48px]">
+
+                    {error && (
+                        <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                            {error}
+                        </div>
+                    )}
+
+                    <div className="flex flex-col gap-[32px]">
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">First Name*</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]   font-[400] text-[16px]  leading-[24px] font-[Poppins]">First Name*</label>
+                            <input
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter your first name"
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Company Name</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={company}
-                                    onChange={(e) => setCompany(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Company Name</label>
+                            <input
+                                type="text"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter company name (optional)"
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Street Address*</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={street}
-                                    onChange={(e) => setStreet(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Street Address*</label>
+                            <input
+                                type="text"
+                                value={street}
+                                onChange={(e) => setStreet(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter your street address"
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Apartment, floor (optional)</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={apartment}
-                                    onChange={(e) => setApartment(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Apartment, floor (optional)</label>
+                            <input
+                                type="text"
+                                value={apartment}
+                                onChange={(e) => setApartment(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Apartment, suite, floor, etc."
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Town/City*</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Town/City*</label>
+                            <input
+                                type="text"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter your city"
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Phone Number*</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="text"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Phone Number*</label>
+                            <input
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter your phone number"
+                                disabled={isLoading}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-[8px]">
-                            <label className="opacity-[40%]">Email Address*</label>
-                            <div className="w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px]">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-[10px] py-[10px]"
-                                />
-                            </div>
+                            <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Email Address*</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
+                                placeholder="Enter your email address"
+                                disabled={isLoading}
+                            />
                         </div>
                     </div>
 
 
-                    <div className="flex gap-[16] mt-[24px] items-center">
-                        <div className="flex gap-4">
-                            <label className="cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={selected}
-                                    onChange={handleToggle}
-                                    className="hidden cursor-pointer"
-                                />
-                                <div
-                                    className={`w-8 h-8 flex items-center justify-center rounded-md transition 
-                    ${selected ? "bg-[#DB4444]" : "bg-gray-200"}`}
-                                >
-                                    {selected && (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="w-5 h-5 text-white"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={3}
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M5 13l4 4L19 7"
-                                            />
-                                        </svg>
-                                    )}
-                                </div>
-                            </label>
-                        </div>
-                        <h1 className="font-[400] text-[16px] font-[Poppins]">
-                            Save this information for faster check-out next time
-                        </h1>
+                    <div className="flex gap-4 mt-[24px] items-center">
+                        <label className="cursor-pointer flex items-center gap-4">
+                            <input
+                                type="checkbox"
+                                checked={selected}
+                                onChange={handleToggle}
+                                className="hidden"
+                                disabled={isLoading}
+                            />
+                            <div
+                                className={`w-8 h-8 flex items-center justify-center rounded-md transition 
+                                ${selected ? "bg-[#DB4444]" : "bg-gray-200"}`}
+                            >
+                                {selected && (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-5 h-5 text-white"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={3}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                            <span className="font-[400] text-[16px] font-[Poppins]">
+                                Save this information for faster check-out next time
+                            </span>
+                        </label>
                     </div>
                 </div>
 
-                <div className="ml-[173px] mt-[110px]">
-                    {cart.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center min-w-[425px] w-full justify-between "
-                        >
-                            <div className="flex gap-[20px] items-center">
-                                <Image
-                                    src={item.itemId.image[0]}
-                                    width={54}
-                                    height={54}
-                                    alt={item.itemId.name}
-                                />
-                                <h1 className="font-[400] text-[16px] font-[Poppins]">
-                                    {item.itemId.name}
-                                </h1>
+
+                <div className="flex-1 lg:ml-[50px] mt-[50px] lg:mt-[110px]">
+
+                    <div className="space-y-4 mb-6">
+                        {cart.map((item, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center justify-between w-full"
+                            >
+                                <div className="flex gap-[20px] items-center">
+                                    <Image
+                                        src={item.itemId.image[0]}
+                                        width={54}
+                                        height={54}
+                                        alt={item.itemId.name}
+                                        className="rounded"
+                                    />
+                                    <div>
+                                        <h3 className="font-[400] text-[16px]  leading-[24px] font-[Poppins]">
+                                            {item.itemId.name}
+                                        </h3>
+
+                                    </div>
+                                </div>
+                                <p className="font-[400] text-[16px] font-[Poppins]">
+                                    ${(item.itemId.price * item.quantity).toFixed(2)}
+                                </p>
                             </div>
-                            <h1 className="font-[400] text-[16px] font-[Poppins]">
-                                {item.itemId.price}
-                            </h1>
-                        </div>
-                    ))}
-
-
-                    <div className="mt-[24px]">
-                        <div className="flex justify-between">
-                            <h1>Subtotal:</h1>
-                            <h1>
-                                $
-                                {cart.reduce(
-                                    (acc, item) => acc + item.itemId.price * item.quantity,
-                                    0
-                                )}
-                            </h1>
-                        </div>
-                        <div className="w-full h-[1px] bg-[#00000080] mt-[16px]"></div>
+                        ))}
                     </div>
 
-                    <div className="mt-[16px]">
-                        <div className="flex justify-between">
-                            <h1>Shipping:</h1>
-                            <h1>Free</h1>
-                        </div>
-                        <div className="w-full h-[1px] bg-[#00000080] mt-[16px]"></div>
-                    </div>
 
-                    <div className="mt-[16px]">
-                        <div className="flex justify-between">
-                            <h1>Total:</h1>
-                            <h1>
-                                $
-                                {cart.reduce(
-                                    (acc, item) => acc + item.itemId.price * item.quantity,
-                                    0
-                                )}
-                            </h1>
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Subtotal:</span>
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">${calculateTotal().toFixed(2)}</span>
+                        </div>
+                        <div className="w-full h-[1px] bg-[#00000020]"></div>
+
+                        <div className="flex justify-between items-center">
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Shipping:</span>
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Free</span>
+                        </div>
+                        <div className="w-full h-[1px] bg-[#00000020]"></div>
+
+                        <div className="flex justify-between items-center font-semibold">
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Total:</span>
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">${calculateTotal().toFixed(2)}</span>
                         </div>
                     </div>
 
 
-                    <div className="flex justify-between mt-[34px]">
-                        <div className="flex gap-[16px] items-center">
+                    <div className="mt-8 space-y-4">
+                        <div className="flex justify-between items-center">
+                            <label className="flex gap-4 items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="bank"
+                                    checked={paymentMethod === "bank"}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    className="w-[20px] h-[20px]"
+                                    disabled={isLoading}
+                                />
+                                <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Bank/Card Payment</span>
+                            </label>
+                            <Image
+                                src="/assets/icons/Bank.svg"
+                                alt="Bank"
+                                width={192}
+                                height={28}
+                            />
+                        </div>
+
+                        <label className="flex gap-4 items-center cursor-pointer">
                             <input
                                 type="radio"
                                 name="payment"
-                                value="bank"
-                                checked={paymentMethod === "bank"}
+                                value="cod"
+                                checked={paymentMethod === "cod"}
                                 onChange={(e) => setPaymentMethod(e.target.value)}
-                                className="w-[24px] h-[24px] cursor-pointer"
+                                className="w-[20px] h-[20px]"
+                                disabled={isLoading}
                             />
-                            <label>Bank</label>
-                        </div>
-                        <Image
-                            src="/assets/icons/Bank.svg"
-                            alt="Bank"
-                            width={192}
-                            height={28}
-                        />
+                            <span className=" font-[400] text-[16px]  leading-[24px] font-[Poppins]">Cash on Delivery</span>
+                        </label>
                     </div>
 
-                    <div className="flex gap-[16px] mt-[32px] items-center">
-                        <input
-                            type="radio"
-                            name="payment"
-                            value="cod"
-                            checked={paymentMethod === "cod"}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                            className="w-[24px] h-[24px] cursor-pointer"
-                        />
-                        <label>Cash on Delivery</label>
-                    </div>
 
-                    {/* Place Order */}
                     <button
                         onClick={handlePlaceOrder}
-                        className="bg-[#DB4444] mt-[32px] text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] cursor-pointer"
+                        disabled={isLoading}
+                        className={`w-full mt-8 text-white px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] transition-colors
+                        ${isLoading
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-[#DB4444] hover:bg-red-600 cursor-pointer'
+                            }`}
                     >
-                        Place Order
+                        {isLoading ? "Processing..." : "Place Order"}
                     </button>
                 </div>
             </div>

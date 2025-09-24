@@ -54,9 +54,10 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
         <div className='border-b-[1px] border-[#000000]/30 w-full flex justify-center items-center'>
             <div className='pt-[40px] pb-[16px] justify-between flex max-w-[1440px] w-full px-[135px] items-center'>
                 <div className='flex gap-[160px]'>
-                    <div>
-                        <h1 className='font-[Inter] font-[700] text-[24px] leading-[24px] tracking-[3%] text-black'>Exclusive</h1>
-                    </div>
+                    <Link href="/">
+                        <div>
+                            <h1 className=' cursor-pointer font-[Inter] font-[700] text-[24px] leading-[24px] tracking-[3%] text-black'>Exclusive</h1>
+                        </div></Link>
                     <div className='flex gap-[48px]'>
                         {nav.map((navs, index) => {
                             if (user && navs.name === "signup") return null;
@@ -66,7 +67,7 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
                             return (
                                 <Link key={index} href={navs.href}>
                                     <div className="group cursor-pointer transition duration-300">
-                                        <p className={`capitalize border-b-[2px] ${isActive ? "border-black" : "border-transparent"}`}>
+                                        <p className={`capitalize  font-[Poppins]  font-[400]  text-[16px] leading-[24px] border-b-[2px] ${isActive ? "border-black" : "border-transparent"}`}>
                                             {navs.name}
                                         </p>
                                         {!isActive && (
@@ -95,7 +96,7 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
                     </form>
 
                     <div className='flex gap-[16px]'>
-                        {ShowWishlist && (
+                        {ShowWishlist && user && (
                             <Link href="/wishlist">
                                 <div className={`${pathName === "/wishlist" ? "bg-[#DB4444] text-white" : "text-black"} relative flex w-[32px] h-[32px] rounded-full px-[2px] py-[2px]`}>
                                     <Wishlist />
@@ -108,7 +109,7 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
                             </Link>
                         )}
 
-                        {ShowCart && (
+                        {ShowCart && user && (
                             <Link href="/cart">
                                 <div className='relative'>
                                     <Cart className={`${pathName === "/cart" ? "bg-[#DB4444] text-white" : "text-black"} w-[32px] h-[32px] rounded-full flex justify-center item-center px-[2px] py-[2px]`} />
@@ -121,7 +122,7 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
                             </Link>
                         )}
 
-                        {ShowProfile && (
+                        {ShowProfile && user && (
                             <div ref={menuRef} className='relative' onClick={() => setIsOpen(true)}>
                                 <User className={`${pathName === "/account" ? "bg-[#DB4444] text-white" : "text-black"} w-[32px] h-[32px] rounded-full flex justify-center item-center px-[2px] py-[2px] cursor-pointer`} />
                                 {isOpen && <ProfileMenu closeMenu={() => setIsOpen(false)} />}

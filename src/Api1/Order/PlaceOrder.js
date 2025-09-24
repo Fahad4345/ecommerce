@@ -1,17 +1,15 @@
+import { API_BASE_URL } from "./../apiUrl";
 export default async function PlaceOrder(orderData) {
   try {
     const token = localStorage.getItem("accessToken");
-    const response = await fetch(
-      "https://backend-production-7ad70.up.railway.app/api/auth/PlaceOrder",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(orderData),
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/${`stripe/PlaceOrder`}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(orderData),
+    });
 
     const data = await response.json().catch(() => ({}));
 

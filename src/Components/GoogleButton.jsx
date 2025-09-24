@@ -3,6 +3,7 @@
 import { useContext, useEffect } from "react";
 import { MyContext } from "../context/MyContext";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "./../Api1/apiUrl";
 
 
 export default function GoogleSignInButton() {
@@ -23,7 +24,7 @@ export default function GoogleSignInButton() {
     }, []);
 
     const handleResponse = async (response) => {
-        const res = await fetch("https://backend-production-7ad70.up.railway.app/api/auth/GoogleLogin", {
+        const res = await fetch(`${API_BASE_URL}/${`api/auth/GoogleLogin`}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token: response.credential }),

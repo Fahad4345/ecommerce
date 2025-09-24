@@ -240,7 +240,7 @@ export default function SaleSection({
             )}
 
             {showViewAll && (
-                <div className="w-full items-center flex justify-center">
+                <div className="w-full max-w-[1170px] items-center flex justify-center">
                     <Link href="/allProduct?viewAll=true">
                         <div className="rounded-[4px] text-[#FAFAFA] w-fit font-[Poppins] font-[400] text-[16px] leading-[24px] px-[38px] py-[16px] cursor-pointer bg-[#DB4444] items-center">
                             View All Products

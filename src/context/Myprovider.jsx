@@ -75,6 +75,13 @@ export default function MyProvider({ children }) {
         syncWishlist();
     }, []);
 
+    useEffect(() => {
+
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setuser(JSON.parse(storedUser));
+        }
+    }, []);
 
     useEffect(() => {
         const handleWishlistUpdate = (event) => {

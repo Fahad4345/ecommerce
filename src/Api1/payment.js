@@ -8,16 +8,13 @@ const stripePromise = loadStripe(
 export default async function handleCheckout() {
   const token = localStorage.getItem("accessToken");
 
-  const res = await fetch(
-    "https://backend-production-7ad70.up.railway.app/api/auth/CheckOut",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(" http://localhost:3001/api/auth/CheckOut", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (res.status === 401 || res.status === 403) {
     alert("You must be logged in to checkout.");
