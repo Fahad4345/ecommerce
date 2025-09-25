@@ -63,8 +63,21 @@ export default function Contact() {
 
                 <div className=' flex flex-col gap-[32px] max-w-[800px] py-[40px] px-[31px] shadow-[0px_1px_13px_0px_#0000000D]'>
                     <div className=' gap-[16px] flex  '>
-                        <input disabled={true} onChange={(e) => setName(e.target.value)} type="text" placeholder={name ? name : "Your Name*"} className=' w-[235px] py-[13px] pl-[16px] pr-[16px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0' />
-                        <input disabled={true} onChange={(e) => setEmail(e.target.value)} type="text" placeholder={email ? email : "Your Email*"} className=' w-[235px] py-[13px] pl-[16px] pr-[16px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
+                        <input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            type="text"
+                            placeholder="Your Name*"
+                            className="w-[235px] py-[13px] px-[16px] bg-[#F5F5F5] font-[Poppins] text-[16px] focus:outline-none"
+                        />
+
+                        <input
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            type="email"
+                            placeholder="Your Email*"
+                            className="w-[235px] py-[13px] px-[16px] bg-[#F5F5F5] font-[Poppins] text-[16px] focus:outline-none"
+                        />
                         <input onChange={(e) => setPhone(e.target.value)} type="text" placeholder='Your Phone *' className='  w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
                     </div>
                     <div>
