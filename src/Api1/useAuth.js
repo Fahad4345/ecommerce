@@ -161,10 +161,8 @@ export function useAuth() {
         throw new Error(data.error || "Logout failed");
       }
 
-      // Use the context function to handle all cleanup
       handleUserLogout();
 
-      // Navigate and show success message
       router.push("/");
       showToast("Logout Successfully!", "success");
 
@@ -172,7 +170,6 @@ export function useAuth() {
     } catch (err) {
       console.error("❌ Logout error:", err.message);
 
-      // Even if API call fails, still logout locally
       handleUserLogout();
       router.push("/");
       showToast("Logged out locally", "info");

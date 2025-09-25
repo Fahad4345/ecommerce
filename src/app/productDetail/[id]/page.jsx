@@ -16,6 +16,7 @@ import { MyContext } from '../../../context/MyContext';
 import { GetCart } from './../../../Api1/Cart/getCart';
 import Link from 'next/link';
 import { Heart, Eye } from "lucide-react";
+import { showToast } from './../../../Components/toast';
 
 
 export default function ProductDetail() {
@@ -56,23 +57,55 @@ export default function ProductDetail() {
             console.error("Error syncing cart items:", error);
         }
     };
+
+    const handleAddToCart = async (productId, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const user = localStorage.getItem("user");
+        if (user) {
+            try {
+                await InsertCart(productId);
+
+                if (!cartIds.includes(productId)) {
+                    const updatedCartIds = [...cartIds, productId];
+                    setCartIds(updatedCartIds);
+                    localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                }
+
+                setcartLength(cartLength + 1);
+                showToast("Added to Cart", "success");
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                alert("Failed to add item to cart");
+            }
+        }
+        else {
+            showToast("Login to Add", "error")
+        }
+    };
     const handleWishlistToggle = async (productId, e) => {
 
         e.preventDefault();
         e.stopPropagation();
-        try {
+        const user = localStorage.getItem("user");
+        if (user) {
+            try {
 
 
-            if (wishlistIds?.includes(productId)) {
-                await removeItem(productId);
-                removeFromWishlist(productId);
-            } else {
-                await insertItem(productId);
-                addToWishlist(productId);
+                if (wishlistIds?.includes(productId)) {
+                    await removeItem(productId);
+                    removeFromWishlist(productId);
+                } else {
+                    await insertItem(productId);
+                    addToWishlist(productId);
+                }
+            } catch (error) {
+                console.error("Error toggling wishlist:", error);
+                alert("Failed to update wishlist");
             }
-        } catch (error) {
-            console.error("Error toggling wishlist:", error);
-            alert("Failed to update wishlist");
+        }
+        else {
+            showToast("Login to add", "error");
         }
     };
 
@@ -289,7 +322,7 @@ export default function ProductDetail() {
                                     <div className='relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] h-full flex justify-center items-center'>
                                         {product.discount && (
                                             <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
-                                                {product.discount}
+                                                {product.discount}%
                                             </span>
                                         )}
 
@@ -322,7 +355,7 @@ export default function ProductDetail() {
                                         <button
                                             onClick={(e) => handleAddToCart(product._id, e)}
                                             disabled={inCart}
-                                            className={`font-[Poppins] font-[500] text-[16px] leading-[24px] absolute bottom-0 left-0 w-full py-2 text-sm translate-y-full group-hover:translate-y-0 transition-all duration-300 ${inCart
+                                            className={`font-[Poppins] font-[500] text-[16px] cursor-pointer leading-[24px] absolute bottom-0 left-0 w-full py-2 text-sm translate-y-full group-hover:translate-y-0 transition-all duration-300 ${inCart
                                                 ? "bg-green-600 text-white cursor-not-allowed"
                                                 : "bg-black text-white hover:bg-gray-800"
                                                 }`}

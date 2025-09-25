@@ -73,23 +73,27 @@ export default function SaleSection({
     const handleAddToCart = async (productId, e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (user) {
+            try {
+                await InsertCart(productId);
 
-        try {
-            await InsertCart(productId);
+
+                if (!cartIds.includes(productId)) {
+                    const updatedCartIds = [...cartIds, productId];
+                    setCartIds(updatedCartIds);
+                    localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                }
 
 
-            if (!cartIds.includes(productId)) {
-                const updatedCartIds = [...cartIds, productId];
-                setCartIds(updatedCartIds);
-                localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                setcartLength(cartLength + 1);
+
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                alert("Failed to add item to cart");
             }
-
-
-            setcartLength(cartLength + 1);
-
-        } catch (error) {
-            console.error("Error adding to cart:", error);
-            alert("Failed to add item to cart");
+        }
+        else {
+            showToast("Login to Add", "error");
         }
     };
 
@@ -112,7 +116,7 @@ export default function SaleSection({
                                     e.stopPropagation();
                                     if (!user) {
 
-                                        showToast(" Login to Add in Wishlist!", "erro");
+                                        showToast(" Login to Add ", "error");
                                         return;
                                     }
                                     if (wishlisted) {

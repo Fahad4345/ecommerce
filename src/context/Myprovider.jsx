@@ -38,7 +38,7 @@ export default function MyProvider({ children }) {
                 setWishlistIds(ids);
                 setWishlistLength(ids.length);
 
-                // Sync with localStorage so UI stays red on refresh
+
                 localStorage.setItem("Wishlist", JSON.stringify(ids));
 
                 console.log("Wishlist from API:", ids);
@@ -91,23 +91,23 @@ export default function MyProvider({ children }) {
         }));
     };
 
-    // Function to handle login - call this after successful login
+
     const handleUserLogin = async (userData) => {
         setuser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
 
-        // Refresh both cart and wishlist after login
+
         await refreshCartLength();
         await refreshWishlistLength();
     };
 
-    // Function to handle logout
+
     const handleUserLogout = () => {
         setuser(null);
         localStorage.removeItem("user");
         setCartIds([]);
 
-        // Clear wishlist and cart data
+
         setWishlistIds([]);
         setWishlistLength(0);
         setcartLength(0);
@@ -117,7 +117,6 @@ export default function MyProvider({ children }) {
         localStorage.removeItem("CartLength");
     };
 
-    // Initial load - check for existing user and sync data
     useEffect(() => {
         const initializeData = async () => {
             const storedUser = localStorage.getItem("user");
@@ -126,16 +125,16 @@ export default function MyProvider({ children }) {
                     const userData = JSON.parse(storedUser);
                     setuser(userData);
 
-                    // Refresh data from API for logged-in users
+
                     await refreshCartLength();
                     await refreshWishlistLength();
                 } catch (error) {
                     console.error("Error parsing stored user:", error);
                     localStorage.removeItem("user");
-                    syncWishlist(); // Fallback to localStorage sync
+                    syncWishlist();
                 }
             } else {
-                // For non-logged-in users, sync from localStorage
+
                 syncWishlist();
             }
         };
@@ -143,19 +142,19 @@ export default function MyProvider({ children }) {
         initializeData();
     }, []);
 
-    // Watch for user changes and refresh data accordingly
+
     useEffect(() => {
         if (user) {
-            // User is logged in, refresh from API
+
             refreshWishlistLength();
             refreshCartLength();
         } else {
-            // User is not logged in, clear data or sync from localStorage
+
             syncWishlist();
         }
-    }, [user?.id]); // Watch for user ID changes to detect login/logout
+    }, [user?.id]);
 
-    // Listen for localStorage changes (for multi-tab sync)
+
     useEffect(() => {
         const handleStorageChange = async (event) => {
             if (event.key === 'user') {
@@ -177,7 +176,7 @@ export default function MyProvider({ children }) {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
-    // Listen for custom wishlist update events
+
     useEffect(() => {
         const handleWishlistUpdate = (event) => {
             if (event.detail && event.detail.wishlistIds) {
@@ -203,14 +202,14 @@ export default function MyProvider({ children }) {
             user,
             setuser,
             refreshCartLength,
-            refreshWishlistLength, // Expose this function
+            refreshWishlistLength,
             wishlistIds,
             setWishlistIds,
             addToWishlist,
             removeFromWishlist,
             syncWishlist,
-            handleUserLogin,  // Expose login handler
-            handleUserLogout  // Expose logout handler
+            handleUserLogin,
+            handleUserLogout
         }}>
             {children}
         </MyContext.Provider>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Navbar from "../../Components/NavBar";
 import { SendEmail } from '../../Api1/sendEmail';
+import { showToast } from './../../Components/toast';
 
 export default function Contact() {
     const [name, setName] = useState("");
@@ -10,9 +11,13 @@ export default function Contact() {
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
     useEffect(() => {
+
         const user = JSON.parse(localStorage.getItem("user"));
-        setEmail(user.email);
-        setName(user.Firstname);
+        if (user) {
+            setEmail(user.email);
+            setName(user.Firstname);
+        }
+
 
     }, [])
 
@@ -65,7 +70,15 @@ export default function Contact() {
                     <div>
                         <textarea onChange={(e) => setMessage(e.target.value)} name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]   focus:outline-none focus:ring-0  ' ></textarea>
                     </div>
-                    <div onClick={() => { SendEmail(name, email, message); }} className='  flex justify-end'><button className=' bg-[#DB4444] w-fit cursor-pointer text-white py-[16px] px-[48px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%]'>Send Message</button>
+                    <div onClick={() => {
+                        if (!email || !name || !message) {
+                            showToast("Please enter all field", "error");
+                        }
+                        else {
+                            SendEmail(name, email, message);
+                        }
+
+                    }} className='  flex justify-end'><button className=' bg-[#DB4444] w-fit cursor-pointer text-white py-[16px] px-[48px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] tracking-[0%]'>Send Message</button>
                     </div>
                 </div>
             </div>

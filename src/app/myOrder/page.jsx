@@ -55,27 +55,7 @@ function MyOrdersPage() {
         );
     }
 
-    // if (error) {
-    //     return (
-    //         <div className="min-h-screen bg-gray-50">
-    //             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
-    //             <div className="max-w-4xl mx-auto p-6">
-    //                 <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-lg shadow-sm">
-    //                     <div className="flex items-center">
-    //                         <div className="text-red-400 text-2xl mr-4">⚠️</div>
-    //                         <div>
-    //                             <h3 className="text-lg font-semibold text-red-800">Oops! Something went wrong</h3>
-    //                             <p className="text-red-700 mt-1">{error}</p>
-    //                             <button className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
-    //                                 Try Again
-    //                             </button>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    // }
+
 
     if (error) {
         return (

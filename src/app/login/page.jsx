@@ -8,7 +8,7 @@ import { MyContext } from '../../context/MyContext';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-    // Use handleUserLogin instead of manually setting user
+
     const { handleUserLogin } = useContext(MyContext);
     const { login } = useAuth();
     const router = useRouter();
@@ -23,12 +23,12 @@ export default function Login() {
 
     const handleChange = async (e) => {
         setFormdata({ ...FormData, [e.target.name]: e.target.value })
-        // Clear error when user starts typing
+
         if (error) setError("");
     }
 
     const handleLogin = async () => {
-        // Basic validation
+
         if (!FormData.email || !FormData.password) {
             setError("Please fill in all fields");
             return;
@@ -43,10 +43,10 @@ export default function Login() {
             if (loginUser) {
                 console.log("LoginUser", loginUser);
 
-                // Use the context function to properly handle login
+
                 await handleUserLogin(loginUser);
 
-                // Navigate to home or dashboard after successful login
+
                 router.push('/');
             } else {
                 setError("Login failed. Please check your credentials.");
@@ -59,7 +59,7 @@ export default function Login() {
         }
     }
 
-    // Handle Enter key press
+
     const handleKeyPress = (e) => {
         if (e.key === "Enter") {
             handleLogin();
@@ -111,7 +111,7 @@ export default function Login() {
                             </div>
                         </form>
 
-                        {/* Error message */}
+
                         {error && (
                             <div className='text-red-500 text-sm font-[Poppins]'>
                                 {error}

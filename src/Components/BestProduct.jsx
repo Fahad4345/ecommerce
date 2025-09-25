@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { InsertCart } from "./../Api1/Cart/insertCart"
 import { MyContext } from "../context/MyContext";
 import { GetCart } from '../Api1/Cart/getCart';
+import { showToast } from './toast';
 
 export default function BestProduct({ products }) {
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -56,24 +57,29 @@ export default function BestProduct({ products }) {
     const handleAddToCart = async (productId, e) => {
         e.preventDefault();
         e.stopPropagation();
+        const user = localStorage.getItem("user");
+        if (user) {
+            try {
+                await InsertCart(productId);
 
-        try {
-            await InsertCart(productId);
+
+                if (!cartIds.includes(productId)) {
+                    const updatedCartIds = [...cartIds, productId];
+                    setCartIds(updatedCartIds);
+                    localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                }
 
 
-            if (!cartIds.includes(productId)) {
-                const updatedCartIds = [...cartIds, productId];
-                setCartIds(updatedCartIds);
-                localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                setcartLength(cartLength + 1);
+
+                alert("Item Added Successfully");
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                showToast("Failed to add item to cart", "error");
             }
-
-
-            setcartLength(cartLength + 1);
-
-            alert("Item Added Successfully");
-        } catch (error) {
-            console.error("Error adding to cart:", error);
-            alert("Failed to add item to cart");
+        }
+        else {
+            showToast("Login to Add", "error");
         }
     };
 
@@ -120,13 +126,18 @@ export default function BestProduct({ products }) {
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
-
-                                                if (wishlisted) {
-                                                    removeItem(product._id);
-                                                    removeFromWishlist(product._id);
-                                                } else {
-                                                    insertItem(product._id);
-                                                    addToWishlist(product._id);
+                                                const user = localStorage.getItem("user");
+                                                if (user) {
+                                                    if (wishlisted) {
+                                                        removeItem(product._id);
+                                                        removeFromWishlist(product._id);
+                                                    } else {
+                                                        insertItem(product._id);
+                                                        addToWishlist(product._id);
+                                                    }
+                                                }
+                                                else {
+                                                    showToast("Login to Add", "error");
                                                 }
                                             }}
                                             className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100"

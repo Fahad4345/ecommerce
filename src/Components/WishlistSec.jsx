@@ -410,6 +410,7 @@ import { InsertCart } from "../Api1/Cart/insertCart";
 import { GetCart } from '../Api1/Cart/getCart';
 import SaleSection from './SaleSec';
 import { GetDataByCategory } from './../Api1/getData';
+import { showToast } from './toast';
 
 
 export default function wishlistSec() {
@@ -492,21 +493,26 @@ export default function wishlistSec() {
     const handleAddToCart = async (productId, e) => {
         e.preventDefault();
         e.stopPropagation();
+        const user = localStorage.getItem("user");
+        if (user) {
+            try {
+                await InsertCart(productId);
 
-        try {
-            await InsertCart(productId);
+                if (!cartIds.includes(productId)) {
+                    const updatedCartIds = [...cartIds, productId];
+                    setCartIds(updatedCartIds);
+                    localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                }
 
-            if (!cartIds.includes(productId)) {
-                const updatedCartIds = [...cartIds, productId];
-                setCartIds(updatedCartIds);
-                localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
+                setcartLength(cartLength + 1);
+                showToast("Added to Cart", "success");
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                alert("Failed to add item to cart");
             }
-
-            setcartLength(cartLength + 1);
-            alert("Item Added Successfully");
-        } catch (error) {
-            console.error("Error adding to cart:", error);
-            alert("Failed to add item to cart");
+        }
+        else {
+            showToast("Login to Add", "error")
         }
     };
 
@@ -531,6 +537,9 @@ export default function wishlistSec() {
     };
 
     const handleMoveAllToBag = async () => {
+
+
+
         try {
             const promises = Wishlist.map(async (product) => {
                 if (!cartIds.includes(product._id)) {
@@ -552,7 +561,7 @@ export default function wishlistSec() {
             localStorage.setItem("CartItems", JSON.stringify(newCartIds));
             setcartLength(newCartIds.length);
 
-            alert("All items moved to cart successfully!");
+            showToast("All items moved to cart successfully!", "success");
         } catch (error) {
             console.error("Error moving items to cart:", error);
             alert("Failed to move some items to cart");
@@ -687,9 +696,9 @@ export default function wishlistSec() {
                         <h1 className='font-[Poppins] font-[400] text-[20px] leading-[26px] text-black'>For you</h1>
                     </div>
                     <div className='flex gap-[8px]'>
-                        <button className='justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px] cursor-pointer hover:bg-gray-200'>
+                        <Link href="/allProduct"><button className='justify-center items-center flex bg-[#F5F5F5] font-[Poppins] font-[500] text-[16px] leading-[24px] px-[48px] py-[16px] cursor-pointer hover:bg-gray-200'>
                             See All
-                        </button>
+                        </button></Link>
                     </div>
                 </div>
 
