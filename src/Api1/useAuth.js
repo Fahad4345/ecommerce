@@ -4,10 +4,19 @@ import { MyContext } from "./../context/MyContext";
 import { API_BASE_URL } from "./apiUrl";
 import { showToast } from "./../Components/toast";
 import { useRouter } from "next/navigation";
+
 export function useAuth() {
-  const { user, setuser, setcartLength } = useContext(MyContext);
+  const {
+    user,
+    setuser,
+    setcartLength,
+    setWishlistLength,
+    setWishlistIds,
+    handleUserLogout,
+  } = useContext(MyContext);
   const [error, setError] = useState(null);
   const router = useRouter();
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     console.log("Token", token);
@@ -64,7 +73,15 @@ export function useAuth() {
 
       localStorage.setItem("accessToken", data.Access_Token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
+      localStorage.setItem("Wishlist", JSON.stringify(data.user.wishlist));
+      localStorage.setItem("CartItems", JSON.stringify(data.user.cart));
+      localStorage.setItem("CartLength", JSON.stringify(data.user.cart.length));
+      localStorage.setItem(
+        "WishlistLength",
+        JSON.stringify(data.user.wishlist.length) || []
+      );
+      setcartLength(data.user.cart.length);
+      setWishlistLength(data.user.wishlist.length);
       setTimeout(() => {
         debugCookies();
       }, 1000);
@@ -133,26 +150,33 @@ export function useAuth() {
 
   const Logout = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/Logout`}`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/Logout`, {
         method: "POST",
         credentials: "include",
       });
-
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("user");
-      setuser(null);
-      setcartLength(0);
 
       const data = await res.json();
 
       if (!res.ok) {
         throw new Error(data.error || "Logout failed");
       }
+
+      // Use the context function to handle all cleanup
+      handleUserLogout();
+
+      // Navigate and show success message
       router.push("/");
-      showToast("Logout Sucessfully!", "success");
+      showToast("Logout Successfully!", "success");
+
       return data;
     } catch (err) {
       console.error("❌ Logout error:", err.message);
+
+      // Even if API call fails, still logout locally
+      handleUserLogout();
+      router.push("/");
+      showToast("Logged out locally", "info");
+
       throw err;
     }
   };

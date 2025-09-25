@@ -12,9 +12,9 @@ import { GetCart } from '../Api1/Cart/getCart';
 export default function BestProduct({ products }) {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { insertItem, removeItem } = useWishlist();
-    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds } = useContext(MyContext);
     const router = useRouter();
-    const [cartIds, setCartIds] = useState([]);
+
 
     const syncCartItems = async () => {
         try {

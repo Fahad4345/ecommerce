@@ -24,7 +24,7 @@ export default function AccountPage() {
 
         await updateProfile(form.Firstname, form.Lastname, form.Addresse, newPassword || undefined, currentPassword);
 
-        alert("Profile updated!");
+
         setNewPassword("");
         setConfirmPassword("");
 

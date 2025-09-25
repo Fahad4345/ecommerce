@@ -117,9 +117,10 @@ export default function CheckoutPage() {
             if (paymentMethod === "cod") {
 
                 const response = await PlaceOrder(orderData);
-
+                console.log("response", response);
                 if (response && response.success !== false) {
-                    alert("Order placed successfully (Cash on Delivery)!");
+                    localStorage.removeItem("CartItems");
+                    localStorage.removeItem("CartLength");
                     resetForm();
                 } else {
                     throw new Error("Failed to place order");

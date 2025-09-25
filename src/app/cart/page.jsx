@@ -242,10 +242,10 @@ export default function Cart() {
                                             UpdateCart(item.itemId._id, item.color, item.size, item.quantity)
                                         )
                                     );
-                                    alert('Cart updated successfully!');
+
                                 } catch (error) {
                                     console.error('Failed to update cart:', error);
-                                    alert('Failed to update cart. Please try again.');
+
                                 }
                             }
                         }}

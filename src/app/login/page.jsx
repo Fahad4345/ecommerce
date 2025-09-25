@@ -5,13 +5,12 @@ import Link from 'next/link';
 import Navbar from "../../Components/NavBar";
 import { useAuth } from "./../../Api1/useAuth"
 import { MyContext } from '../../context/MyContext';
-
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-    const { setuser, setcartLength, setWishlistLength } = useContext(MyContext);
+    // Use handleUserLogin instead of manually setting user
+    const { handleUserLogin } = useContext(MyContext);
     const { login } = useAuth();
-
     const router = useRouter();
 
     const [FormData, setFormdata] = useState({
@@ -19,64 +18,127 @@ export default function Login() {
         password: ""
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleChange = async (e) => {
         setFormdata({ ...FormData, [e.target.name]: e.target.value })
+        // Clear error when user starts typing
+        if (error) setError("");
     }
+
     const handleLogin = async () => {
-        const loginUser = await login(FormData.email, FormData.password);
-        setuser(loginUser);
+        // Basic validation
+        if (!FormData.email || !FormData.password) {
+            setError("Please fill in all fields");
+            return;
+        }
 
-        console.log("LoginUser", loginUser);
-        router.push("/")
+        setLoading(true);
+        setError("");
 
+        try {
+            const loginUser = await login(FormData.email, FormData.password);
+
+            if (loginUser) {
+                console.log("LoginUser", loginUser);
+
+                // Use the context function to properly handle login
+                await handleUserLogin(loginUser);
+
+                // Navigate to home or dashboard after successful login
+                router.push('/');
+            } else {
+                setError("Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            setError("Login failed. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     }
 
-
-
+    // Handle Enter key press
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleLogin();
+        }
+    }
 
     return (
-        <div className=' bg-white h-full flex flex-col justify-center items-center'>
+        <div className='bg-white h-full flex flex-col justify-center items-center'>
             <Navbar />
 
-
-            <div className=' flex flex-row mt-[60px]  max-w-[1305px] gap-[129px] justify-center items-center'>
-                <div className=' max-w-[805px] w-full h-full bg-[#CBE4E8] max-h-[781px]'><Image src="/assets/images/loginImage.png" width={919} height={706} alt="" /></div>
-
-                <div className='  flex  flex-col gap-[40px]'> <div className=' flex flex-col gap-[48px] min-w-[371px] '>
-                    <div className=' flex flex-col gap-[24px] '>
-                        <h1 className=" font-[Inter] font-[500] text-[30px] leading-[30px] tracking-[4%]">Log in to Exclusive</h1>
-                        <h1 className=" font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]">Enter your details below</h1>
-
-                    </div>
-                    <form className=' gap-[40px]   flex flex-col '>
-
-                        <div>
-                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0 ' placeholder='Email or Phone Number' name="email" value={FormData.email} type="text" />
-
-
-                        </div>
-                        <div>
-                            <input onChange={handleChange} className=' pb-[8px] w-full  border-b-[1px] border-[#00000066]  font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0 ' placeholder='Password' name="password" value={FormData.password} type="text" />
-
-
-                        </div>
-                    </form>
+            <div className='flex flex-row mt-[60px] max-w-[1305px] gap-[129px] justify-center items-center'>
+                <div className='max-w-[805px] w-full h-full bg-[#CBE4E8] max-h-[781px]'>
+                    <Image src="/assets/images/loginImage.png" width={919} height={706} alt="Login" />
                 </div>
-                    <div className=' flex flex-row gap-[87px]  justify-center items-center'>
 
-                        <button onClick={handleLogin} className=' cursor-pointer bg-[#DB4444] px-[48px] py-[16px]  rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px]  text-white tracking-[0%]'>Login</button>
+                <div className='flex flex-col gap-[40px]'>
+                    <div className='flex flex-col gap-[48px] min-w-[371px]'>
+                        <div className='flex flex-col gap-[24px]'>
+                            <h1 className="font-[Inter] font-[500] text-[30px] leading-[30px] tracking-[4%]">
+                                Log in to Exclusive
+                            </h1>
+                            <h1 className="font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]">
+                                Enter your details below
+                            </h1>
+                        </div>
 
+                        <form className='gap-[40px] flex flex-col' onKeyPress={handleKeyPress}>
+                            <div>
+                                <input
+                                    onChange={handleChange}
+                                    className='pb-[8px] w-full border-b-[1px] border-[#00000066] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0'
+                                    placeholder='Email or Phone Number'
+                                    name="email"
+                                    value={FormData.email}
+                                    type="text"
+                                    disabled={loading}
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    onChange={handleChange}
+                                    className='pb-[8px] w-full border-b-[1px] border-[#00000066] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] focus:outline-none focus:ring-0'
+                                    placeholder='Password'
+                                    name="password"
+                                    value={FormData.password}
+                                    type="password"
+                                    disabled={loading}
+                                />
+                            </div>
+                        </form>
 
+                        {/* Error message */}
+                        {error && (
+                            <div className='text-red-500 text-sm font-[Poppins]'>
+                                {error}
+                            </div>
+                        )}
+                    </div>
 
-                        <Link href="/Pages/login"> <h1 className=' font-[Poppins] font-[500] text-[#DB4444] text-[16px] leading-[24px] tracking-[0%] underline cursor-pointer'>Forget Password?</h1></Link>
+                    <div className='flex flex-row gap-[87px] justify-center items-center'>
+                        <button
+                            onClick={handleLogin}
+                            disabled={loading}
+                            className={`cursor-pointer px-[48px] py-[16px] rounded-[4px] font-[Poppins] font-[500] text-[16px] leading-[24px] text-white tracking-[0%] ${loading
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-[#DB4444] hover:bg-[#c53030]'
+                                }`}
+                        >
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
 
-
-                    </div></div>
-
-
+                        <Link href="/Pages/login">
+                            <h1 className='font-[Poppins] font-[500] text-[#DB4444] text-[16px] leading-[24px] tracking-[0%] underline cursor-pointer'>
+                                Forget Password?
+                            </h1>
+                        </Link>
+                    </div>
+                </div>
             </div>
-
         </div>
     )
 }

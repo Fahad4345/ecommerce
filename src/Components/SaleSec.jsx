@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import Image from "next/image";
 import { Heart, Eye } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +11,7 @@ import FlashSaleTimer from "./FlashTimer";
 import { InsertCart } from '../Api1/Cart/insertCart';
 import { MyContext } from "../context/MyContext";
 import { GetCart } from '../Api1/Cart/getCart';
+import { showToast } from "./toast";
 
 export default function SaleSection({
     title = "",
@@ -23,27 +24,30 @@ export default function SaleSection({
     slidesPerView = 4,
     showTimer = false,
 }) {
-    const { insertItem, removeItem } = useWishlist();
-    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
-
+    const { insertItem, removeItem, } = useWishlist();
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds } = useContext(MyContext);
+    const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user")) : null;
     const swiperRef = useRef(null);
-    const [cartIds, setCartIds] = useState([]);
+
 
     const syncCartItems = async () => {
         try {
-            const data = await GetCart();
-            if (data && data.cart && Array.isArray(data.cart)) {
-                const itemIds = data.cart.map(item => item.itemId._id);
-                setCartIds(itemIds);
-                localStorage.setItem("CartItems", JSON.stringify(itemIds));
-            } else {
-                setCartIds([]);
-                localStorage.setItem("CartItems", JSON.stringify([]));
+            if (user) {
+                const data = await GetCart();
+                if (data && data.cart && Array.isArray(data.cart)) {
+                    const itemIds = data.cart.map(item => item.itemId._id);
+                    setCartIds(itemIds);
+                    localStorage.setItem("CartItems", JSON.stringify(itemIds));
+                } else {
+                    setCartIds([]);
+                    localStorage.setItem("CartItems", JSON.stringify([]));
+                }
             }
         } catch (error) {
             console.error("Error syncing cart items:", error);
         }
     };
+
 
     useEffect(() => {
         syncCartItems();
@@ -83,7 +87,6 @@ export default function SaleSection({
 
             setcartLength(cartLength + 1);
 
-            alert("Item Added Successfully");
         } catch (error) {
             console.error("Error adding to cart:", error);
             alert("Failed to add item to cart");
@@ -93,7 +96,7 @@ export default function SaleSection({
     function ProductCard({ product }) {
         const wishlisted = wishlistIds?.includes(product._id);
         const inCart = cartIds?.includes(product._id);
-
+        console.log("wishlist ID", wishlistIds, "productId", product._id);
         return (
             <Link key={product._id} href={`/productDetail/${product._id}`}>
                 <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] h-full gap-[16px]`}>
@@ -101,12 +104,17 @@ export default function SaleSection({
                         <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
                             {`${product.discount}%`}
                         </span>
+
                         <div className={`absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end`}>
                             <button
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
+                                    if (!user) {
 
+                                        showToast(" Login to Add in Wishlist!", "erro");
+                                        return;
+                                    }
                                     if (wishlisted) {
                                         removeItem(product._id);
                                         removeFromWishlist(product._id);

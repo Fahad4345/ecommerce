@@ -28,7 +28,7 @@ export default function NewArivalSec() {
                             <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Black and White version of the PS5 coming out on sale.</h1>
 
                             <div className="group  transition duration-300 cursor-pointer ">
-                                <button className=" flex  gap-[8px]">
+                                <button className=" flex gap-[8px] cursor-pointer ">
                                     <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                     <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                 </button>
@@ -55,7 +55,7 @@ export default function NewArivalSec() {
                                 <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Featured woman collections that give you another vibe.</h1>
 
                                 <div className="group  transition duration-300 cursor-pointer ">
-                                    <button className=" flex  gap-[8px]">
+                                    <button className="  cursor-pointer flex  gap-[8px]">
                                         <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                         <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                     </button>
@@ -82,7 +82,7 @@ export default function NewArivalSec() {
                                     <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Amazon wireless speakers</h1>
 
                                     <div className="group  transition duration-300 cursor-pointer ">
-                                        <button className=" flex  gap-[8px]">
+                                        <button className=" cursor-pointer flex  gap-[8px]">
                                             <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
                                             <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                         </button>
@@ -112,7 +112,7 @@ export default function NewArivalSec() {
                                     <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>GUCCI INTENSE OUD EDP</h1>
 
                                     <div className="group  transition duration-300 cursor-pointer ">
-                                        <button className=" flex  gap-[8px]">
+                                        <button className="  cursor-pointer flex  gap-[8px]">
                                             <p className='text-white  font-[Poppins] font-[500] cursor-pointer text-[16px] leading-[24px]'>Shop Now</p>
                                             <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                                         </button>

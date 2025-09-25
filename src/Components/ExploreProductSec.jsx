@@ -12,12 +12,12 @@ import { GetCart } from '../Api1/Cart/getCart';
 export default function ExploreProduct({ products }) {
     const router = useRouter();
     const { insertItem, removeItem } = useWishlist();
-    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds } = useContext(MyContext);
 
     const [selectedColors, setSelectedColors] = useState({});
-    const [cartIds, setCartIds] = useState([]);
 
- 
+
+
     const syncCartItems = async () => {
         try {
             const data = await GetCart();
@@ -42,7 +42,7 @@ export default function ExploreProduct({ products }) {
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (!document.hidden) {
-             
+
                 syncCartItems();
             }
         };
@@ -54,7 +54,7 @@ export default function ExploreProduct({ products }) {
         };
     }, []);
 
-   
+
     const handleAddToCart = async (productId, selectedColor, e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -62,14 +62,14 @@ export default function ExploreProduct({ products }) {
         try {
             await InsertCart(productId, selectedColor);
 
-     
+
             if (!cartIds.includes(productId)) {
                 const updatedCartIds = [...cartIds, productId];
                 setCartIds(updatedCartIds);
                 localStorage.setItem("CartItems", JSON.stringify(updatedCartIds));
             }
 
-           
+
             setcartLength(cartLength + 1);
 
             alert("Item Added Successfully");
@@ -81,7 +81,7 @@ export default function ExploreProduct({ products }) {
 
     return (
         <div className='mx-[135px] mt-[145px] flex flex-col gap-[60px] items-center'>
-          
+
             <div className='flex w-full justify-between'>
                 <div className='flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>

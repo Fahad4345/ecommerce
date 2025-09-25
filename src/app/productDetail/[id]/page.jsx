@@ -17,10 +17,12 @@ import { GetCart } from './../../../Api1/Cart/getCart';
 import Link from 'next/link';
 import { Heart, Eye } from "lucide-react";
 
+
 export default function ProductDetail() {
+
     const Cartitem = useSelector(state => state.cart.items);
     const router = useRouter();
-    const { insertItem } = useWishlist();
+    const { insertItem, removeItem } = useWishlist();
     const [size, setSize] = useState("Sm");
     const [selectedColor, setSelectedColor] = useState("");
     const [quantity, setQuantity] = useState(1);
@@ -54,6 +56,26 @@ export default function ProductDetail() {
             console.error("Error syncing cart items:", error);
         }
     };
+    const handleWishlistToggle = async (productId, e) => {
+
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+
+
+            if (wishlistIds?.includes(productId)) {
+                await removeItem(productId);
+                removeFromWishlist(productId);
+            } else {
+                await insertItem(productId);
+                addToWishlist(productId);
+            }
+        } catch (error) {
+            console.error("Error toggling wishlist:", error);
+            alert("Failed to update wishlist");
+        }
+    };
+
 
     useEffect(() => {
         syncCartItems();
@@ -190,12 +212,12 @@ export default function ProductDetail() {
 
 
                         <div className='flex mt-[16px] items-center gap-[16px]'>
-                            <div className='flex border-[1px] border-[#00000080]'>
-                                <button onClick={handleDecrement} className='px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                            <div className='flex border-[1px] border-[#00000080] rounded-[4px]'>
+                                <button onClick={handleDecrement} className=' cursor-pointer px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                                     <rect x="5" y="9" width="10" height="2" rx="1" fill="currentColor" />
                                 </svg></button>
-                                <span className='py-[8px] px-[34px] border-l-[1px] border-r-[1px]'>{quantity}</span>
-                                <button onClick={handleIncrement} className='px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                <span className='py-[8px] px-[34px] border-l-[1px] border-r-[1px] font-[500] text-[20px] leading-[28px]  font-[Poppins]'>{quantity}</span>
+                                <button onClick={handleIncrement} className=' cursor-pointer px-3 py-2'><svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                                     <rect x="9" y="5" width="2" height="10" rx="1" fill="currentColor" />
                                     <rect x="5" y="9" width="10" height="2" rx="1" fill="currentColor" />
                                 </svg></button>
@@ -216,13 +238,27 @@ export default function ProductDetail() {
                                         InsertCart(item._id, size, selectedColor, quantity); router.push("/cart");
                                     }
                                 }}
-                                className='px-[48px] py-[10px] font-[500] text-[16px]  font-[Poppins] leading-[24px] bg-[#DB4444] text-white rounded-[4px]'
+                                className='px-[42px] py-[10px] font-[500] text-[16px]  cursor-pointer font-[Poppins] leading-[24px] bg-[#DB4444] tracking-[0px] text-white rounded-[4px]'
                             >
                                 {Cartitem ? "Add to Cart" : "Buy Now"}
                             </button>
 
-                            <div onClick={() => insertItem(item._id)} className='w-[40px] h-[40px] border  border-[#00000080] rounded-[4px] flex justify-center items-center cursor-pointer'>
-                                <Image src="/assets/icons/Wishlist.svg" width={32} height={32} alt="" />
+                            <div onClick={(e) => handleWishlistToggle(item._id, e)} className='w-[40px] h-[40px] border  border-[#00000080] rounded-[4px] flex justify-center items-center cursor-pointer'>
+                                <Heart
+                                    fill={wishlistIds?.includes(item._id) ? "red" : "none"}
+                                    color={wishlistIds?.includes(item._id) ? "red" : "black"}
+                                    size={20}
+                                />
+                            </div>
+                        </div>
+                        <div className=' flex flex-col border-[1px] border-[#00000080] rounded-[4px] mt-[40px]'>
+                            <div className=' flex gap-[16px] pt-[24px] pb-[16px] pl-[16px]  items-center border-b-[1px] border-[#00000080]'>
+                                <div><Image width={40} height={40} alt="" src="/assets/icons/icon-delivery (1).svg" /></div>
+                                <div className=' '><p className='font-[500]  text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>Free Delivery</p><p className='font-[500] text-[12px] leading-[28px] underline tracking-[0%] font-[Poppins]'>Enter your postal code for Delivery Availability</p></div>
+                            </div>
+                            <div className=' flex gap-[16px] pt-[24px] pb-[16px] pl-[16px]  items-center'>
+                                <div><Image width={40} height={40} alt="" src="/assets/icons/Icon-return.svg" /></div>
+                                <div className=' '><p className='font-[500]   text-[16px] leading-[24px] tracking-[0%] font-[Poppins]'>Return Delivery</p><p className='font-[500] text-[12px] leading-[28px]  tracking-[0%] font-[Poppins]'>Free 30 Days Delivery Returns. <span className='font-[500] text-[12px] leading-[28px] underline tracking-[0%] font-[Poppins]'>Details</span></p></div>
                             </div>
                         </div>
                     </div>
@@ -244,7 +280,7 @@ export default function ProductDetail() {
                 <div className='grid grid-cols-4 gap-x-[30px] gap-y-[60px] mt-[60px] '>
 
                     {products.map((product) => {
-                        const wishlisted = wishlistIds?.includes(product._id);
+
                         const inCart = cartIds?.includes(product._id);
 
                         return (
@@ -263,8 +299,8 @@ export default function ProductDetail() {
                                                 className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100"
                                             >
                                                 <Heart
-                                                    fill={wishlisted ? "red" : "none"}
-                                                    color={wishlisted ? "red" : "black"}
+                                                    fill={wishlistIds?.includes(product._id) ? "red" : "none"}
+                                                    color={wishlistIds?.includes(product._id) ? "red" : "black"}
                                                     size={20}
                                                 />
                                             </button>

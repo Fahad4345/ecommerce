@@ -55,29 +55,29 @@ function MyOrdersPage() {
         );
     }
 
-    if (error) {
-        return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
-                <div className="max-w-4xl mx-auto p-6">
-                    <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-lg shadow-sm">
-                        <div className="flex items-center">
-                            <div className="text-red-400 text-2xl mr-4">⚠️</div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-red-800">Oops! Something went wrong</h3>
-                                <p className="text-red-700 mt-1">{error}</p>
-                                <button className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
-                                    Try Again
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    // if (error) {
+    //     return (
+    //         <div className="min-h-screen bg-gray-50">
+    //             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+    //             <div className="max-w-4xl mx-auto p-6">
+    //                 <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-lg shadow-sm">
+    //                     <div className="flex items-center">
+    //                         <div className="text-red-400 text-2xl mr-4">⚠️</div>
+    //                         <div>
+    //                             <h3 className="text-lg font-semibold text-red-800">Oops! Something went wrong</h3>
+    //                             <p className="text-red-700 mt-1">{error}</p>
+    //                             <button className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+    //                                 Try Again
+    //                             </button>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
-    if (orders.length === 0) {
+    if (error) {
         return (
             <div className="min-h-screen bg-gray-50">
                 <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
@@ -234,24 +234,12 @@ function MyOrdersPage() {
 
                                 <div className="pt-6 border-t border-gray-200">
                                     <div className="flex flex-wrap gap-4">
-                                        <button className="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
-                                            <span>🚚</span>
-                                            <span>Track Order</span>
-                                        </button>
+
                                         <button onClick={() => cancelOrder(order._id)} className="flex-1 sm:flex-none px-6 py-3 border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-semibold rounded-xl transition-all duration-200 flex items-center justify-center space-x-2">
                                             <span>📄</span>
                                             <span>Cancel Order</span>
                                         </button>
-                                        {order.orderStatus === 'Delivered' && (
-                                            <button className="flex-1 sm:flex-none px-6 py-3 border-2 border-green-300 hover:border-green-500 hover:bg-green-50 text-green-700 hover:text-green-800 font-semibold rounded-xl transition-all duration-200 flex items-center justify-center space-x-2">
-                                                <span>🔄</span>
-                                                <span>Reorder</span>
-                                            </button>
-                                        )}
-                                        <button className="flex-1 sm:flex-none px-6 py-3 border-2 border-orange-300 hover:border-orange-500 hover:bg-orange-50 text-orange-700 hover:text-orange-800 font-semibold rounded-xl transition-all duration-200 flex items-center justify-center space-x-2">
-                                            <span>💬</span>
-                                            <span>Support</span>
-                                        </button>
+
                                     </div>
                                 </div>
                             </div>

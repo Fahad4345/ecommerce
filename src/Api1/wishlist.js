@@ -1,10 +1,11 @@
 "use client";
 import { API_BASE_URL } from "./apiUrl";
 import { useContext, useState } from "react";
+import { showToast } from "./../Components/toast";
 import { MyContext } from "./../context/MyContext";
 
 export function useWishlist() {
-  const { setWishlistLength } = useContext(MyContext);
+  const [wishlistLength, setWishlistLength] = useState();
   const [wishlistItems, setWishlistItems] = useState([]);
   const [error, setError] = useState(null);
 
@@ -31,7 +32,7 @@ export function useWishlist() {
       localStorage.setItem("Wishlist", JSON.stringify(updated));
       setWishlistLength(updated.length);
       setWishlistItems(updated);
-
+      showToast("Added to Wishlist!", "success");
       window.dispatchEvent(new Event("wishlist-updated"));
       return data.wishlist;
     } catch (err) {
@@ -97,7 +98,7 @@ export function useWishlist() {
       localStorage.setItem("Wishlist", JSON.stringify(updated));
       setWishlistLength(updated.length);
       setWishlistItems(updated);
-
+      showToast("Removed from  Wishlist", "success");
       window.dispatchEvent(new Event("wishlist-updated"));
       return data;
     } catch (err) {

@@ -12,7 +12,7 @@ export default function Contact() {
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         setEmail(user.email);
-        setName(user.name);
+        setName(user.Firstname);
 
     }, [])
 

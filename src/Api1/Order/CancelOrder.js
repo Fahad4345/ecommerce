@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./../apiUrl";
+import { showToast } from "../../Components/toast";
 export default async function cancelOrder(orderId) {
   try {
     const res = await fetch(
@@ -14,7 +15,7 @@ export default async function cancelOrder(orderId) {
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to cancel order");
-    alert("Order cancelled and refunded successfully!");
+    showToast(" Order Cancelled!", "success");
   } catch (err) {
     alert(err.message);
   }

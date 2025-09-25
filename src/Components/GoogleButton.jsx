@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "../context/MyContext";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "./../Api1/apiUrl";
+import { showToast } from "./../Components/toast";
 
 
 export default function GoogleSignInButton() {
@@ -35,6 +36,8 @@ export default function GoogleSignInButton() {
         localStorage.setItem("user", JSON.stringify(data.user))
         console.log("Data", user);
         setuser(data.user);
+        showToast("Login sucessfull!", "success");
+
         router.push("/")
 
     };

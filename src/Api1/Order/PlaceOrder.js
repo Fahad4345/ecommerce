@@ -1,8 +1,9 @@
 import { API_BASE_URL } from "./../apiUrl";
+import { showToast } from "../../Components/toast";
 export default async function PlaceOrder(orderData) {
   try {
     const token = localStorage.getItem("accessToken");
-    const response = await fetch(`${API_BASE_URL}/${`stripe/PlaceOrder`}`, {
+    const response = await fetch(`${API_BASE_URL}/${`api/auth/PlaceOrder`}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,10 +18,11 @@ export default async function PlaceOrder(orderData) {
       console.error("❌ Backend error response:", data);
       throw new Error(data.message || "Failed to place order");
     }
-
+    showToast("Order Placed!", "success");
+    console.log("Data", data);
     return data;
   } catch (err) {
-    console.error("❌ Error placing order:", err);
+    console.log({ message: err.message });
     throw err;
   }
 }

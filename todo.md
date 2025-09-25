@@ -2,16 +2,13 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Creted Api for cancel and refund Order
+- Added refund feature for cancel order
 - Adjusted UI
-- Fix Strip now strip is creating order but still have error
-- Created My order page and display all order
-- Created api to Get all order by using userid
-- Create and integrated web hook of stripe but it have some error
+- Fixed Strip
 
 Next:
 
-- Fixes for stripe
+- Some remaining fixes in UI
 
-Loom : ( NOt creted due to error)
-Preview : (https://ecommerce-three-delta-52.vercel.app/)(Backend deployed but there are errors)
+Loom : (https://www.loom.com/share/2b522bb3af364181be6f81a29555a98c?sid=30ca9b5b-fbf8-434b-acf7-617da928e628)
+Preview : (https://ecommerce-8txphp4pf-fahad-rehans-projects.vercel.app/)
