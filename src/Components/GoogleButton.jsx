@@ -13,7 +13,7 @@ export default function GoogleSignInButton() {
     useEffect(() => {
         if (window.google) {
             window.google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
+                client_id: process.env.GOOGLE_CLIENT_ID,
                 callback: handleResponse,
             });
 
@@ -38,7 +38,7 @@ export default function GoogleSignInButton() {
         setuser(data.user);
         showToast("Login sucessfull!", "success");
 
-        router.push("/")
+        router.push("/");
 
     };
 

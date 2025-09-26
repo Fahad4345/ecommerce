@@ -8,5 +8,5 @@ Next:
 
 - Completed
 
-Loom : ()
-Preview : (https://ecommerce-three-delta-52.vercel.app/)
+Loom : ()Not Created due to network issue
+Preview : (https://ecommerce-31sj941je-fahad-rehans-projects.vercel.app/)

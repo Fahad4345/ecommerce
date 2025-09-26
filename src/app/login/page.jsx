@@ -6,6 +6,7 @@ import Navbar from "../../Components/NavBar";
 import { useAuth } from "./../../Api1/useAuth"
 import { MyContext } from '../../context/MyContext';
 import { useRouter } from 'next/navigation';
+import GoogleSignInButton from './../../Components/GoogleButton';
 
 export default function Login() {
 
@@ -118,8 +119,12 @@ export default function Login() {
                             </div>
                         )}
                     </div>
+                    <GoogleSignInButton disabled={loading} />
+
 
                     <div className='flex flex-row gap-[87px] justify-center items-center'>
+
+
                         <button
                             onClick={handleLogin}
                             disabled={loading}
