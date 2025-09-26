@@ -215,7 +215,7 @@ function MyOrdersPage() {
                                 <div className="pt-6 border-t border-gray-200">
                                     <div className="flex flex-wrap gap-4">
 
-                                        <button onClick={() => cancelOrder(order._id)} className="flex-1 sm:flex-none px-6 py-3 border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-semibold rounded-xl transition-all duration-200 flex items-center justify-center space-x-2">
+                                        <button onClick={() => cancelOrder(order._id)} className="flex-1 sm:flex-none px-6 py-3 border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-semibold rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 cursor-pointer">
                                             <span>📄</span>
                                             <span>Cancel Order</span>
                                         </button>
