@@ -103,7 +103,7 @@ export default function CheckoutPage() {
                 paymentMethod: paymentMethod === "cod" ? "Cash on Delivery" : "Card",
                 status: "Pending",
                 customer: {
-                    userId: user?._id || null,
+                    userId: user?.id || null,
                     firstName: firstName.trim(),
                     company: company.trim(),
                     address: `${street.trim()}${apartment.trim() ? `, ${apartment.trim()}` : ""}, ${city.trim()}`,
