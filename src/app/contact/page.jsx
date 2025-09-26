@@ -78,10 +78,10 @@ export default function Contact() {
                             placeholder="Your Email*"
                             className="w-[235px] py-[13px] px-[16px] bg-[#F5F5F5] font-[Poppins] text-[16px] focus:outline-none"
                         />
-                        <input onChange={(e) => setPhone(e.target.value)} type="text" placeholder='Your Phone *' className='  w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
+                        <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder='Your Phone *' className='  w-[235px] py-[13px] pl-[16px] pr-[118px] bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%]  focus:outline-none focus:ring-0' />
                     </div>
                     <div>
-                        <textarea onChange={(e) => setMessage(e.target.value)} name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]   focus:outline-none focus:ring-0  ' ></textarea>
+                        <textarea value={message} onChange={(e) => setMessage(e.target.value)} name="message" id="" placeholder='Your Message *' className=' py-[13px] px-[16px]  bg-[#F5F5F5] font-[Poppins] font-[400] text-[16px] leading-[24px] tracking-[0%] w-[737px] h-[207px]   focus:outline-none focus:ring-0  ' ></textarea>
                     </div>
                     <div onClick={() => {
                         if (!email || !name || !message) {
