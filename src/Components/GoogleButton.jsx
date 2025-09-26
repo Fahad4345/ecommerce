@@ -12,8 +12,9 @@ export default function GoogleSignInButton() {
     const router = useRouter();
     useEffect(() => {
         if (window.google) {
+            console.log("ClientID", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
             window.google.accounts.id.initialize({
-                client_id: process.env.GOOGLE_CLIENT_ID,
+                client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
                 callback: handleResponse,
             });
 
