@@ -95,13 +95,13 @@ export default function navbar({ ShowWishlist = false, ShowCart = false, ShowPro
                         </button>
                     </form>
 
-                    <div className='flex gap-[16px]'>
+                    <div className='flex gap-[16px] justify-center items-center'>
                         {ShowWishlist && user && (
                             <Link href="/wishlist">
-                                <div className={`${pathName === "/wishlist" ? "bg-[#DB4444] text-white" : "text-black"} relative flex w-[32px] h-[32px] rounded-full px-[2px] py-[2px]`}>
+                                <div className={`${pathName === "/wishlist" ? "bg-[#DB4444] text-white" : "text-black"} relative flex   justify-center items-center rounded-full px-[2px] py-[2px]`}>
                                     <Wishlist />
                                     {pathName !== "/wishlist" && WishlistLength > 0 && (
-                                        <div className='text-white font-[400] text-[12px] leading-[18px] font-[Poppins] absolute left-[15px] w-[16px] h-[17px] rounded-full flex justify-center items-center bg-[#DB4444]'>
+                                        <div className='text-white font-[400] text-[12px] leading-[18px] font-[Poppins] absolute  top-[-3px] left-[19px] w-[16px] h-[17px] rounded-full flex justify-center items-center bg-[#DB4444]'>
                                             {WishlistLength}
                                         </div>
                                     )}
