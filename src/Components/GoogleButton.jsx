@@ -20,7 +20,7 @@ export default function GoogleSignInButton() {
 
             window.google.accounts.id.renderButton(
                 document.getElementById("google-btn"),
-                { theme: "outline", size: "large" }
+                { theme: "outline" }
             );
         }
     }, []);
@@ -43,5 +43,5 @@ export default function GoogleSignInButton() {
 
     };
 
-    return <div id="google-btn"></div>;
+    return <div id="google-btn" className=" w-full" ></div>;
 }
