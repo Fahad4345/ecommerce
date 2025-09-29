@@ -50,7 +50,7 @@ export default function AccountPage() {
 
 
     return (
-        <div className=' flex justify-center items-center flex-col'>
+        <div className=' bg-white flex justify-center items-center flex-col'>
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
             {user ? (<div className='  max-w-[1170px] w-full flex justify-center items-center flex-row mx-[135px] mt-[80px]'>

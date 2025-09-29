@@ -181,8 +181,8 @@ export default function SaleSection({
     }
 
     return (
-        <div className={`${showSwiper === true ? "ml-[275px]" : "mx-[135px] max-w-[1170px]"} ${className} overflow-hidden w-full mt-[145px] flex flex-col gap-[40px]`}>
-            <div className="flex items-end justify-between max-w-[1170px] w-full">
+        <div className={` w-full max-w-[1170px] mx-[135px]  ${className} overflow-hidden w-full mt-[145px] flex flex-col gap-[40px]`}>
+            <div className="flex items-end justify-between max-w-[1170px] mx-[135px] w-full">
                 <div className="flex flex-row justify-end items-end gap-[87px]">
                     <div className="flex flex-col gap-[24px]">
                         <div className="flex items-center gap-[16px]">
@@ -235,7 +235,7 @@ export default function SaleSection({
                         swiperRef.current = swiper;
                     }}
                     allowTouchMove={false}
-                    className="w-full max-w-[1440px]"
+                    className="w-full max-w-[1170px]"
                 >
                     {products.map((product) => (
                         <SwiperSlide className="max-w-[270px] w-full" key={product._id}>
@@ -252,7 +252,7 @@ export default function SaleSection({
             )}
 
             {showViewAll && (
-                <div className="w-full max-w-[1170px] items-center flex justify-center">
+                <div className="w-full max-w-[1170px] mx-[135px] items-center flex justify-center">
                     <Link href="/allProduct?viewAll=true">
                         <div className="rounded-[4px] text-[#FAFAFA] w-fit font-[Poppins] font-[400] text-[16px] leading-[24px] px-[38px] py-[16px] cursor-pointer bg-[#DB4444] items-center">
                             View All Products

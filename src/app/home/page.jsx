@@ -26,6 +26,7 @@ export default function Home() {
                 products={products}
                 showTimer={true}
                 showSwiper={true}
+                slidesPerView={4}
                 showNavigation={true}
                 showViewAll={true}
                 title="Flash Sale"

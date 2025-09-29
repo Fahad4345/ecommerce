@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './../../Components/NavBar';
 import useCustomerOrders from "../../Api1/Order/GetOrder";
 import cancelOrder from "./../../Api1/Order/CancelOrder"
+import Link from 'next/link';
 
 function MyOrdersPage() {
     const [user, setUser] = useState(null);
@@ -70,9 +71,9 @@ function MyOrdersPage() {
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">No Orders Yet</h2>
                         <p className="text-xl text-gray-600 mb-2">Your order history is waiting to be filled!</p>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto">Discover amazing products and start your shopping journey with us today.</p>
-                        <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <Link href="/"><button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg">
                             🛍️ Start Shopping Now
-                        </button>
+                        </button></Link>
                     </div>
                 </div>
             </div>

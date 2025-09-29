@@ -579,9 +579,18 @@ export default function wishlistSec() {
             if (isCurrentlyWishlisted) {
                 await removeItem(productId);
                 removeFromWishlist(productId);
+
+
+                setWishlist(prev => prev.filter(item => item._id !== productId));
             } else {
                 await insertItem(productId);
                 addToWishlist(productId);
+
+
+                const newProduct = products.find(p => p._id === productId);
+                if (newProduct) {
+                    setWishlist(prev => [...prev, newProduct]);
+                }
             }
         } catch (error) {
             console.error("Error toggling wishlist:", error);
@@ -718,7 +727,7 @@ export default function wishlistSec() {
                                         <div className='relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] h-full flex justify-center items-center'>
                                             {product.discount && (
                                                 <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
-                                                    {product.discount}
+                                                    {product.discount}%
                                                 </span>
                                             )}
 

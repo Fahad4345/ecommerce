@@ -167,7 +167,7 @@ export default function ProductDetail() {
     </div>
 
     return (
-        <div className='flex justify-center items-center flex-col h-full' >
+        <div className='flex  bg-white justify-center items-center flex-col h-full' >
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
             <div className='mx-[135px] mt-[80px] max-w-[1170px] w-full'>
