@@ -1,12 +1,32 @@
 "use client"
+import { useState } from "react";
 import React from "react";
 import Image from "next/image";
+import { showToast } from "./toast";
+import { API_BASE_URL } from "./../Api1/apiUrl";
 
 export default function Footer() {
+    const [email, setEmail] = useState("");
 
     const scrollToTop = () => {
         if (typeof window !== "undefined") {
             window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
+    const SubmitSubscribe = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/auth/SendSubscribeEmail`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || "Subscription failed");
+            showToast("Subscription successful!", "success");
+        } catch (error) {
+            showToast(error.message, "error");
         }
     };
 
@@ -38,11 +58,19 @@ export default function Footer() {
                     </h1>
                     <div className="   border-[1.5px] border-[#FAFAFA] rounded-[4px]  flex w-[217px] min-h-[48px] py-[12px] px-[16px] cursor-pointer gap-[32px] ">
                         <input
+                            onChange={(e) => { setEmail(e.target.value) }}
                             type="email"
                             placeholder="Enter your email"
                             className="font-[Poppins]  focus:outline-none focus:ring-0 focus:border-transparent  max-w-[130px] font-[400] text-[16px] leading-[24px] cursor-pointer text-[#FAFAFA]"
                         />
-                        <Image
+                        <Image onClick={() => {
+                            if (!email) {
+                                showToast("Please enter email", "error");
+                            }
+                            else {
+                                SubmitSubscribe();
+                            }
+                        }} className=" cursor-pointer"
                             src="/assets/icons/icon-send.svg"
                             alt=""
                             width={24}

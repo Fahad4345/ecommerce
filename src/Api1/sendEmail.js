@@ -2,7 +2,6 @@ import { API_BASE_URL } from "./apiUrl";
 import { showToast } from "./../Components/toast";
 export async function SendEmail(name, email, message) {
   try {
-    const subject = "Helpline";
     let text = `Hello my name is ${name} and ${message} `;
 
     const res = await fetch(` ${API_BASE_URL}/${`api/auth/SendEmail`}`, {
@@ -10,7 +9,7 @@ export async function SendEmail(name, email, message) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ to: email, subject: subject, text: text }),
+      body: JSON.stringify({ to: email, text: text }),
     });
     const data = await res.json();
     console.log("data", data);
