@@ -2,13 +2,14 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Completed The fixes of UI
-- Understand Redux Toolkit
-- Understand RTK query
+- Added Navigation on Order page start shopping now Button
+- Fixed Wishlist page which is not showing added wishlist item on run time
+- Contain flash sale swiper to show 4 items
+- Fixed dark mode
 
-Next:
+  Next:
 
-- Completed
+- Remaining fixes
 
-Loom : (https://www.loom.com/share/9116975ecee14231b13512de6375feae?sid=71c69a05-4070-41e7-adb3-fb673a41708d)
+Loom : (https://www.loom.com/share/b4475481e0b1454aa166dc579c266c87?sid=70800401-d405-4354-84fa-248295e36bf0)
 Preview : (https://ecommerce-three-delta-52.vercel.app)

@@ -7,6 +7,7 @@ import { useAuth } from "./../../Api1/useAuth"
 import { MyContext } from '../../context/MyContext';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './../../Components/GoogleButton';
+import { showToast } from './../../Components/toast';
 
 export default function Login() {
 
@@ -27,7 +28,28 @@ export default function Login() {
 
         if (error) setError("");
     }
-
+    const handleForgetPassword = () => {
+        if (FormData.email === "") {
+            setError("Please enter your email");
+        } else {
+            try {
+                const res = fetch(`http://localhost:3001/api/auth/forgetPassword`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email: FormData.email })
+                });
+                if (res.ok) {
+                    showToast("Password reset email sent successfully", 'success');
+                }
+            }
+            catch (error) {
+                console.error("Error:", error);
+                setError("Failed to send password reset email");
+            }
+        };
+    }
     const handleLogin = async () => {
 
         if (!FormData.email || !FormData.password) {
@@ -136,11 +158,11 @@ export default function Login() {
                             {loading ? "Logging in..." : "Login"}
                         </button>
 
-                        <Link href="/Pages/login">
+                        < button onClick={handleForgetPassword}>
                             <h1 className='font-[Poppins] font-[500] text-[#DB4444] text-[16px] leading-[24px] tracking-[0%] underline cursor-pointer'>
                                 Forget Password?
                             </h1>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
