@@ -408,9 +408,10 @@ import { useWishlist } from '../Api1/wishlist';
 import { MyContext } from "../context/MyContext";
 import { InsertCart } from "../Api1/Cart/insertCart";
 import { GetCart } from '../Api1/Cart/getCart';
-import SaleSection from './SaleSec';
 import { GetDataByCategory } from './../Api1/getData';
 import { showToast } from './toast';
+import Loader from './loader';
+import { Package, User, CreditCard, Clock, CheckCircle, XCircle, RefreshCw, Truck, MapPin, Mail, Phone } from 'lucide-react';
 
 
 export default function wishlistSec() {
@@ -597,7 +598,9 @@ export default function wishlistSec() {
             alert("Failed to update wishlist");
         }
     };
-
+    if (isLoading && isLoadingProducts) {
+        return <Loader />;
+    }
     return (
         <div className='flex flex-col gap-[80px] max-w-[1170px] w-full'>
             <div className='mt-[80px] flex flex-col gap-[60px] items-center'>

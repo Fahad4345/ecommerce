@@ -9,18 +9,26 @@ import NewArivalSec from "../../Components/NewArivalSec";
 import FeatureSec from "../../Components/FeatureSec";
 import Navbar from "../../Components/NavBar";
 import React, { useEffect, useState } from "react";
+import Loader from "./../../Components/loader";
 
 
 export default function Home() {
     const [products, SetProducts] = useState([]);
     useEffect(() => {
+        if (products.length === 0) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    }, [products]);
 
-
-    }, [])
 
     return (
         <div className=" bg-white h-full justify-center items-center flex flex-col overflow-hidden overflow-x-hidden">
+
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
+            {products.length === 0 && <Loader />}
+
             <BannerSec />
             <SaleSection
                 products={products}

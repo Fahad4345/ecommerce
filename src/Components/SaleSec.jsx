@@ -103,7 +103,7 @@ export default function SaleSection({
         console.log("wishlist ID", wishlistIds, "productId", product._id);
         return (
             <Link key={product._id} href={`/productDetail/${product._id}`}>
-                <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] h-full gap-[16px]`}>
+                <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-[16px]`}>
                     <div className="relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] flex justify-center items-center">
                         <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
                             {`${product.discount}%`}
@@ -138,8 +138,9 @@ export default function SaleSection({
 
                         <Image
                             src={product.image[0]}
-                            width={172}
-                            height={129}
+                            width={200}
+                            height={200}
+                            className="max-h-[200px] max-w-[200px] min-h-[200px] min-w-[200px] w-full h-full object-contain"
                             alt={product.name}
                         />
 

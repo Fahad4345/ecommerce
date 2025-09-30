@@ -5,6 +5,7 @@ import Navbar from "./NavBar";
 import CategorySec from './CategorySec';
 import SaleSection from './SaleSec';
 import { GetDataByCategory } from '../Api1/getData';
+import Loader from './loader';
 
 export default function AllProduct() {
     const [products, setProducts] = useState([]);
@@ -117,12 +118,10 @@ export default function AllProduct() {
         <div className='flex flex-col justify-center items-center'>
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
 
-            {shouldShowCategorySec && <CategorySec onItemFetch={handleProductsFetch} />}
 
+            {shouldShowCategorySec && <CategorySec onItemFetch={handleProductsFetch} />}
             {isLoading ? (
-                <div className='flex justify-center items-center py-[100px]'>
-                    <p className='font-[Poppins] text-[18px]'>Loading products...</p>
-                </div>
+                <Loader />
             ) : (
                 <>
                     {searchQuery && fromViewAll !== 'true' && products.length === 0 ? (
