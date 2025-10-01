@@ -2,14 +2,17 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Added Navigation on Order page start shopping now Button
-- Fixed Wishlist page which is not showing added wishlist item on run time
-- Contain flash sale swiper to show 4 items
-- Fixed dark mode
+- Added forget passord feature but have errors
+- Created UI for Admin View all Products and also Category Wise And also Integrated Backend
+- Added Delete Item Api and integrated it in front end
+- Added Update Item Api and Integrated it in Frontend
+- Created Insert Item Api and integrated it
 
-  Next:
+- Next:
 
-- Remaining fixes
+- Fetch All User Api
+- Fetch All Order
+- Integration for Admin in login Signup
 
-Loom : (https://www.loom.com/share/b4475481e0b1454aa166dc579c266c87?sid=70800401-d405-4354-84fa-248295e36bf0)
+Loom : ()
 Preview : (https://ecommerce-three-delta-52.vercel.app)

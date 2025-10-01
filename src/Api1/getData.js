@@ -12,5 +12,7 @@ export async function GetDataByCategory(Category) {
     const data = await res.json();
     console.log(" Get Data", data);
     return data;
-  } catch (err) {}
+  } catch (err) {
+    cobnsole.log("Error fetching data:", err);
+  }
 }

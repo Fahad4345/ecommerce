@@ -1,131 +1,153 @@
 "use client";
-import { useState } from 'react';
-import { Plus, X, Upload } from 'lucide-react';
-import AdminNavBar from './../../Components/AdminNavBar';
+import { useState } from "react";
+import { Plus, X } from "lucide-react";
+import AdminNavBar from "./../../Components/AdminNavBar";
+import ItemNav from './../../Components/itemNav'
 
 export default function AddItemForm() {
     const [formData, setFormData] = useState({
-        name: '',
-        category: '',
-        price: '',
-        description: '',
-        discount: '',
-        discountPrice: '',
+        name: "",
+        category: "",
+        price: "",
+        description: "",
+        discount: "",
         color: [],
         sizes: [],
-        review: '',
-        rating: '',
-        image: []
+        review: "",
+        rating: "",
+        image: [],
     });
 
-    const [colorInput, setColorInput] = useState('');
-    const [imageInput, setImageInput] = useState('');
+    const [colorInput, setColorInput] = useState("");
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState({ type: '', text: '' });
+    const [message, setMessage] = useState({ type: "", text: "" });
 
-    const categories = ['Phones', 'Computers', 'SmartWatch', 'Camera', 'HeadPhones', 'Gaming'];
-    const sizeOptions = ['Sm', 'Md', 'Lg', 'Xl'];
+    const categories = [
+        "Phones",
+        "Computers",
+        "SmartWatch",
+        "Camera",
+        "HeadPhones",
+        "Gaming",
+    ];
+    const sizeOptions = ["Sm", "Md", "Lg", "Xl"];
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+
     const handleSizeToggle = (size) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             sizes: prev.sizes.includes(size)
-                ? prev.sizes.filter(s => s !== size)
-                : [...prev.sizes, size]
+                ? prev.sizes.filter((s) => s !== size)
+                : [...prev.sizes, size],
         }));
     };
 
     const addColor = () => {
         if (colorInput.trim()) {
-            setFormData(prev => ({
+            setFormData((prev) => ({
                 ...prev,
-                color: [...prev.color, colorInput.trim()]
+                color: [...prev.color, colorInput.trim()],
             }));
-            setColorInput('');
+            setColorInput("");
         }
     };
 
     const removeColor = (index) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            color: prev.color.filter((_, i) => i !== index)
+            color: prev.color.filter((_, i) => i !== index),
         }));
     };
 
-    const addImage = () => {
-        if (imageInput.trim()) {
-            setFormData(prev => ({
-                ...prev,
-                image: [...prev.image, imageInput.trim()]
-            }));
-            setImageInput('');
-        }
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setFormData((prev) => ({
+            ...prev,
+            image: [...prev.image, ...files],
+        }));
     };
 
+
     const removeImage = (index) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            image: prev.image.filter((_, i) => i !== index)
+            image: prev.image.filter((_, i) => i !== index),
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setMessage({ type: '', text: '' });
-
-        // Prepare data for submission
-        const submitData = {
-            name: formData.name,
-            category: formData.category,
-            price: parseFloat(formData.price),
-            description: formData.description,
-            image: formData.image,
-            ...(formData.discount && { discount: parseFloat(formData.discount) }),
-            ...(formData.discountPrice && { discountPrice: parseFloat(formData.discountPrice) }),
-            ...(formData.color.length > 0 && { color: formData.color }),
-            ...(formData.sizes.length > 0 && { sizes: formData.sizes }),
-            ...(formData.review && { review: parseFloat(formData.review) }),
-            ...(formData.rating && { rating: parseFloat(formData.rating) })
-        };
+        setMessage({ type: "", text: "" });
 
         try {
-            // Replace with your actual API endpoint
-            const response = await fetch('http://localhost:5000/api/items', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(submitData)
+            const formDataToSend = new FormData();
+
+
+            formDataToSend.append("name", formData.name);
+            formDataToSend.append("category", formData.category);
+            formDataToSend.append("price", formData.price);
+            formDataToSend.append("description", formData.description);
+            if (formData.discount) formDataToSend.append("discount", formData.discount);
+            if (formData.review) formDataToSend.append("review", formData.review);
+            if (formData.rating) formDataToSend.append("rating", formData.rating);
+
+
+            formData.color.forEach((c) => formDataToSend.append("color", c));
+            formData.sizes.forEach((s) => formDataToSend.append("sizes", s));
+
+
+            formData.image.forEach((file) => {
+                formDataToSend.append("images", file);
             });
 
+            const response = await fetch(
+                "http://localhost:3001/api/auth/Insert",
+                {
+                    method: "POST",
+                    body: formDataToSend,
+                }
+            );
+
             if (response.ok) {
-                setMessage({ type: 'success', text: 'Item added successfully!' });
-                // Reset form
+                const result = await response.json();
+                setMessage({
+                    type: "success",
+                    text: "Item added successfully!",
+                });
+
                 setFormData({
-                    name: '',
-                    category: '',
-                    price: '',
-                    description: '',
-                    discount: '',
-                    discountPrice: '',
+                    name: "",
+                    category: "",
+                    price: "",
+                    description: "",
+                    discount: "",
                     color: [],
                     sizes: [],
-                    review: '',
-                    rating: '',
-                    image: []
+                    review: "",
+                    rating: "",
+                    image: [],
                 });
             } else {
                 const error = await response.json();
-                setMessage({ type: 'error', text: error.message || 'Failed to add item' });
+                setMessage({
+                    type: "error",
+                    text: error.message || "Failed to add item",
+                });
             }
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Network error. Please try again.' });
+        } catch (err) {
+            console.error("Error:", err);
+            setMessage({
+                type: "error",
+                text: "Network error. Please try again.",
+            });
         } finally {
             setLoading(false);
         }
@@ -134,20 +156,30 @@ export default function AddItemForm() {
     return (
         <div>
             <AdminNavBar />
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
+            <ItemNav />
+            <div className="min-h-screen py-12 px-4">
                 <div className="max-w-3xl mx-auto">
                     <div className="bg-white rounded-2xl shadow-xl p-8">
-                        <h1 className="text-3xl font-bold text-slate-800 mb-2">Add New Item</h1>
-                        <p className="text-slate-600 mb-8">Fill in the details to add a new product to inventory</p>
+                        <h1 className="text-3xl font-bold text-slate-800 mb-2">
+                            Add New Item
+                        </h1>
+                        <p className="text-slate-600 mb-8">
+                            Fill in the details to add a new product to inventory
+                        </p>
 
-                        {message.text && (
-                            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+                        {/* {message.text && (
+                            <div
+                                className={`mb-6 p-4 rounded-lg ${message.type === "success"
+                                    ? "bg-green-50 text-green-800 border border-green-200"
+                                    : "bg-red-50 text-red-800 border border-red-200"
+                                    }`}
+                            >
                                 {message.text}
                             </div>
-                        )}
+                        )} */}
 
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Name */}
+
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Product Name *
@@ -163,7 +195,7 @@ export default function AddItemForm() {
                                 />
                             </div>
 
-                            {/* Category */}
+
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Category *
@@ -176,13 +208,15 @@ export default function AddItemForm() {
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
                                     <option value="">Select a category</option>
-                                    {categories.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
 
-                            {/* Price & Discount */}
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -217,24 +251,7 @@ export default function AddItemForm() {
                                 </div>
                             </div>
 
-                            {/* Discount Price */}
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Discount Price
-                                </label>
-                                <input
-                                    type="number"
-                                    name="discountPrice"
-                                    value={formData.discountPrice}
-                                    onChange={handleChange}
-                                    min="0"
-                                    step="0.01"
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="0.00"
-                                />
-                            </div>
 
-                            {/* Description */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Description *
@@ -250,7 +267,7 @@ export default function AddItemForm() {
                                 />
                             </div>
 
-                            {/* Colors */}
+
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Colors
@@ -260,7 +277,9 @@ export default function AddItemForm() {
                                         type="text"
                                         value={colorInput}
                                         onChange={(e) => setColorInput(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addColor())}
+                                        onKeyPress={(e) =>
+                                            e.key === "Enter" && (e.preventDefault(), addColor())
+                                        }
                                         className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter color"
                                     />
@@ -274,9 +293,16 @@ export default function AddItemForm() {
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {formData.color.map((color, index) => (
-                                        <span key={index} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                        <span
+                                            key={index}
+                                            className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                                        >
                                             {color}
-                                            <button type="button" onClick={() => removeColor(index)} className="hover:text-blue-600">
+                                            <button
+                                                type="button"
+                                                onClick={() => removeColor(index)}
+                                                className="hover:text-blue-600"
+                                            >
                                                 <X size={14} />
                                             </button>
                                         </span>
@@ -284,20 +310,20 @@ export default function AddItemForm() {
                                 </div>
                             </div>
 
-                            {/* Sizes */}
+
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
                                     Sizes
                                 </label>
                                 <div className="flex gap-2">
-                                    {sizeOptions.map(size => (
+                                    {sizeOptions.map((size) => (
                                         <button
                                             key={size}
                                             type="button"
                                             onClick={() => handleSizeToggle(size)}
                                             className={`px-4 py-2 rounded-lg border-2 transition ${formData.sizes.includes(size)
-                                                ? 'bg-blue-600 border-blue-600 text-white'
-                                                : 'border-slate-300 text-slate-700 hover:border-blue-400'
+                                                ? "bg-blue-600 border-blue-600 text-white"
+                                                : "border-slate-300 text-slate-700 hover:border-blue-400"
                                                 }`}
                                         >
                                             {size}
@@ -306,41 +332,43 @@ export default function AddItemForm() {
                                 </div>
                             </div>
 
-                            {/* Images */}
+
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Image URLs *
+                                    Upload Images *
                                 </label>
-                                <div className="flex gap-2 mb-2">
-                                    <input
-                                        type="url"
-                                        value={imageInput}
-                                        onChange={(e) => setImageInput(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
-                                        className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter image URL"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={addImage}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                                    >
-                                        <Upload size={20} />
-                                    </button>
-                                </div>
-                                <div className="space-y-2">
-                                    {formData.image.map((img, index) => (
-                                        <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded-lg">
-                                            <span className="flex-1 text-sm text-slate-600 truncate">{img}</span>
-                                            <button type="button" onClick={() => removeImage(index)} className="text-red-600 hover:text-red-700">
-                                                <X size={18} />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleFileChange}
+                                    className="mb-4"
+                                />
+
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    {formData.image.map((file, index) => (
+                                        <div
+                                            key={index}
+                                            className="relative bg-slate-50 rounded-lg overflow-hidden shadow"
+                                        >
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt="preview"
+                                                className="w-full h-32 object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeImage(index)}
+                                                className="absolute top-2 right-2 bg-white rounded-full p-1 text-red-600 shadow hover:bg-red-50"
+                                            >
+                                                <X size={16} />
                                             </button>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Review & Rating */}
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -374,13 +402,13 @@ export default function AddItemForm() {
                                 </div>
                             </div>
 
-                            {/* Submit Button */}
+
                             <button
                                 type="submit"
                                 disabled={loading}
                                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {loading ? 'Adding Item...' : 'Add Item'}
+                                {loading ? "Adding Item..." : "Add Item"}
                             </button>
                         </form>
                     </div>
