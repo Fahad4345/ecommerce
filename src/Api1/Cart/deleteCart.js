@@ -3,7 +3,7 @@ import { showToast } from "../../Components/toast";
 export const deleteCartItem = async (itemId) => {
   try {
     const token = localStorage.getItem("accessToken");
-    const res = await fetch(`${API_BASE_URL}/${`api/auth/DeleteCart`}`, {
+    const res = await fetch(`${API_BASE_URL}/${`cart/DeleteCart`}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

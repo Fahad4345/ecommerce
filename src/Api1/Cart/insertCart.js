@@ -6,7 +6,7 @@ export async function InsertCart(itemId, size, color, quantity) {
   const token = localStorage.getItem("accessToken");
   if (token) {
     try {
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/InsertCart`}`, {
+      const res = await fetch(`${API_BASE_URL}/${`cart/InsertCart`}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

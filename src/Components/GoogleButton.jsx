@@ -5,9 +5,10 @@ import { MyContext } from "../context/MyContext";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "./../Api1/apiUrl";
 import { showToast } from "./../Components/toast";
-
+import { useAuth } from "../Api1/useAuth";
 
 export default function GoogleSignInButton() {
+    const { handleResponse } = useAuth();
     const { user, setuser } = useContext(MyContext);
     const router = useRouter();
     useEffect(() => {
@@ -25,23 +26,7 @@ export default function GoogleSignInButton() {
         }
     }, []);
 
-    const handleResponse = async (response) => {
-        const res = await fetch(`${API_BASE_URL}/${`api/auth/GoogleLogin`}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: response.credential }),
-        });
 
-        const data = await res.json();
-        localStorage.setItem("accessToken", data.Access_Token)
-        localStorage.setItem("user", JSON.stringify(data.user))
-        console.log("Data", user);
-        setuser(data.user);
-        showToast("Login sucessfull!", "success");
-
-        router.push("/");
-
-    };
 
     return <div id="google-btn" className=" w-full" ></div>;
 }

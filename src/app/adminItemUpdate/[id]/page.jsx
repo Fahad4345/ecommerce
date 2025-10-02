@@ -32,7 +32,7 @@ export default function ProductDetail() {
     const allSizes = ["Sm", "Md", "Lg", "Xl"];
     const updateItem = async (id, updatedData) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/auth/Update/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/item/Update/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

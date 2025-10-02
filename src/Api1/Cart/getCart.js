@@ -3,7 +3,7 @@ export async function GetCart() {
   try {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`${API_BASE_URL}/${`api/auth/GetCart`}`, {
+    const res = await fetch(`${API_BASE_URL}/${`cart/GetCart`}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

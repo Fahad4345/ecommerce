@@ -115,7 +115,7 @@ export default function ExploreProduct({ products }) {
 
                     return (
                         <Link key={product._id} href={`/productDetail/${product._id}`}>
-                            <div className="flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px]">
+                            <div className="flex flex-col  max-w-[270px] min-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-[16px]">
                                 <div className='group relative bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] h-full flex justify-center items-center overflow-hidden'>
                                     <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
                                         {product.discount}%
@@ -151,7 +151,7 @@ export default function ExploreProduct({ products }) {
                                     </div>
 
                                     <div>
-                                        <Image src={product.image[0]} width={172} height={129} alt={product.name} />
+                                        <Image src={product.image[0]} width={270} height={250} alt={product.name} className='max-h-[270px] max-w-[250px] min-h-[250px] min-w-[270px] w-full h-full object-cover' />
                                     </div>
 
                                     <button

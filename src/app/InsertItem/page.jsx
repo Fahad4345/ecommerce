@@ -3,8 +3,12 @@ import { useState } from "react";
 import { Plus, X } from "lucide-react";
 import AdminNavBar from "./../../Components/AdminNavBar";
 import ItemNav from './../../Components/itemNav'
+import { API_BASE_URL } from "../../Api1/apiUrl";
+import { showToast } from "../../Components/toast";
+import { useRouter } from "next/navigation";
 
 export default function AddItemForm() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         name: "",
         category: "",
@@ -109,7 +113,7 @@ export default function AddItemForm() {
             });
 
             const response = await fetch(
-                "http://localhost:3001/api/auth/Insert",
+                `${API_BASE_URL}/item/Insert`,
                 {
                     method: "POST",
                     body: formDataToSend,
@@ -122,7 +126,8 @@ export default function AddItemForm() {
                     type: "success",
                     text: "Item added successfully!",
                 });
-
+                showToast("Item added successfully!", "success");
+                router.push("/viewProducts");
                 setFormData({
                     name: "",
                     category: "",

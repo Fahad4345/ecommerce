@@ -13,7 +13,7 @@ export default function useCustomerOrders(userId) {
     const fetchOrders = async () => {
       try {
         const res = await fetch(
-          `${API_BASE_URL}/${`api/auth/GetOrder/${userId}`}`,
+          `${API_BASE_URL}/${`order/GetOrder/${userId}`}`,
           {
             method: "GET",
             headers: {

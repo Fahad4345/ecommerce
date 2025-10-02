@@ -42,7 +42,7 @@ export function useAuth() {
   };
   const signup = async (FormData) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/Signup`}`, {
+      const res = await fetch(`${API_BASE_URL}/${`auth/Signup`}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export function useAuth() {
   };
   const login = async (email, password) => {
     try {
-      const res = await fetch(` ${API_BASE_URL}/${`api/auth/Login`}`, {
+      const res = await fetch(` ${API_BASE_URL}/${`auth/Login`}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export function useAuth() {
   const getDashboard = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/Dashboard`}`, {
+      const res = await fetch(`${API_BASE_URL}/${`auth/Dashboard`}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ export function useAuth() {
   ) => {
     try {
       const token = localStorage.getItem("accessToken");
-      const res = await fetch(` ${API_BASE_URL}/${`api/auth/updateProfile`}`, {
+      const res = await fetch(` ${API_BASE_URL}/${`auth/updateProfile`}`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ export function useAuth() {
 
   const Logout = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/Logout`, {
+      const res = await fetch(`${API_BASE_URL}/auth/Logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -177,6 +177,22 @@ export function useAuth() {
       throw err;
     }
   };
+  const handleResponse = async (response) => {
+    const res = await fetch(`${API_BASE_URL}/${`auth/GoogleLogin`}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: response.credential }),
+    });
+
+    const data = await res.json();
+    localStorage.setItem("accessToken", data.Access_Token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    console.log("Data", user);
+    setuser(data.user);
+    showToast("Login sucessfull!", "success");
+
+    router.push("/");
+  };
   return {
     user,
     error,
@@ -185,5 +201,6 @@ export function useAuth() {
     getDashboard,
     updateProfile,
     Logout,
+    handleResponse,
   };
 }

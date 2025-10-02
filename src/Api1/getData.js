@@ -2,10 +2,10 @@ import { API_BASE_URL } from "./apiUrl";
 export async function GetDataByCategory(Category) {
   try {
     const url = Category
-      ? ` ${API_BASE_URL}/${`api/auth/GetItem?Category=${encodeURIComponent(
+      ? ` ${API_BASE_URL}/${`item/GetItem?Category=${encodeURIComponent(
           Category
         )}`}`
-      : ` ${API_BASE_URL}/${`api/auth/GetItem`}`;
+      : ` ${API_BASE_URL}/${`item/GetItem`}`;
     const res = await fetch(url, {
       method: "GET",
     });

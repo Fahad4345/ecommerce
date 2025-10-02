@@ -138,9 +138,9 @@ export default function SaleSection({
 
                         <Image
                             src={product.image[0]}
-                            width={200}
-                            height={200}
-                            className="max-h-[200px] max-w-[200px] min-h-[200px] min-w-[200px] w-full h-full object-contain"
+                            width={270}
+                            height={250}
+                            className="max-h-[270px] max-w-[250px] min-h-[250px] min-w-[270px] w-full h-full object-cover"
                             alt={product.name}
                         />
 

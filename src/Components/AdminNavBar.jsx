@@ -9,7 +9,7 @@ export default function AdminNavBar() {
     const nav = [
         { name: "Items", href: "/viewProducts" },
         { name: "View Orders", href: "/adminOrder" },
-        { name: "View Users", href: "/Users" },
+        { name: "View Users", href: "/adminUser" },
     ]
     return (
 

@@ -113,7 +113,7 @@ export default function BestProduct({ products }) {
 
                     return (
                         <Link key={id} href={`/productDetail/${product._id}`}>
-                            <div className="flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-4">
+                            <div className="flex flex-col min-w-[270px] max-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-4">
                                 <div className="group relative bg-[#F5F5F5] px-3 py-3 min-h-[250px] flex justify-center items-center overflow-hidden">
                                     {product.discount && (
                                         <span className="absolute top-3 left-3 font-[Poppins] font-[400] text-[12px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
@@ -151,9 +151,10 @@ export default function BestProduct({ products }) {
 
                                     <Image
                                         src={product.image[0]}
-                                        width={172}
-                                        height={129}
+                                        width={270}
+                                        height={250}
                                         alt={product.name}
+                                        className='max-h-[270px] max-w-[250px] min-h-[250px] min-w-[270px] w-full h-full object-cover'
                                     />
 
                                     <button

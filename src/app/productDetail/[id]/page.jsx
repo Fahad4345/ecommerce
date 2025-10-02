@@ -173,14 +173,14 @@ export default function ProductDetail() {
                                         onClick={() => setMainImage(img)}
                                         className={`w-[170px] h-[138px] flex justify-center items-center rounded-[4px] bg-[#F5F5F5] cursor-pointer border-2 transition-all ${isSelected ? 'border-black scale-105' : 'border-transparent'}`}
                                     >
-                                        <Image src={img} width={121} height={114} alt="" />
+                                        <Image src={img} width={121} height={114} alt="" className='max-h-[138px] max-w-[170px] min-h-[138px] min-w-[170px] w-full h-full object-cover' />
                                     </div>
                                 )
                             })}
                         </div>
 
                         <div className='w-[500px] h-[600px] flex justify-center items-center rounded-[4px] bg-[#F5F5F5]'>
-                            <Image src={mainImage} width={446} height={315} alt="" />
+                            <Image src={mainImage} width={500} height={600} alt="" className='max-h-[600px] max-w-[500px] min-h-[600px] min-w-[500px] w-full h-full object-cover' />
                         </div>
                     </div>
 
@@ -296,7 +296,7 @@ export default function ProductDetail() {
                             const inCart = cartIds?.includes(product._id);
                             return (
                                 <Link key={product._id} href={`/productDetail/${product._id}`}>
-                                    <div className="flex flex-col min-w-[270px] w-full min-h-[350px] h-full gap-[16px]">
+                                    <div className="flex flex-col min-w-[270px]  max-w-[270px] w-full min-h-[350px]  max-h-[350px] h-full gap-[16px]">
                                         <div className='relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] h-full flex justify-center items-center'>
                                             {product.discount && (
                                                 <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
@@ -325,7 +325,7 @@ export default function ProductDetail() {
                                                     width={172}
                                                     height={129}
                                                     alt=""
-                                                    className="cursor-pointer"
+                                                    className="cursor-pointer max-h-[270px] max-w-[250px] min-h-[250px] min-w-[270px] w-full h-full object-cover"
                                                 />
                                             </div>
 

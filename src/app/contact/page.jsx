@@ -64,7 +64,7 @@ export default function Contact() {
                 <div className=' flex flex-col gap-[32px] max-w-[800px] py-[40px] px-[31px] shadow-[0px_1px_13px_0px_#0000000D]'>
                     <div className=' gap-[16px] flex  '>
                         <input
-                            value={name}
+                            value={name ?? ""}
                             onChange={(e) => setName(e.target.value)}
                             type="text"
                             placeholder="Your Name*"

@@ -8,6 +8,7 @@ import { MyContext } from '../../context/MyContext';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './../../Components/GoogleButton';
 import { showToast } from './../../Components/toast';
+import { API_BASE_URL } from '../../Api1/apiUrl';
 
 export default function Login() {
 
@@ -33,7 +34,7 @@ export default function Login() {
             setError("Please enter your email");
         } else {
             try {
-                const res = fetch(`http://localhost:3001/api/auth/forgetPassword`, {
+                const res = fetch(`${API_BASE_URL}/email/forgetPassword`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

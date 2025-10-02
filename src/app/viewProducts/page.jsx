@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GetDataByCategory } from "./../../Api1/getData";
 import Loader from "./../../Components/loader";
+import { API_BASE_URL } from "../../Api1/apiUrl";
 
 export default function Page() {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Page() {
     const categories = ["All", "Phones", "Computers", "SmartWatch", "Gaming", "Camera"];
     const HandleDelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3001/api/auth/Delete`, {
+            const res = await fetch(`${API_BASE_URL}/item/Delete`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id }),
@@ -76,7 +77,7 @@ export default function Page() {
                                 src={imageUrl}
                                 width={270}
                                 height={350}
-                                className="max-h-[270px]  min-h-[350px] min-w-[270px] max-w-[270px] w-full h-full object-contain"
+                                className="max-h-[270px]  min-h-[350px] min-w-[270px] max-w-[270px] w-full h-full object-cover"
                                 alt={product.name}
                             />
                             <div className="absolute top-[12px] right-[12px] flex flex-col gap-2 items-end justify-end">
@@ -96,7 +97,7 @@ export default function Page() {
 
                         <div className="flex flex-col gap-[8px]">
                             <h3 className="font-[Poppins] font-[500] text-[16px] leading-[24px]">
-                                {product.name}
+                                {product.name.slice(0, 50)}{product.name.length > 25 ? "..." : ""}
                             </h3>
                             <div className="flex items-center gap-2">
                                 <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">
@@ -126,51 +127,54 @@ export default function Page() {
         <div className="flex flex-col justify-center items-center">
             <AdminNavBar />
 
-            <div className="w-full   flex flex-row  justify-end items-center pb-[20px] pt-[20px] bg-white">
-                <Link href="./InsertItem"><button className="bg-[#DB4444] h-[50px] text-white font-[Poppins]  items-end text-[14px] px-[50px] py-[16px] mr-[20px] rounded-[4px]">Create Item +</button></Link></div>
-
-
-            <div className="relative w-[500px] justify-center items-center mx-[135px] bg-black/10 rounded-[4px] p-[10px]">
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center w-full justify-between text-black bg-transparent font-[Poppins] text-[14px] cursor-pointer "
-                >
-                    <p>{category}</p>
-                    <svg
-                        width="20"
-                        height="15"
-                        viewBox="0 0 12 8"
-                        fill="none"
-                        className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            <div className=" max-w-[1250px] w-full   flex flex-row  justify- justify-between  items-center pb-[20px] pt-[20px] bg-white">
+                <div className="relative w-[500px] justify-center items-center  bg-black/10 rounded-[4px] p-[10px]">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="flex items-center w-full justify-between text-black bg-transparent font-[Poppins] text-[14px] cursor-pointer "
                     >
-                        <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
+                        <p>{category}</p>
+                        <svg
+                            width="20"
+                            height="15"
+                            viewBox="0 0 12 8"
+                            fill="none"
+                            className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                        >
+                            <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
 
-                {isOpen && (
-                    <div className="absolute top-full right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 z-50 min-w-[120px] overflow-hidden">
-                        {categories.map((cat, index) => (
-                            <button
-                                key={cat}
-                                onClick={() => {
-                                    setCategory(cat);
-                                    setIsOpen(false);
-                                }}
-                                className={`w-full text-left px-4 py-3 font-[Poppins] text-[14px] transition-colors ${category === cat
-                                    ? "bg-[#DB4444] text-white"
-                                    : "text-black hover:bg-gray-100"
-                                    }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                )}
-            </div>
+                    {isOpen && (
+                        <div className="absolute top-full right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 z-50 min-w-[120px] overflow-hidden">
+                            {categories.map((cat, index) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => {
+                                        setCategory(cat);
+                                        setIsOpen(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-3 font-[Poppins] text-[14px] transition-colors ${category === cat
+                                        ? "bg-[#DB4444] text-white"
+                                        : "text-black hover:bg-gray-100"
+                                        }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+
+                <Link href="./InsertItem"><button className="bg-[#DB4444] h-[50px] text-white font-[Poppins]  items-end text-[14px] px-[50px] py-[16px]  rounded-[4px]">Create Item +</button></Link></div>
 
 
 
-            <div className="flex flex-wrap justify-center gap-[40px] mx-[135px] my-[40px] items-center">
+
+
+
+            <div className="flex flex-wrap max-w-[1250px]  justify-center w-full gap-[40px] mx-[135px] my-[40px] items-center">
                 {products.length > 0 ? (
                     products.map((p) => <ProductCard key={p._id} product={p} />)
                 ) : (

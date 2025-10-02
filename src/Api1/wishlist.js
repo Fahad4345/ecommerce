@@ -14,7 +14,7 @@ export function useWishlist() {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
 
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/InsertWishlist`}`, {
+      const res = await fetch(`${API_BASE_URL}/${`wishlist/InsertWishlist`}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,8 +45,9 @@ export function useWishlist() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
+      console.log("Token in wishlist", token);
 
-      const res = await fetch(`${API_BASE_URL}/${`api/auth/GetWishlist`}`, {
+      const res = await fetch(`${API_BASE_URL}/${`wishlist/GetWishlist`}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export function useWishlist() {
       if (!token) return null;
 
       const res = await fetch(
-        `${API_BASE_URL}/${`api/auth/RemoveItemWishlist`}`,
+        `${API_BASE_URL}/${`wishlist/RemoveItemWishlist`}`,
         {
           method: "POST",
           headers: {

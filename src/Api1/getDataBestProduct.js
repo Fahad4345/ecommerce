@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "./apiUrl";
 export async function GetDataByCategory(Category) {
   try {
-    const url = ` ${API_BASE_URL}/${`api/auth/GetItem?Category=${encodeURIComponent(
+    const url = ` ${API_BASE_URL}/${`item/GetItem?Category=${encodeURIComponent(
       Category
     )}`}`;
 
