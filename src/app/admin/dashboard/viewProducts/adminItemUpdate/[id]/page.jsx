@@ -11,6 +11,7 @@ import { showToast } from '../../../../../../Components/toast';
 import AdminNavBar from '../../../../../../Components/AdminNavBar';
 import Loader from '../../../../../../Components/loader';
 import Guardwrapper from '../../../../../../Components/Guardwrapper';
+import { API_BASE_URL } from '../../../../../../Api1/apiUrl';
 
 export default function ProductDetail() {
 
@@ -37,6 +38,8 @@ export default function ProductDetail() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+
                 },
                 body: JSON.stringify(updatedData),
             });

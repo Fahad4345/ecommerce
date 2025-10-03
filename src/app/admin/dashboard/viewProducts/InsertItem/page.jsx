@@ -112,11 +112,13 @@ export default function AddItemForm() {
                 formDataToSend.append("images", file);
             });
 
-            const response = await fetch(
-                `${API_BASE_URL}/item/Insert`,
+            const response = await fetch(`${API_BASE_URL}/item/Insert`,
                 {
                     method: "POST",
                     body: formDataToSend,
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
                 }
             );
 
