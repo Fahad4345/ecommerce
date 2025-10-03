@@ -52,6 +52,13 @@ export default function ProfileMenu({ closeMenu }) {
         <XCircle size={24} />
         <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">My Cancellations</span>
       </div>
+      {user.role == "admin" && (<Link href="/admin/dashboard"><div className={`flex items-center gap-[16px] cursor-pointer ${hoverColor}`}>
+        <XCircle size={24} />
+        <span className="font-[Poppins] font-[400] text-[14px] leading-[21px]">Admin Dashboard</span>
+      </div></Link>
+      )
+
+      }
 
       <div className={`flex items-center gap-[16px] cursor-pointer ${hoverColor}`}>
         <Star size={24} />

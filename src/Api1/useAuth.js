@@ -201,11 +201,35 @@ export function useAuth() {
     }
     showToast("Login sucessfull!", "success");
   };
+
+  const DeleteUser = async (id) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/DeleteUser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to delete user");
+      }
+
+      return true;
+    } catch (err) {
+      console.error("DeleteUser API Error:", err);
+      return false;
+    }
+  };
   return {
     user,
     error,
     signup,
     login,
+    DeleteUser,
     getDashboard,
     updateProfile,
     Logout,

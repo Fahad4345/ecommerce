@@ -180,14 +180,14 @@ export default function ProductDetail() {
                                         onClick={() => setMainImage(img)}
                                         className={`w-[170px] overflow-hidden h-[138px] flex justify-center items-center rounded-[4px] bg-[#F5F5F5] cursor-pointer border-2 transition-all ${isSelected ? 'border-black scale-105' : 'border-transparent'}`}
                                     >
-                                        <Image src={img} width={170} height={137} alt="" />
+                                        <Image src={img} width={170} height={137} alt="" className='w-[170px] h-[137px] object-cover' />
                                     </div>
                                 )
                             })}
                         </div>
 
                         <div className='w-[500px] overflow-hidden h-[600px] flex justify-center items-center rounded-[4px] bg-[#F5F5F5]'>
-                            {mainImage && <Image src={mainImage} width={500} height={600} alt="" />}
+                            {mainImage && <Image src={mainImage} width={500} height={600} alt="" className='w-[500px] h-[600px] object-cover' />}
                         </div>
                     </div>
 

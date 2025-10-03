@@ -136,7 +136,7 @@ export default function Page() {
                 <AdminNavBar />
 
                 {/* Category & Create Button */}
-                <div className=" max-w-[1250px] w-full flex flex-row justify-between items-center pb-[20px] pt-[20px] bg-white">
+                <div className=" max-w-[1200px] w-full flex flex-row justify-between items-center pb-[20px] pt-[20px] bg-white">
                     <div className="relative w-[500px] justify-center items-center bg-black/10 rounded-[4px] p-[10px]">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
@@ -182,7 +182,7 @@ export default function Page() {
                     </div>
 
                     <Link href="/admin/dashboard/viewProducts/InsertItem">
-                        <button className="bg-[#DB4444] h-[50px] text-white font-[Poppins] text-[14px] px-[50px] py-[16px] rounded-[4px]">
+                        <button className="bg-[#DB4444] h-[50px] cursor-pointer text-white font-[Poppins] text-[14px] px-[50px] py-[16px] rounded-[4px]">
                             Create Item +
                         </button>
                     </Link>
@@ -203,7 +203,7 @@ export default function Page() {
                 {visibleCount < products.length && (
                     <button
                         onClick={() => setVisibleCount((prev) => prev + 8)}
-                        className="bg-[#DB4444] text-white font-[Poppins] px-6 py-3 rounded-md mb-10"
+                        className="bg-[#DB4444] cursor-pointer text-white font-[Poppins] px-6 py-3 rounded-md mb-10"
                     >
                         Load More
                     </button>

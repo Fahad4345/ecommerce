@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Search, ShoppingCart, Heart, Mail, MapPin } from 'lucide-react';
+import { Search, ShoppingCart, Heart, Mail, MapPin, Trash } from 'lucide-react';
 import AdminNavBar from '../../../../Components/AdminNavBar';
 import AdminAllUsers from './../../../../Api1/getAllUsers';
 import Guardwrapper from '../../../../Components/Guardwrapper';
+import { showToast } from './../../../../Components/toast';
+import { useAuth } from './../../../../Api1/useAuth';
 
 export default function AdminUsersDashboard() {
-
+    const { DeleteUser } = useAuth();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -19,7 +21,18 @@ export default function AdminUsersDashboard() {
 
         fetchData();
     }, []);
+    const handleDelete = async (id) => {
+        const res = await DeleteUser(id)
+        if (res) {
+            setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id))
+            users.filter((user) => user._id === users._id)
+            showToast("User Deleted", "sucess");
 
+        } else {
+            showToast("Failed to delete user", "error");
+        }
+
+    }
     const [users, setUsers] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -61,6 +74,7 @@ export default function AdminUsersDashboard() {
                                     <th className="px-6 py-4 text-left text-sm font-semibold font-[Poppins] text-gray-700">Address</th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Cart</th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Wishlist</th>
+                                    <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Delete</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
@@ -97,6 +111,10 @@ export default function AdminUsersDashboard() {
                                                 <span className="font-semibold text-gray-900 font-[Poppins]">
                                                     {user.wishlist.length}
                                                 </span>
+                                            </div>
+                                        </td><td className="px-6 py-4">
+                                            <div onClick={() => handleDelete(user._id)} className="flex items-center justify-center">
+                                                <Trash className="w-4 h-4 mr-1 text-red-500" />
                                             </div>
                                         </td>
                                     </tr>

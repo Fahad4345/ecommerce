@@ -129,7 +129,7 @@ export default function AddItemForm() {
                     text: "Item added successfully!",
                 });
                 showToast("Item added successfully!", "success");
-                router.push("/viewProducts");
+                router.push("/admin/dashboard/viewProducts");
                 setFormData({
                     name: "",
                     category: "",
@@ -213,11 +213,11 @@ export default function AddItemForm() {
                                         value={formData.category}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2  cursor-pointer border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         <option value="">Select a category</option>
                                         {categories.map((cat) => (
-                                            <option key={cat} value={cat}>
+                                            <option className="curs " key={cat} value={cat}>
                                                 {cat}
                                             </option>
                                         ))}
@@ -294,7 +294,7 @@ export default function AddItemForm() {
                                         <button
                                             type="button"
                                             onClick={addColor}
-                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                            className="px-4 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                                         >
                                             <Plus size={20} />
                                         </button>
@@ -309,7 +309,7 @@ export default function AddItemForm() {
                                                 <button
                                                     type="button"
                                                     onClick={() => removeColor(index)}
-                                                    className="hover:text-blue-600"
+                                                    className="hover:text-blue-600 cursor-pointer"
                                                 >
                                                     <X size={14} />
                                                 </button>
@@ -329,7 +329,7 @@ export default function AddItemForm() {
                                                 key={size}
                                                 type="button"
                                                 onClick={() => handleSizeToggle(size)}
-                                                className={`px-4 py-2 rounded-lg border-2 transition ${formData.sizes.includes(size)
+                                                className={`px-4 py-2 rounded-lg  cursor-pointer border-2 transition ${formData.sizes.includes(size)
                                                     ? "bg-blue-600 border-blue-600 text-white"
                                                     : "border-slate-300 text-slate-700 hover:border-blue-400"
                                                     }`}
@@ -377,44 +377,11 @@ export default function AddItemForm() {
                                 </div>
 
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                                            Review Count
-                                        </label>
-                                        <input
-                                            type="number"
-                                            name="review"
-                                            value={formData.review}
-                                            onChange={handleChange}
-                                            min="0"
-                                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                                            Rating
-                                        </label>
-                                        <input
-                                            type="number"
-                                            name="rating"
-                                            value={formData.rating}
-                                            onChange={handleChange}
-                                            min="0"
-                                            max="5"
-                                            step="0.1"
-                                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="0.0"
-                                        />
-                                    </div>
-                                </div>
-
 
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full bg-gradient-to-r cursor-pointer from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? "Adding Item..." : "Add Item"}
                                 </button>
