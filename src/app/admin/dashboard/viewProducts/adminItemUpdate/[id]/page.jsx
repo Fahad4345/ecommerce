@@ -1,15 +1,16 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation';
-import getItem from "../../../Api1/getItem"
+import getItem from "../../../../../../Api1/getItem"
 
 import { useParams } from "next/navigation";
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
-import { showToast } from './../../../Components/toast';
-import AdminNavBar from './../../../Components/AdminNavBar';
-import Loader from '../../../Components/loader';
+import { showToast } from '../../../../../../Components/toast';
+import AdminNavBar from '../../../../../../Components/AdminNavBar';
+import Loader from '../../../../../../Components/loader';
+import Guardwrapper from '../../../../../../Components/Guardwrapper';
 
 export default function ProductDetail() {
 
@@ -160,7 +161,7 @@ export default function ProductDetail() {
     }
 
     return (
-        <div className='flex bg-white justify-center items-center flex-col h-full '>
+        <Guardwrapper><div className='flex bg-white justify-center items-center flex-col h-full '>
             <AdminNavBar />
 
             <div className='mx-[135px] mt-[80px] max-w-[1170px] w-full mb-[80px]'>
@@ -324,6 +325,7 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></Guardwrapper>
+
     )
 }

@@ -88,7 +88,12 @@ export function useAuth() {
 
       if (!res.ok) throw new Error(data.error || "Login failed");
       setuser(data.user);
-      router.push("/");
+      console.log("User after login", data.user);
+      if (data.user?.role === "admin") {
+        router.push("admin/dashboard");
+      } else {
+        router.push("/");
+      }
       showToast("Login Sucessfully!", "success");
       return data.user;
     } catch (err) {
@@ -189,9 +194,12 @@ export function useAuth() {
     localStorage.setItem("user", JSON.stringify(data.user));
     console.log("Data", user);
     setuser(data.user);
+    if (data.user?.role === "admin") {
+      router.push("admin/dashboard");
+    } else {
+      router.push("/");
+    }
     showToast("Login sucessfull!", "success");
-
-    router.push("/");
   };
   return {
     user,

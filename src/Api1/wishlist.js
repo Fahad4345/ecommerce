@@ -58,7 +58,6 @@ export function useWishlist() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch wishlist");
 
-      console.log("data from get", data);
       const ids = data.wishlist.map((item) => item._id);
       localStorage.setItem("Wishlist", JSON.stringify(ids));
       setWishlistItems(data.wishlist);

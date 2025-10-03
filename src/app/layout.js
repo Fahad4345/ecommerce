@@ -30,27 +30,26 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {" "}
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"
         />
         <ReduxProvider>
           <MyProvider>
-            {" "}
             <Header />
-            {children}
+
+            <main className="flex-grow">{children}</main>
+
             <Toaster position="top-center" reverseOrder={false} />
             <Footer />
           </MyProvider>
-        </ReduxProvider>{" "}
+        </ReduxProvider>
       </body>
     </html>
   );

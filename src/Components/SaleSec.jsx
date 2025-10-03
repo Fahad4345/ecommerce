@@ -100,7 +100,7 @@ export default function SaleSection({
     function ProductCard({ product }) {
         const wishlisted = wishlistIds?.includes(product._id);
         const inCart = cartIds?.includes(product._id);
-        console.log("wishlist ID", wishlistIds, "productId", product._id);
+
         return (
             <Link key={product._id} href={`/productDetail/${product._id}`}>
                 <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-[16px]`}>

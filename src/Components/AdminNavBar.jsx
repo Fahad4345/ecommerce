@@ -7,9 +7,9 @@ import { usePathname } from 'next/navigation'
 export default function AdminNavBar() {
     const pathName = usePathname();
     const nav = [
-        { name: "Items", href: "/viewProducts" },
-        { name: "View Orders", href: "/adminOrder" },
-        { name: "View Users", href: "/adminUser" },
+        { name: "Items", href: "/admin/dashboard/viewProducts" },
+        { name: "View Orders", href: "/admin/dashboard/adminOrder" },
+        { name: "View Users", href: "/admin/dashboard/adminUser" },
     ]
     return (
 

@@ -2,17 +2,16 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Added forget passord feature but have errors
-- Created UI for Admin View all Products and also Category Wise And also Integrated Backend
-- Added Delete Item Api and integrated it in front end
-- Added Update Item Api and Integrated it in Frontend
-- Created Insert Item Api and integrated it
+- Created View All order api for admin and integrated it in front end
+- Created UI for Admin View all User
+- Adjusted files of backend seprated al controllers and routes
+- Adjusted UI
 
 - Next:
 
 - Fetch All User Api
-- Fetch All Order
 - Integration for Admin in login Signup
+- Bugs Fixes
 
-Loom : (https://www.loom.com/share/ea34a312ddb7421894c97038efb38f2b?sid=515140df-53fc-4a73-8f2f-1e73b31ad12b)
+Loom : (https://www.loom.com/share/7f22c84fa1e2433eb1bd66c7aa54d0b0?sid=82427f37-8f33-4f88-b034-ae5431906a45)
 Preview : (https://ecommerce-three-delta-52.vercel.app)
