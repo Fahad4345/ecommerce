@@ -12,6 +12,7 @@ import { UpdateCart } from '../../Api1/Cart/updateCart';
 import { MyContext } from "../../context/MyContext";
 import { deleteCartItem } from './../../Api1/Cart/deleteCart';
 import { Package, User, CreditCard, Clock, CheckCircle, XCircle, RefreshCw, Truck, MapPin, Mail, Phone } from 'lucide-react';
+import Loader from '../../Components/loader';
 
 export default function Cart() {
     const { setcartLength, cartLength } = useContext(MyContext);
@@ -130,12 +131,7 @@ export default function Cart() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="text-center">
-                    <RefreshCw className="animate-spin mx-auto mb-4 text-blue-600" size={48} />
-                    <p className="text-slate-600">Loading orders...</p>
-                </div>
-            </div>
+            <> <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} /><Loader /></>
         );
     }
 

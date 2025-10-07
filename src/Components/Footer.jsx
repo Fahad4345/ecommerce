@@ -15,7 +15,7 @@ export default function Footer() {
     };
     const SubmitSubscribe = async () => {
         try {
-            const res = await fetch(`${API_BASE_URL}/api/auth/SendSubscribeEmail`, {
+            const res = await fetch(`${API_BASE_URL}/email/SendSubscribeEmail`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
