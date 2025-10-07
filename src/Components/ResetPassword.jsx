@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "../Components/NavBar";
 import { useRouter, useSearchParams } from "next/navigation";
 
+
 export default function ResetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();

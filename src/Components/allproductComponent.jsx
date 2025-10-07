@@ -5,7 +5,7 @@ import Navbar from "./NavBar";
 import CategorySec from "./CategorySec";
 import SaleSection from "./SaleSec";
 import { GetDataByCategory } from "../Api1/getData";
-import Loader from "./loader";
+import Loader from "../Components/loader";
 
 export default function AllProduct() {
     const [products, setProducts] = useState([]);
