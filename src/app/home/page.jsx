@@ -10,28 +10,45 @@ import FeatureSec from "../../Components/FeatureSec";
 import Navbar from "../../Components/NavBar";
 import React, { useEffect, useState } from "react";
 import Loader from "./../../Components/loader";
-
+import { GetDataByCategory } from "../../Api1/getData";
 
 export default function Home() {
     const [products, SetProducts] = useState([]);
+    const [product, SetProduct] = useState([]);
+    const [isLoading, SetisLoading] = useState(false);
     useEffect(() => {
-        if (products.length === 0) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
+
+        const fetchItems = async () => {
+
+            try {
+
+                SetisLoading(true);
+
+                const data = await GetDataByCategory();
+
+                SetProduct(data.item);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                SetProduct([]);
+            } finally {
+                SetisLoading(false);
+            }
         }
-    }, [products]);
+        fetchItems();
+    }, []);
 
-
+    if (isLoading) {
+        return <><Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} /><Loader /></>
+    }
     return (
         <div className=" bg-white h-full justify-center items-center flex flex-col overflow-hidden overflow-x-hidden">
 
             <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
-            {products.length === 0 && <Loader />}
+
 
             <BannerSec />
             <SaleSection
-                products={products}
+                products={product}
                 showTimer={true}
                 showSwiper={true}
                 slidesPerView={4}
@@ -46,7 +63,7 @@ export default function Home() {
             <div className=" border-b-[0.5px] mx-[135px] mt-[60px] border-[#000000]/30 h-[10px] w-[1170]"></div>
             <BestProduct products={products} />
             <Banner2 />
-            <ExploreProduct products={products} />
+            <ExploreProduct products={product} />
             <NewArivalSec />
             <FeatureSec />
         </div>

@@ -182,8 +182,8 @@ export default function SaleSection({
     }
 
     return (
-        <div className={` w-full max-w-[1170px] mx-[135px]  ${className} overflow-hidden w-full mt-[145px] flex flex-col gap-[40px]`}>
-            <div className="flex items-end justify-between max-w-[1170px] mx-[135px] w-full">
+        <div className={` w-full max-w-[1170px]  justify-center items-center  ${className} overflow-hidden w-full mt-[145px] flex flex-col gap-[40px]`}>
+            <div className="flex items-end justify-between max-w-[1170px]  w-full">
                 <div className="flex flex-row justify-end items-end gap-[87px]">
                     <div className="flex flex-col gap-[24px]">
                         <div className="flex items-center gap-[16px]">

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./loader";
 
 export default function Guardwrapper({ children }) {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function Guardwrapper({ children }) {
   }, [user, loading, router]);
 
   if (loading) {
-    return <div>Loading...</div>; // prevent flicker
+    return <Loader />; // prevent flicker
   }
 
   if (!user || user.role !== "admin") {

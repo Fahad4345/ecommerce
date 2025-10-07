@@ -2,16 +2,16 @@ Ecommerce:
 Integrated :
 
 - Started Backend
-- Created View All order api for admin and integrated it in front end
-- Created UI for Admin View all User
-- Adjusted files of backend seprated al controllers and routes
+- Created Fetch all user Api and integrated it
+- Created api to delete user and integrated it
+- Added admin role in login signup
+- Restricted access of user to admin portal
 - Adjusted UI
 
 - Next:
 
-- Fetch All User Api
-- Integration for Admin in login Signup
+- Admin Dashboard UI
 - Bugs Fixes
 
-Loom : (https://www.loom.com/share/7f22c84fa1e2433eb1bd66c7aa54d0b0?sid=82427f37-8f33-4f88-b034-ae5431906a45)
+Loom : (https://www.loom.com/share/17db75472e31402bb09a32a85fffcf0c?sid=20b134f4-2013-45af-8585-2fd40bed7f89)
 Preview : (https://ecommerce-three-delta-52.vercel.app)

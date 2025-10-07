@@ -715,9 +715,7 @@ export default function wishlistSec() {
                 </div>
 
                 {isLoadingProducts ? (
-                    <div className='flex justify-center items-center py-[100px]'>
-                        <p className='font-[Poppins] text-[18px]'>Loading products...</p>
-                    </div>
+                    <Loader />
                 ) : (
                     <div className='grid grid-cols-4 gap-x-[30px] gap-y-[60px]'>
                         {products.map((product) => {

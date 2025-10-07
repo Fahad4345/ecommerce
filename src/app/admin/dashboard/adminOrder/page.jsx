@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Package, User, CreditCard, Clock, CheckCircle, XCircle, RefreshCw, Truck, MapPin, Mail, Phone } from 'lucide-react';
 import AdminAllOrders from '../../../../Api1/Order/AdminAllOrder';
 import AdminNavBar from '../../../../Components/AdminNavBar';
 import Guardwrapper from '../../../../Components/Guardwrapper';
 import Loader from '../../../../Components/Guardwrapper';
+import { MyContext } from './../../../../context/MyContext';
 
 
 
@@ -24,6 +25,7 @@ export default function OrdersDashboard() {
 
 
                 setOrders(data);
+
             } catch (err) {
                 console.log(err)
                 setError('Network error. Please try again.');

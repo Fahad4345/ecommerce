@@ -1,10 +1,11 @@
 
 import { Suspense } from "react";
 import AllProductClient from "./../../Components/allproductComponent";
+import Loader from "../../Components/loader";
 
 export default function AllProductPage() {
     return (
-        <Suspense fallback={<div>Loading products...</div>}>
+        <Suspense fallback={<><Loader /></>}>
             <AllProductClient />
         </Suspense>
     );

@@ -1,5 +1,7 @@
 import { API_BASE_URL } from "./apiUrl";
 import { showToast } from "../Components/toast";
+import { useContext } from "react";
+
 export default async function AdminAllUsers() {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/GetAllUsers`, {
@@ -17,6 +19,7 @@ export default async function AdminAllUsers() {
     }
 
     console.log("Data", data);
+
     return data;
   } catch (err) {
     console.log(err);

@@ -6,6 +6,8 @@ import { useWishlist } from "../Api1/wishlist";
 
 export default function MyProvider({ children }) {
     const [WishlistLength, setWishlistLength] = useState(0);
+    const [OrderLength, setOrderLength] = useState(0);
+    const [UserLength, setUserLength] = useState(0);
     const [cartLength, setcartLength] = useState(0);
     const [user, setuser] = useState(null);
     const [wishlistIds, setWishlistIds] = useState([]);
@@ -209,7 +211,11 @@ export default function MyProvider({ children }) {
             removeFromWishlist,
             syncWishlist,
             handleUserLogin,
-            handleUserLogout
+            handleUserLogout,
+            OrderLength,
+            setOrderLength,
+            UserLength,
+            setUserLength
         }}>
             {children}
         </MyContext.Provider>

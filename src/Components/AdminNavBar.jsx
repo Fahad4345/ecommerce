@@ -7,9 +7,12 @@ import { usePathname } from 'next/navigation'
 export default function AdminNavBar() {
     const pathName = usePathname();
     const nav = [
+        { name: "Dashoard", href: "/admin/dashboard" },
         { name: "Items", href: "/admin/dashboard/viewProducts" },
         { name: "View Orders", href: "/admin/dashboard/adminOrder" },
         { name: "View Users", href: "/admin/dashboard/adminUser" },
+
+
     ]
     return (
 

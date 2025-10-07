@@ -17,6 +17,7 @@ import { GetCart } from './../../../Api1/Cart/getCart';
 import Link from 'next/link';
 import { Heart, Eye } from "lucide-react";
 import { showToast } from './../../../Components/toast';
+import Loader from '../../../Components/loader';
 
 export default function ProductDetail() {
 
@@ -277,9 +278,7 @@ export default function ProductDetail() {
 
 
             {isLoadingProducts ? (
-                <div className=' flex justify-center items-center px-[1000px] py-[100px]'>
-                    <p className='font-[Poppins] text-[18px]'>Loading products...</p>
-                </div>
+                <Loader />
             ) : (
                 <div className=' mt-[140px]'>
                     <div className="flex flex-col gap-[24px]">
