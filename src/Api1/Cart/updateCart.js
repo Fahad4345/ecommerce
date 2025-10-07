@@ -13,7 +13,7 @@ export async function UpdateCart(itemId, color, size, quantity) {
       body: JSON.stringify({ itemId, color, quantity, size }),
     });
     const data = await res.json();
-    showToast("Cart Updated!", "success");
+    showToast("Cart updated successfully", "success");
     return data;
   } catch (err) {
     console.error("UpdateCart error:", err.message);

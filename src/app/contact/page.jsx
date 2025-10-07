@@ -10,6 +10,7 @@ export default function Contact() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
+
     useEffect(() => {
 
         const user = JSON.parse(localStorage.getItem("user"));

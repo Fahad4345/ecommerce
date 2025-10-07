@@ -26,14 +26,7 @@ export default function AddItemForm() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: "", text: "" });
 
-    const categories = [
-        "Phones",
-        "Computers",
-        "SmartWatch",
-        "Camera",
-        "HeadPhones",
-        "Gaming",
-    ];
+    const categories = ["All", "Phones", "Computers", "SmartWatch", "Gaming", "Camera", "Men Fashion", "Women Fashion", "Medicine"];
     const sizeOptions = ["Sm", "Md", "Lg", "Xl"];
 
 
@@ -69,9 +62,15 @@ export default function AddItemForm() {
         }));
     };
 
-
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
+        const totalFiles = formData.image.length + files.length;
+
+        if (totalFiles > 5) {
+            showToast("You can upload a maximum of 5 images.", "success");
+            return;
+        }
+
         setFormData((prev) => ({
             ...prev,
             image: [...prev.image, ...files],
@@ -88,6 +87,17 @@ export default function AddItemForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.image.length === 0) {
+            showToast("Please upload at least one image.", "error");
+            return;
+        }
+
+        if (formData.image.length > 5) {
+            showToast("You can upload a maximum of 5 images.", "error");
+            return;
+        }
+
+
         setLoading(true);
         setMessage({ type: "", text: "" });
 
@@ -342,16 +352,22 @@ export default function AddItemForm() {
 
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                                        Upload Images *
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        multiple
-                                        onChange={handleFileChange}
-                                        className="mb-4"
-                                    />
+
+                                    <div className="border-2 rounded-[4px] px-[10px] py-[10px] ">
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                                            Upload Images *
+                                        </label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+
+                                            onChange={handleFileChange}
+                                            disabled={formData.image.length >= 5}
+                                            className="mb-4"
+                                        />
+                                    </div>
+
 
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                         {formData.image.map((file, index) => (

@@ -261,7 +261,7 @@ export default function ProductDetail() {
                                 }}
                                 className='px-[42px] py-[10px] font-[500] text-[16px] cursor-pointer font-[Poppins] leading-[24px] bg-[#DB4444] tracking-[0px] text-white rounded-[4px]'
                             >
-                                {Cartitem ? "Add to Cart" : "Buy Now"}
+                                {Cartitem ? "Buy Now" : "Add to Cart"}
                             </button>
 
                             <div onClick={(e) => handleWishlistToggle(item._id, e)} className='w-[40px] h-[40px] border border-[#00000080] rounded-[4px] flex justify-center items-center cursor-pointer'>

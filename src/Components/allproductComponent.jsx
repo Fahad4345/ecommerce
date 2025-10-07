@@ -11,6 +11,7 @@ export default function AllProduct() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchApplied, setSearchApplied] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(8);
 
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get("search");
@@ -24,13 +25,14 @@ export default function AllProduct() {
 
     // ✅ Determine if CategorySec should be shown
     const shouldShowCategorySec =
-        !searchQuery && !fromCategory && fromViewAll !== "true";
+        !searchQuery && !fromCategory && !fromViewAll !== "true";
 
     // ✅ Fetch products by category (from URL param ?category=)
     useEffect(() => {
         async function fetchCategoryProducts() {
             if (fromCategory) {
                 setIsLoading(true);
+                setVisibleCount(8);
                 try {
                     const data = await GetDataByCategory(fromCategory);
                     setProducts(data?.item || []);
@@ -50,6 +52,7 @@ export default function AllProduct() {
         const fetchAllProducts = async () => {
             if (fromViewAll === "true") {
                 setIsLoading(true);
+                setVisibleCount(8);
                 try {
                     let allProducts = [];
                     for (const category of categories) {
@@ -76,6 +79,7 @@ export default function AllProduct() {
             if (searchQuery && searchQuery.trim() && fromViewAll !== "true") {
                 setIsLoading(true);
                 setSearchApplied(true);
+                setVisibleCount(8);
 
                 try {
                     const query = searchQuery.toLowerCase().trim();
@@ -152,6 +156,7 @@ export default function AllProduct() {
     const handleProductsFetch = (fetchedProducts) => {
         if (!searchApplied || fromViewAll === "true") {
             setProducts(fetchedProducts);
+            setVisibleCount(8);
             setIsLoading(false);
         }
     };
@@ -177,6 +182,9 @@ export default function AllProduct() {
         return "Check out all our products";
     };
 
+    // ✅ Get visible products
+    const visibleProducts = products.slice(0, visibleCount);
+
     // ✅ Render UI
     return (
         <Suspense fallback={<Loader />}>
@@ -198,15 +206,27 @@ export default function AllProduct() {
                                 </p>
                             </div>
                         ) : (
-                            <SaleSection
-                                title={getTitle()}
-                                subtitle={getSubtitle()}
-                                products={products}
-                                showNavigation={false}
-                                showViewAll={false}
-                                showSwiper={false}
-                                className="max-w-[1170px]"
-                            />
+                            <>
+                                <SaleSection
+                                    title={getTitle()}
+                                    subtitle={getSubtitle()}
+                                    products={visibleProducts}
+                                    showNavigation={false}
+                                    showViewAll={false}
+                                    showSwiper={false}
+                                    className="max-w-[1170px]"
+                                />
+
+                                {/* Load More Button */}
+                                {visibleCount < products.length && (
+                                    <button
+                                        onClick={() => setVisibleCount((prev) => prev + 8)}
+                                        className="bg-[#DB4444] mt-[40px] cursor-pointer text-white font-[Poppins] px-6 py-3 rounded-md mb-10"
+                                    >
+                                        Load More
+                                    </button>
+                                )}
+                            </>
                         )}
                     </>
                 )}

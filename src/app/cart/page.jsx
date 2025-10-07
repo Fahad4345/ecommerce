@@ -13,6 +13,7 @@ import { MyContext } from "../../context/MyContext";
 import { deleteCartItem } from './../../Api1/Cart/deleteCart';
 import { Package, User, CreditCard, Clock, CheckCircle, XCircle, RefreshCw, Truck, MapPin, Mail, Phone } from 'lucide-react';
 import Loader from '../../Components/loader';
+import showToast from '../../Components/loader';
 
 export default function Cart() {
     const { setcartLength, cartLength } = useContext(MyContext);
@@ -48,20 +49,7 @@ export default function Cart() {
         setCart(newCart);
 
 
-        try {
-            await UpdateCart(
-                newCart[index].itemId._id,
-                newCart[index].color,
-                newCart[index].size,
-                newCart[index].quantity
-            );
-        } catch (error) {
-            console.error("Failed to update cart:", error);
 
-            const revertCart = [...cart];
-            revertCart[index].quantity -= 1;
-            setCart(revertCart);
-        }
     };
 
     const decrement = async (index) => {
@@ -70,20 +58,7 @@ export default function Cart() {
             newCart[index].quantity -= 1;
             setCart(newCart);
 
-            try {
-                await UpdateCart(
-                    newCart[index].itemId._id,
-                    newCart[index].color,
-                    newCart[index].size,
-                    newCart[index].quantity
-                );
-            } catch (error) {
-                console.error("Failed to update cart:", error);
 
-                const revertCart = [...cart];
-                revertCart[index].quantity += 1;
-                setCart(revertCart);
-            }
         }
     }
 
@@ -230,20 +205,26 @@ export default function Cart() {
                     <button
                         className='font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px] cursor-pointer hover:bg-gray-50'
                         onClick={async () => {
-                            if (Array.isArray(cart)) {
-                                try {
-                                    await Promise.all(
-                                        cart.map(item =>
-                                            UpdateCart(item.itemId._id, item.color, item.size, item.quantity)
-                                        )
-                                    );
+                            if (!Array.isArray(cart) || cart.length === 0) {
+                                showToast("Your cart is empty", "error");
+                                return;
+                            }
 
-                                } catch (error) {
-                                    console.error('Failed to update cart:', error);
+                            try {
 
-                                }
+                                await Promise.all(
+                                    cart.map((item) =>
+                                        UpdateCart(item.itemId?._id, item.color, item.size, item.quantity)
+                                    )
+                                );
+
+                                showToast("Cart updated successfully", "success");
+                            } catch (error) {
+                                console.error("Failed to update cart:", error);
+                                showToast("Failed to update cart", "error");
                             }
                         }}
+
                     >
                         Update Cart
                     </button>

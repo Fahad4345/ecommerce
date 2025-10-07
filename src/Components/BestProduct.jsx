@@ -72,7 +72,7 @@ export default function BestProduct({ products }) {
 
                 setcartLength(cartLength + 1);
 
-                alert("Item Added Successfully");
+                showToast("Item Added Successfully", "success");
             } catch (error) {
                 console.error("Error adding to cart:", error);
                 showToast("Failed to add item to cart", "error");

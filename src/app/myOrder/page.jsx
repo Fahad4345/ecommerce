@@ -10,7 +10,7 @@ function MyOrdersPage() {
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) setUser(storedUser.id); console.log("User", user);
+        if (storedUser) setUser(storedUser._id); console.log("User", user);
     }, []);
 
     const { orders, loading, error } = useCustomerOrders(user);
