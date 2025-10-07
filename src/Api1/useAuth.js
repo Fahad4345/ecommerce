@@ -224,6 +224,8 @@ export function useAuth() {
       return false;
     }
   };
+
+ 
   return {
     user,
     error,
@@ -234,5 +236,6 @@ export function useAuth() {
     updateProfile,
     Logout,
     handleResponse,
+
   };
 }

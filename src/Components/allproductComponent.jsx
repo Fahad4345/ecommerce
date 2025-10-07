@@ -23,11 +23,11 @@ export default function AllProduct() {
         []
     );
 
-    // ✅ Determine if CategorySec should be shown
+
     const shouldShowCategorySec =
         !searchQuery && !fromCategory && !fromViewAll !== "true";
 
-    // ✅ Fetch products by category (from URL param ?category=)
+
     useEffect(() => {
         async function fetchCategoryProducts() {
             if (fromCategory) {
@@ -47,7 +47,7 @@ export default function AllProduct() {
         fetchCategoryProducts();
     }, [fromCategory]);
 
-    // ✅ Fetch all products when "View All" page
+
     useEffect(() => {
         const fetchAllProducts = async () => {
             if (fromViewAll === "true") {
@@ -73,7 +73,7 @@ export default function AllProduct() {
         fetchAllProducts();
     }, [fromViewAll, categories]);
 
-    // ✅ Fetch by search query
+
     useEffect(() => {
         const performSearch = async () => {
             if (searchQuery && searchQuery.trim() && fromViewAll !== "true") {
@@ -133,7 +133,7 @@ export default function AllProduct() {
                             }
                         }
 
-                        // Remove duplicates
+
                         const uniqueResults = allSearchResults.filter(
                             (product, index, self) =>
                                 index === self.findIndex((p) => p._id === product._id)
@@ -152,7 +152,7 @@ export default function AllProduct() {
         if (searchQuery && fromViewAll !== "true") performSearch();
     }, [searchQuery, fromViewAll, categories]);
 
-    // ✅ Callback from CategorySec (used when viewing all categories)
+
     const handleProductsFetch = (fetchedProducts) => {
         if (!searchApplied || fromViewAll === "true") {
             setProducts(fetchedProducts);
@@ -161,7 +161,7 @@ export default function AllProduct() {
         }
     };
 
-    // ✅ Dynamic title/subtitle
+
     const getTitle = () => {
         if (fromCategory) return `${fromCategory} Products`;
         if (searchQuery && fromViewAll !== "true") {
@@ -182,10 +182,10 @@ export default function AllProduct() {
         return "Check out all our products";
     };
 
-    // ✅ Get visible products
+
     const visibleProducts = products.slice(0, visibleCount);
 
-    // ✅ Render UI
+
     return (
         <Suspense fallback={<Loader />}>
             <div className="flex flex-col justify-center items-center">
@@ -217,7 +217,7 @@ export default function AllProduct() {
                                     className="max-w-[1170px]"
                                 />
 
-                                {/* Load More Button */}
+
                                 {visibleCount < products.length && (
                                     <button
                                         onClick={() => setVisibleCount((prev) => prev + 8)}
