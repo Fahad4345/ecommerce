@@ -92,7 +92,7 @@ export default function OrdersDashboard() {
 
     return (
         <Guardwrapper>
-            <div className=" bg-gradient-to-br from-slate-50 to-slate-100">
+            <div className=" bg-gradient-to-br">
                 <AdminNavBar />
                 <div className="max-w-7xl mx-auto mt-[40px]">
                     <div className="mb-8">

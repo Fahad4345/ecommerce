@@ -353,7 +353,7 @@ export default function AddItemForm() {
 
                                 <div>
 
-                                    <div className="border-2 rounded-[4px] px-[10px] py-[10px] ">
+                                    <div className="border-2 rounded-[4px] px-[10px] py-[10px] mb-[20px] ">
                                         <label className="block text-sm font-medium text-slate-700 mb-2">
                                             Upload Images *
                                         </label>

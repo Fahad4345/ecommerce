@@ -1,10 +1,11 @@
 import { API_BASE_URL } from "./apiUrl";
 import { showToast } from "./../Components/toast";
+import { fetchWithAuth } from "./fetchWithAuth";
 export async function SendEmail(name, email, message) {
   try {
     let text = `Hello my name is ${name} and ${message} `;
 
-    const res = await fetch(` ${API_BASE_URL}/${`email/SendEmail`}`, {
+    const res = await fetchWithAuth(`/email/SendEmail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

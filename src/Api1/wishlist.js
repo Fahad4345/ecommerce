@@ -3,6 +3,7 @@ import { API_BASE_URL } from "./apiUrl";
 import { useContext, useState } from "react";
 import { showToast } from "./../Components/toast";
 import { MyContext } from "./../context/MyContext";
+import { fetchWithAuth } from "./fetchWithAuth";
 
 export function useWishlist() {
   const [wishlistLength, setWishlistLength] = useState();
@@ -14,7 +15,7 @@ export function useWishlist() {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
 
-      const res = await fetch(`${API_BASE_URL}/${`wishlist/InsertWishlist`}`, {
+      const res = await fetchWithAuth(`/wishlist/InsertWishlist`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +48,7 @@ export function useWishlist() {
       if (!token) return null;
       console.log("Token in wishlist", token);
 
-      const res = await fetch(`${API_BASE_URL}/${`wishlist/GetWishlist`}`, {
+      const res = await fetchWithAuth(`/wishlist/GetWishlist`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,17 +77,14 @@ export function useWishlist() {
       const token = localStorage.getItem("accessToken");
       if (!token) return null;
 
-      const res = await fetch(
-        `${API_BASE_URL}/${`wishlist/RemoveItemWishlist`}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ itemId: id }),
-        }
-      );
+      const res = await fetchWithAuth(`/wishlist/RemoveItemWishlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ itemId: id }),
+      });
 
       const data = await res.json();
       if (!res.ok)

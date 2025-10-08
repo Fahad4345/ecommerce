@@ -624,10 +624,10 @@ export default function wishlistSec() {
                     </div>
                 </div>
 
-                {isLoading ? (
+                {Wishlist.length === 0 ? (
                     <div className='max-w-[1170px] mx-[135px] mt-[80px]'>
                         <div className='flex justify-center items-center py-[100px]'>
-                            <p className='font-[Poppins] text-[18px]'>Loading wishlist...</p>
+                            <p className='font-[Poppins] font-[400] text-[20px] leading-[26px] text-black'>No Product Found</p>
                         </div>
                     </div>
                 ) : (

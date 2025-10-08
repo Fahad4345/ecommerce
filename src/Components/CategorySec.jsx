@@ -50,14 +50,22 @@ export default function CategorySec({ onItemFetch }) {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await GetDataByCategory(SelectedCategory);
-            onItemFetch?.(data.item);
-
+            try {
+                let data;
+                if (SelectedCategory) {
+                    data = await GetDataByCategory(SelectedCategory);
+                } else {
+                    // Fetch all products when no category selected
+                    data = await GetDataByCategory();
+                }
+                onItemFetch?.(data.item);
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
         }
 
         fetchData();
-
-    }, [SelectedCategory])
+    }, [SelectedCategory]);
 
 
     const handlenext = () => {
@@ -100,7 +108,9 @@ export default function CategorySec({ onItemFetch }) {
                         return (<SwiperSlide className="max-w-[270px] w-full" key={index}>
                             <div
                                 key={index}
-                                onClick={() => setSelectedIndex(index)}
+                                onClick={() =>
+                                    setSelectedIndex((prev) => (prev === index ? null : index))
+                                }
                                 className={`min-w-[170px] w-full min-h-[145px] h-full gap-[16px] flex flex-col justify-center items-center rounded-[4px] border-[1px] cursor-pointer transition
                 ${isActive
                                         ? "bg-[#DB4444] text-white border-[#DB4444]"

@@ -1,10 +1,11 @@
 import { API_BASE_URL } from "./apiUrl";
 import { showToast } from "../Components/toast";
 import { useContext } from "react";
+import { fetchWithAuth } from "./fetchWithAuth";
 
 export default async function AdminAllUsers() {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/GetAllUsers`, {
+    const response = await fetchWithAuth(`/auth/GetAllUsers`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

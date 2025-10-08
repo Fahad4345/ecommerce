@@ -1,14 +1,16 @@
+import { fetchWithAuth } from "../fetchWithAuth";
 import { API_BASE_URL } from "./../apiUrl";
 export async function GetCart() {
   try {
     const token = localStorage.getItem("accessToken");
-
-    const res = await fetch(`${API_BASE_URL}/${`cart/GetCart`}`, {
+    console.log("AcessToken", token);
+    const res = await fetchWithAuth(`/cart/GetCart`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      credentials: "include",
     });
     const data = await res.json();
 

@@ -5,6 +5,9 @@ import { GetCart } from "../../Api1/Cart/getCart";
 import PlaceOrder from "../../Api1/Order/PlaceOrder";
 import Image from "next/image";
 import { API_BASE_URL } from "./../../Api1/apiUrl";
+import Loader from "../../Components/loader";
+import { MyContext } from "../../context/MyContext";
+import { useContext } from "react";
 
 export default function CheckoutPage() {
     const [selected, setSelected] = useState(false);
@@ -12,7 +15,7 @@ export default function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-
+    const { user } = useContext(MyContext);
 
     const [firstName, setFirstName] = useState("");
     const [company, setCompany] = useState("");
@@ -25,11 +28,17 @@ export default function CheckoutPage() {
     const handleToggle = () => setSelected((prev) => !prev);
 
     useEffect(() => {
+
         fetchCart();
     }, []);
+    useEffect(() => {
+        if (user?.email) setEmail(user.email);
+        fetchCart();
+    }, [user]);
 
     const fetchCart = async () => {
         try {
+            setIsLoading(true);
             const data = await GetCart();
             if (data && data.cart) {
                 setCart(data.cart);
@@ -37,6 +46,8 @@ export default function CheckoutPage() {
         } catch (err) {
             console.error("Failed to load cart:", err);
             setError("Failed to load cart items");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -192,23 +203,8 @@ export default function CheckoutPage() {
         setError("");
     };
 
-    if (cart.length === 0) {
-        return (
-            <div className="bg-white min-h-screen flex flex-col">
-                <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} />
-                <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                        <p className="text-gray-600 text-lg mb-4">Your cart is empty</p>
-                        <button
-                            onClick={() => window.history.back()}
-                            className="bg-[#DB4444] text-white px-6 py-2 rounded hover:bg-red-600 transition-colors"
-                        >
-                            Continue Shopping
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
+    if (isLoading) {
+        return <Loader />
     }
 
     return (
@@ -305,11 +301,12 @@ export default function CheckoutPage() {
                             <label className="opacity-[40%]  font-[400] text-[16px]  leading-[24px] font-[Poppins]">Email Address*</label>
                             <input
                                 type="email"
-                                value={email}
+
+                                value={email || user?.email || ""}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] rounded-[4px] px-[16px] border-none outline-none"
-                                placeholder="Enter your email address"
-                                disabled={isLoading}
+                                className="w-full max-w-[470px] h-[50px] bg-[#F5F5F5] opacity-40% rounded-[4px] px-[16px] border-none outline-none"
+
+
                             />
                         </div>
                     </div>
@@ -323,6 +320,7 @@ export default function CheckoutPage() {
                                 onChange={handleToggle}
                                 className="hidden"
                                 disabled={isLoading}
+
                             />
                             <div
                                 className={`w-8 h-8 flex items-center justify-center rounded-md transition 

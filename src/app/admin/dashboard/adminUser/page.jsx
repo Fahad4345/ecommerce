@@ -6,6 +6,7 @@ import AdminAllUsers from './../../../../Api1/getAllUsers';
 import Guardwrapper from '../../../../Components/Guardwrapper';
 import { showToast } from './../../../../Components/toast';
 import { useAuth } from './../../../../Api1/useAuth';
+import { fetchOrders } from '../../../../Api1/Order/GetOrder';
 
 export default function AdminUsersDashboard() {
     const { DeleteUser } = useAuth();
@@ -13,7 +14,24 @@ export default function AdminUsersDashboard() {
         const fetchData = async () => {
             try {
                 const users = await AdminAllUsers();
-                setUsers(users);
+
+                // ✅ Fetch order counts in parallel
+                const usersWithOrderCounts = await Promise.all(
+                    users.map(async (user) => {
+                        try {
+                            const data = await fetchOrders(user._id); // ← await added
+                            return {
+                                ...user,
+                                orderCount: Array.isArray(data) ? data.length : 0
+                            };
+                        } catch (err) {
+                            console.error(`Error fetching orders for ${user._id}:`, err.message);
+                            return { ...user, orderCount: 0 };
+                        }
+                    })
+                );
+
+                setUsers(usersWithOrderCounts);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
@@ -21,6 +39,7 @@ export default function AdminUsersDashboard() {
 
         fetchData();
     }, []);
+
     const handleDelete = async (id) => {
         const res = await DeleteUser(id)
         if (res) {
@@ -71,7 +90,7 @@ export default function AdminUsersDashboard() {
                                 <tr>
                                     <th className="px-6 py-4 text-left text-sm font-semibold font-[Poppins] text-gray-700">Name</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold font-[Poppins] text-gray-700">Email</th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold font-[Poppins] text-gray-700">Address</th>
+                                    <th className="px-6 py-4 text-left text-sm font-semibold font-[Poppins] text-gray-700">Orders</th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Cart</th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Wishlist</th>
                                     <th className="px-6 py-4 text-center text-sm font-semibold font-[Poppins] text-gray-700">Delete</th>
@@ -94,7 +113,7 @@ export default function AdminUsersDashboard() {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center text-gray-600">
                                                 <MapPin className="w-4 h-4 mr-2 text-gray-400 font-[Poppins]" />
-                                                {user.Addresse || 'N/A'}
+                                                {user.orderCount ?? 'N/A'}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">

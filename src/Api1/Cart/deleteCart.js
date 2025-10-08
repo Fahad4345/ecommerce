@@ -1,9 +1,10 @@
 import { API_BASE_URL } from "./../apiUrl";
 import { showToast } from "../../Components/toast";
+import { fetchWithAuth } from "../fetchWithAuth";
 export const deleteCartItem = async (itemId) => {
   try {
     const token = localStorage.getItem("accessToken");
-    const res = await fetch(`${API_BASE_URL}/${`cart/DeleteCart`}`, {
+    const res = await fetchWithAuth(`/cart/DeleteCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

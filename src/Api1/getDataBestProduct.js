@@ -1,11 +1,10 @@
 import { API_BASE_URL } from "./apiUrl";
+import { fetchWithAuth } from "./fetchWithAuth";
 export async function GetDataByCategory(Category) {
   try {
-    const url = ` ${API_BASE_URL}/${`item/GetItem?Category=${encodeURIComponent(
-      Category
-    )}`}`;
+    const url = ` /item/GetItem?Category=${encodeURIComponent(Category)}`;
 
-    const res = await fetch(url, {
+    const res = await fetchWithAuth(url, {
       method: "GET",
     });
     const data = await res.json();

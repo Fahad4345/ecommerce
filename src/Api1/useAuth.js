@@ -187,6 +187,7 @@ export function useAuth() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: response.credential }),
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -225,7 +226,6 @@ export function useAuth() {
     }
   };
 
- 
   return {
     user,
     error,
@@ -236,6 +236,5 @@ export function useAuth() {
     updateProfile,
     Logout,
     handleResponse,
-
   };
 }

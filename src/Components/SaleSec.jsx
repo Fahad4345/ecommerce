@@ -12,7 +12,7 @@ import { InsertCart } from '../Api1/Cart/insertCart';
 import { MyContext } from "../context/MyContext";
 import { GetCart } from '../Api1/Cart/getCart';
 import { showToast } from "./toast";
-
+import { useRouter } from "next/navigation";
 export default function SaleSection({
     title = "",
     subtitle = "",
@@ -28,6 +28,7 @@ export default function SaleSection({
     const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds } = useContext(MyContext);
     const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user")) : null;
     const swiperRef = useRef(null);
+    const router = useRouter();
 
 
     const syncCartItems = async () => {
@@ -94,6 +95,7 @@ export default function SaleSection({
         }
         else {
             showToast("Login to Add", "error");
+            router.push("/login");
         }
     };
 
@@ -103,7 +105,7 @@ export default function SaleSection({
 
         return (
             <Link key={product._id} href={`/productDetail/${product._id}`}>
-                <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-[16px]`}>
+                <div className={`flex flex-col cursor-pointer ${showSwiper === true ? "w-full" : "max-w-[270px] min-w-[270px] w-full"} max-w-[270px] min-w-[270px] w-full min-h-[350px] max-h-[350px] h-full gap-[16px] mb-[2px]`}>
                     <div className="relative group overflow-hidden bg-[#F5F5F5] px-[12px] py-[12px] min-h-[250px] flex justify-center items-center">
                         <span className="absolute top-[12px] left-[12px] font-[Poppins] h-[26px] font-[400] text-[12px] leading-[18px] px-[12px] py-[4px] bg-[#DB4444] text-white rounded-[4px]">
                             {`${product.discount}%`}
@@ -117,6 +119,7 @@ export default function SaleSection({
                                     if (!user) {
 
                                         showToast(" Login to Add ", "error");
+                                        router.push("/login");
                                         return;
                                     }
                                     if (wishlisted) {
@@ -168,12 +171,18 @@ export default function SaleSection({
                                 ${product.discountPrice}
                             </span>
                         </div>
-                        <div className="flex items-center text-yellow-400 text-[20px]">
-                            {"★".repeat(Math.round(product.rating))}
-                            {"☆".repeat(5 - Math.round(product.rating))}
-                            <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
-                                ({product.review})
-                            </span>
+                        <div className="flex items-center gap-2">
+
+                            <div className="flex items-center text-yellow-400 text-[20px]">
+                                {/** ✅ Default rating to 0 if missing */}
+                                {"★".repeat(Math.round(product?.rating || 0))}
+                                {"☆".repeat(5 - Math.round(product?.rating || 0))}
+
+                                {/** ✅ Default review to 0 if missing */}
+                                <span className="ml-2 text-gray-500 font-[Poppins] font-[600] text-[14px] leading-[21px]">
+                                    ({product?.review ?? 0})
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ import { showToast } from './toast';
 export default function BestProduct({ products }) {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { insertItem, removeItem } = useWishlist();
-    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds } = useContext(MyContext);
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, cartIds, setCartIds, user } = useContext(MyContext);
     const router = useRouter();
 
 
@@ -33,16 +33,15 @@ export default function BestProduct({ products }) {
         }
     };
 
-    useEffect(() => {
-        syncCartItems();
-    }, []);
 
 
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (!document.hidden) {
+                if (user) {
+                    syncCartItems();
+                }
 
-                syncCartItems();
             }
         };
 
@@ -89,7 +88,7 @@ export default function BestProduct({ products }) {
     }, [products]);
 
     return (
-        <div className=' w-full max-w-[1170px] mx-[135px] mt-[145px] flex flex-col gap-[40px] items-center'>
+        <div className=' w-full max-w-[1170px] mx-[135px] mt-[145px] flex flex-col gap-[40px] items-start'>
             <div className='flex w-full justify-between'>
                 <div className='flex flex-col gap-[24px]'>
                     <div className='flex items-center gap-[16px]'>
@@ -138,6 +137,7 @@ export default function BestProduct({ products }) {
                                                 }
                                                 else {
                                                     showToast("Login to Add", "error");
+                                                    router.push("/login")
                                                 }
                                             }}
                                             className="w-[34px] h-[34px] cursor-pointer bg-white rounded-full flex justify-center items-center shadow hover:bg-gray-100"

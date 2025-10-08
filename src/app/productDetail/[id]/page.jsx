@@ -39,7 +39,7 @@ export default function ProductDetail() {
     const dispatch = useDispatch();
     const handleDecrement = () => setQuantity(prev => Math.max(1, prev - 1));
     const handleIncrement = () => setQuantity(prev => prev + 1);
-    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist } = useContext(MyContext);
+    const { cartLength, setcartLength, wishlistIds, addToWishlist, removeFromWishlist, user } = useContext(MyContext);
 
     const syncCartItems = async () => {
         try {
@@ -103,11 +103,15 @@ export default function ProductDetail() {
         }
         else {
             showToast("Login to add", "error");
+            router.push("/login");
         }
     };
 
     useEffect(() => {
-        syncCartItems();
+        if (user) {
+            syncCartItems();
+        }
+
         const fetchItem = async () => {
             try {
                 const product = await getItem(id);
@@ -151,11 +155,7 @@ export default function ProductDetail() {
 
     const smallImages = item?.image?.slice(1, 5);
 
-    if (!item) return <div className='max-w-[1170px] h-[500px] flex justify-center items-center mx-[135px] mt-[80px]'>
-        <div className='flex justify-center items-center py-[100px]'>
-            <p className='font-[Poppins] text-[18px]'>Loading wishlist...</p>
-        </div>
-    </div>
+    if (!item) return <>  <Navbar ShowCart={true} ShowProfile={true} ShowWishlist={true} /><Loader /></>
 
     return (
         <div className='flex bg-white justify-center items-center flex-col h-full'>

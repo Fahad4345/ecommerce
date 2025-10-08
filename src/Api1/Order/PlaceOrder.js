@@ -1,9 +1,10 @@
 import { API_BASE_URL } from "./../apiUrl";
 import { showToast } from "../../Components/toast";
+import { fetchWithAuth } from "../fetchWithAuth";
 export default async function PlaceOrder(orderData) {
   try {
     const token = localStorage.getItem("accessToken");
-    const response = await fetch(`${API_BASE_URL}/${`order/PlaceOrder`}`, {
+    const response = await fetchWithAuth(`/order/PlaceOrder`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
