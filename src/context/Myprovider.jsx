@@ -19,7 +19,7 @@ export default function MyProvider({ children }) {
         try {
             const data = await GetCart();
             if (data && data.cart && Array.isArray(data.cart)) {
-                const totalItems = data.cart.reduce((total, item) => total + item.quantity, 0);
+                const totalItems = data.cart.length
                 setcartLength(totalItems);
             } else {
                 setcartLength(0);

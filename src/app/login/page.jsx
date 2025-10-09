@@ -14,7 +14,7 @@ export default function Login() {
 
     const { handleUserLogin } = useContext(MyContext);
     const { login } = useAuth();
-    const router = useRouter();
+
 
     const [FormData, setFormdata] = useState({
         email: "",
@@ -71,7 +71,7 @@ export default function Login() {
                 await handleUserLogin(loginUser);
 
 
-                router.push('/');
+
             } else {
                 setError("Login failed. Please check your credentials.");
             }
