@@ -48,7 +48,7 @@ export default function ResetPassword() {
 
     try {
       const res = await fetch(
-        `${API_BASE_URL}/api/auth/resetPassword`,
+        `${API_BASE_URL}/auth/resetPassword`,
         {
           method: "POST",
           headers: {
