@@ -6,6 +6,7 @@ import AdminNavBar from '../../../../Components/AdminNavBar';
 import Guardwrapper from '../../../../Components/Guardwrapper';
 import Loader from '../../../../Components/Guardwrapper';
 import { MyContext } from './../../../../context/MyContext';
+import cancelOrder from '../../../../Api1/Order/CancelOrder';
 
 
 
@@ -15,6 +16,28 @@ export default function OrdersDashboard() {
     const [error, setError] = useState('');
     const [filter, setFilter] = useState('all');
     const [expandedOrder, setExpandedOrder] = useState(null);
+    const handleAcceptOrder = (orderId) => {
+        setOrders((prevOrders) => {
+            return prevOrders.map((order) => {
+                if (order._id === orderId) {
+                    // Create a fake local status change (for UI only)
+                    return { ...order, orderStatus: "Confirmed" };
+                }
+                return order;
+            });
+        });
+    };
+    const handleDeclineOrder = (orderId) => {
+        setOrders((prevOrders) => {
+            return prevOrders.map((order) => {
+                if (order._id === orderId) {
+                    // Just update locally to Cancelled
+                    return { ...order, orderStatus: "Cancelled" };
+                }
+                return order;
+            });
+        });
+    };
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -57,7 +80,7 @@ export default function OrdersDashboard() {
     const uniqueStatuses = [...new Set(orders.map(order => order.orderStatus))].sort();
 
     const filteredOrders = orders.filter(order => {
-        if (filter === 'all') return true;
+        if (filter === 'all') return true
         return order.orderStatus.toLowerCase() === filter.toLowerCase();
     });
 
@@ -151,8 +174,8 @@ export default function OrdersDashboard() {
                                         className="p-6 cursor-pointer hover:bg-slate-50 transition"
                                         onClick={() => toggleExpand(order._id)}
                                     >
-                                        <div className="flex flex-wrap items-start justify-between gap-4">
-                                            <div className="flex-1 min-w-0">
+                                        <div className="flex flex-wrap items-start justify-between ">
+                                            <div className="flex-1 max-w-[600px] ">
                                                 <div className="flex items-center gap-3 mb-2 flex-wrap">
                                                     <h3 className="text-lg font-semibold text-slate-800">
                                                         Order #{order._id?.slice(-8)}
@@ -181,7 +204,35 @@ export default function OrdersDashboard() {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
+                                            {["all", "Placed"].includes(filter) && (
+                                                <div className='flex gap-[10px]'>
+                                                    {order.orderStatus === "Confirmed" ? (
+                                                        <span className="bg-green-100 text-green-700 px-[20px] py-[5px] rounded-[4px] font-semibold">
+                                                            Accepted
+                                                        </span>
+                                                    ) : order.orderStatus === "Cancelled" ? (
+                                                        <span className="bg-red-100 text-red-700 px-[20px] py-[5px] rounded-[4px] font-semibold">
+                                                            Declined
+                                                        </span>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                onClick={() => handleDeclineOrder(order._id)}
+                                                                className='bg-[#DB4444] text-white px-[20px] py-[5px] rounded-[4px]'
+                                                            >
+                                                                Decline
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleAcceptOrder(order._id)}
+                                                                className='bg-green-500 text-white px-[20px] py-[5px] rounded-[4px]'
+                                                            >
+                                                                Accept
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            )}
+                                            <div className="text-right w-[200px]">
                                                 <p className="text-2xl font-bold text-slate-800">${order.total.toFixed(2)}</p>
                                                 <p className="text-sm text-slate-600">{order.items.length} item</p>
                                             </div>
