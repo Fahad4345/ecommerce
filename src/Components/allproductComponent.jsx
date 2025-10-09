@@ -19,7 +19,7 @@ export default function AllProduct() {
     const fromCategory = searchParams.get("category");
 
     const categories = useMemo(
-        () => ["Phones", "Computers", "SmartWatch", "Camera", "HeadPhones", "Gaming"],
+        () => ["Phones", "Computers", "SmartWatch", "Camera", "HeadPhones", "Gaming", "Men Fashion", "Women Fashion", "Medicine"],
         []
     );
 

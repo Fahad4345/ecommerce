@@ -30,11 +30,11 @@ const Category = [
         category: "Gaming",
         Icon: GamePad
     }, {
-        category: "Men's Fashion",
+        category: "Men Fashion",
         Icon: Phone
     },
     {
-        category: "Women's Fashion",
+        category: "Women Fashion",
         Icon: Phone
     }, {
         category: "Medicine",

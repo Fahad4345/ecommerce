@@ -4,13 +4,14 @@ import Navbar from "./../../Components/NavBar";
 import { fetchOrders } from "../../Api1/Order/GetOrder";
 import cancelOrder from "./../../Api1/Order/CancelOrder";
 import Link from "next/link";
+import Loader from "../../Components/loader";
 
 function MyOrdersPage() {
     const [userId, setUserId] = useState(null);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // ✅ Fetch user + orders safely
+
     useEffect(() => {
         const fetchOrderData = async () => {
             try {
@@ -78,25 +79,13 @@ function MyOrdersPage() {
         }
     };
 
-    // ✅ Loading state
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar ShowCart ShowProfile ShowWishlist />
-                <div className="flex flex-col justify-center items-center h-96">
-                    <div className="relative">
-                        <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200"></div>
-                        <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent absolute top-0"></div>
-                    </div>
-                    <p className="mt-4 text-lg text-gray-600 font-medium">
-                        Loading your orders...
-                    </p>
-                </div>
-            </div>
+            <Loader />
         );
     }
 
-    // ✅ Empty state
     if (!orders || orders.length === 0) {
         return (
             <div className="min-h-screen bg-gray-50">
@@ -111,7 +100,7 @@ function MyOrdersPage() {
                             Your order history is waiting to be filled!
                         </p>
                         <Link href="/">
-                            <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <button className=" bg-[#DB4444] text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg">
                                 🛍️ Start Shopping Now
                             </button>
                         </Link>

@@ -14,7 +14,7 @@ export default function Page() {
     const [category, setCategory] = useState("All");
     const [visibleCount, setVisibleCount] = useState(8);
 
-    const categories = ["All", "Phones", "Computers", "SmartWatch", "Gaming", "Camera"];
+    const categories = ["All", "Phones", "Computers", "SmartWatch", "Gaming", "Camera", "Men Fashion", "Women Fashion"];
 
     const HandleDelete = async (id) => {
         try {

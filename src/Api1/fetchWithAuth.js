@@ -2,7 +2,7 @@ import { API_BASE_URL } from "../Api1/apiUrl";
 
 async function refreshAccessToken() {
   try {
-    console.log("Refresh acess token called");
+    console.log("Refresh access token called");
     const res = await fetch(`${API_BASE_URL}/auth/RefreshToken`, {
       method: "POST",
       credentials: "include",
@@ -28,11 +28,13 @@ async function refreshAccessToken() {
 export async function fetchWithAuth(url, options = {}) {
   let token = localStorage.getItem("accessToken");
 
-  // Attach access token
+  // ✅ Detect if the request body is FormData
+  const isFormData = options.body instanceof FormData;
+
   const headers = {
     ...options.headers,
     Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
   };
 
   let response = await fetch(`${API_BASE_URL}${url}`, {
@@ -41,18 +43,17 @@ export async function fetchWithAuth(url, options = {}) {
     credentials: "include", // send cookies if needed
   });
 
-  // If unauthorized, try refreshing token
+  // 🔄 Handle token refresh if expired
   if (response.status === 401 || response.status === 403) {
     console.log("Access token expired, trying refresh...");
 
     const newToken = await refreshAccessToken();
 
     if (newToken) {
-      // Retry original request
       const retryHeaders = {
         ...options.headers,
         Authorization: `Bearer ${newToken}`,
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
       };
 
       response = await fetch(`${API_BASE_URL}${url}`, {

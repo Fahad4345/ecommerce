@@ -6,7 +6,7 @@ import { API_BASE_URL } from "../../../../../Api1/apiUrl";
 import { showToast } from "../../../../../Components/toast";
 import { useRouter } from "next/navigation";
 import Guardwrapper from "../../../../../Components/Guardwrapper";
-
+import { fetchWithAuth } from "../../../../../Api1/fetchWithAuth";
 export default function AddItemForm() {
     const router = useRouter();
     const [formData, setFormData] = useState({
@@ -87,6 +87,7 @@ export default function AddItemForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (formData.image.length === 0) {
             showToast("Please upload at least one image.", "error");
             return;
@@ -97,13 +98,11 @@ export default function AddItemForm() {
             return;
         }
 
-
         setLoading(true);
         setMessage({ type: "", text: "" });
 
         try {
             const formDataToSend = new FormData();
-
 
             formDataToSend.append("name", formData.name);
             formDataToSend.append("category", formData.category);
@@ -113,33 +112,21 @@ export default function AddItemForm() {
             if (formData.review) formDataToSend.append("review", formData.review);
             if (formData.rating) formDataToSend.append("rating", formData.rating);
 
-
             formData.color.forEach((c) => formDataToSend.append("color", c));
             formData.sizes.forEach((s) => formDataToSend.append("sizes", s));
+            formData.image.forEach((file) => formDataToSend.append("images", file));
 
-
-            formData.image.forEach((file) => {
-                formDataToSend.append("images", file);
+            // 🚫 DO NOT manually set Content-Type — browser sets it automatically for FormData
+            const response = await fetchWithAuth(`/item/Insert`, {
+                method: "POST",
+                body: formDataToSend,
             });
-
-            const response = await fetch(`${API_BASE_URL}/item/Insert`,
-                {
-                    method: "POST",
-                    body: formDataToSend,
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                }
-            );
 
             if (response.ok) {
                 const result = await response.json();
-                setMessage({
-                    type: "success",
-                    text: "Item added successfully!",
-                });
                 showToast("Item added successfully!", "success");
                 router.push("/admin/dashboard/viewProducts");
+
                 setFormData({
                     name: "",
                     category: "",
@@ -154,17 +141,11 @@ export default function AddItemForm() {
                 });
             } else {
                 const error = await response.json();
-                setMessage({
-                    type: "error",
-                    text: error.message || "Failed to add item",
-                });
+                showToast(error.message || "Failed to add item", "error");
             }
         } catch (err) {
             console.error("Error:", err);
-            setMessage({
-                type: "error",
-                text: "Network error. Please try again.",
-            });
+            showToast("Network error. Please try again.", "error");
         } finally {
             setLoading(false);
         }
@@ -304,7 +285,7 @@ export default function AddItemForm() {
                                         <button
                                             type="button"
                                             onClick={addColor}
-                                            className="px-4 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                            className="px-4 py-2 cursor-pointer bg-[#DB4444] text-white rounded-lg transition"
                                         >
                                             <Plus size={20} />
                                         </button>
@@ -319,7 +300,7 @@ export default function AddItemForm() {
                                                 <button
                                                     type="button"
                                                     onClick={() => removeColor(index)}
-                                                    className="hover:text-blue-600 cursor-pointer"
+                                                    className="text-black cursor-pointer"
                                                 >
                                                     <X size={14} />
                                                 </button>
@@ -340,8 +321,8 @@ export default function AddItemForm() {
                                                 type="button"
                                                 onClick={() => handleSizeToggle(size)}
                                                 className={`px-4 py-2 rounded-lg  cursor-pointer border-2 transition ${formData.sizes.includes(size)
-                                                    ? "bg-blue-600 border-blue-600 text-white"
-                                                    : "border-slate-300 text-slate-700 hover:border-blue-400"
+                                                    ? "bg-[#DB4444] text-white"
+                                                    : "border-slate-300 text-black bg-white"
                                                     }`}
                                             >
                                                 {size}
@@ -353,10 +334,8 @@ export default function AddItemForm() {
 
                                 <div>
 
-                                    <div className="border-2 rounded-[4px] px-[10px] py-[10px] mb-[20px] ">
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                                            Upload Images *
-                                        </label>
+                                    <div className="border-2 rounded-[4px]  mb-[20px] ">
+
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -364,7 +343,7 @@ export default function AddItemForm() {
 
                                             onChange={handleFileChange}
                                             disabled={formData.image.length >= 5}
-                                            className="mb-4"
+                                            className="px-[10px] py-[10px] w-full"
                                         />
                                     </div>
 
@@ -397,7 +376,7 @@ export default function AddItemForm() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-gradient-to-r cursor-pointer from-blue-600 to-blue-700 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full bg-[#DB4444] text-white py-3 px-6 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? "Adding Item..." : "Add Item"}
                                 </button>

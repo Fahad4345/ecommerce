@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "../Components/NavBar";
 import { useRouter, useSearchParams } from "next/navigation";
+import { fetchWithAuth } from "./../Api1/fetchWithAuth";
 
 
 export default function ResetPassword() {
@@ -47,8 +48,8 @@ export default function ResetPassword() {
     setSuccess("");
 
     try {
-      const res = await fetch(
-        `${API_BASE_URL}/api/auth/resetPassword`,
+      const res = await fetchWithAuth(
+        `/auth/resetPassword`,
         {
           method: "POST",
           headers: {

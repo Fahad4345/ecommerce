@@ -83,7 +83,7 @@ export default function BestProduct({ products }) {
     };
 
     useEffect(() => {
-        const filtered = products.filter((item) => item.rating >= 4.5).slice(0, 4);
+        const filtered = products.slice(0, 4);
         setFilteredProducts(filtered)
     }, [products]);
 
