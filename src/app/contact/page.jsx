@@ -117,7 +117,7 @@ export default function Contact() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Your Message *"
-                            className="py-[13px] px-[16px] bg-[#F5F5F5] font-[Poppins] text-[16px] w-[737px] h-[207px] focus:outline-none"
+                            className="py-[13px] px-[16px] bg-[#F5F5F5]  resize-none font-[Poppins] text-[16px] w-[737px] h-[207px] focus:outline-none"
                         ></textarea>
                     </div>
 
