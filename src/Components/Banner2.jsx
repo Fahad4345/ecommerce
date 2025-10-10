@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import BannerFlashSaleTimer from './BannerFlashtimer'
+import Link from 'next/link'
 
 const banners = [
     {
@@ -39,14 +40,14 @@ export default function Banner2() {
 
 
 
+                <Link href="/allProduct">
+                    <div className="group mt-[40px]   w-fit py-[16px] px-[48px] cursor-pointer bg-[#00FF66] transition duration-300 cursor-pointer ">
+                        <button className=" flex  gap-[8px]">
+                            <p className='text-white  font-[Poppins] font-[400] text-[16px] leading-[24px]'>Buy Now!</p>
 
-                <div className="group mt-[40px]   w-fit py-[16px] px-[48px] cursor-pointer bg-[#00FF66] transition duration-300 cursor-pointer ">
-                    <button className=" flex  gap-[8px]">
-                        <p className='text-white  font-[Poppins] font-[400] text-[16px] leading-[24px]'>Buy Now!</p>
-
-                    </button>
-                    <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                </div>
+                        </button>
+                        <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
+                    </div></Link>
 
             </div>
             <div className="relative pt-[37px] pb-[43px]">
