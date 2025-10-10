@@ -29,7 +29,8 @@ export default function OrdersDashboard() {
             });
         });
     };
-    const handleDeclineOrder = (orderId) => {
+    const handleDeclineOrder = async (orderId) => {
+        await updateOrderStatus(orderId, "Cancelled")
         setOrders((prevOrders) => {
             return prevOrders.map((order) => {
                 if (order._id === orderId) {
