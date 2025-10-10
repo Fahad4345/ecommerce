@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function NewArivalSec() {
     return (
@@ -26,15 +27,15 @@ export default function NewArivalSec() {
                                 <h1 className='  font-[Poppins] font-[600] text-[24px] leading-[24px] tracking-[3%] text-white'>PlayStation 5</h1>
                             </div>
                             <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Black and White version of the PS5 coming out on sale.</h1>
-
-                            <div className="group  transition duration-300 cursor-pointer ">
-                                <button className=" flex gap-[8px] cursor-pointer ">
-                                    <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
-                                    <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
-                                </button>
-                                <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                            </div>
-
+                            <Link href="/allProduct">
+                                <div className="group  transition duration-300 cursor-pointer ">
+                                    <button className=" flex gap-[8px] cursor-pointer ">
+                                        <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
+                                        <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
+                                    </button>
+                                    <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
+                                </div>
+                            </Link>
 
 
                         </div>
@@ -53,14 +54,15 @@ export default function NewArivalSec() {
                                     <h1 className='  font-[Poppins] font-[600] text-[24px] leading-[24px] tracking-[3%] text-white'>Women’s Collections</h1>
                                 </div>
                                 <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Featured woman collections that give you another vibe.</h1>
-
-                                <div className="group  transition duration-300 cursor-pointer ">
-                                    <button className="  cursor-pointer flex  gap-[8px]">
-                                        <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
-                                        <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
-                                    </button>
-                                    <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                                </div>
+                                <Link href="/allProduct">
+                                    <div className="group  transition duration-300 cursor-pointer ">
+                                        <button className="  cursor-pointer flex  gap-[8px]">
+                                            <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
+                                            <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
+                                        </button>
+                                        <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
+                                    </div>
+                                </Link>
 
 
 
@@ -80,14 +82,15 @@ export default function NewArivalSec() {
                                         <h1 className='  font-[Poppins] font-[600] text-[24px] leading-[24px] tracking-[3%] text-white'>Speakers</h1>
                                     </div>
                                     <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>Amazon wireless speakers</h1>
-
-                                    <div className="group  transition duration-300 cursor-pointer ">
-                                        <button className=" cursor-pointer flex  gap-[8px]">
-                                            <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
-                                            <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
-                                        </button>
-                                        <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                                    </div>
+                                    <Link href="/allProduct">
+                                        <div className="group  transition duration-300 cursor-pointer ">
+                                            <button className=" cursor-pointer flex  gap-[8px]">
+                                                <p className='text-white  font-[Poppins] font-[500] text-[16px] leading-[24px] cursor-pointer'>Shop Now</p>
+                                                <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
+                                            </button>
+                                            <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
+                                        </div>
+                                    </Link>
 
 
 
@@ -110,14 +113,14 @@ export default function NewArivalSec() {
                                         <h1 className='  font-[Poppins] font-[600] text-[24px] leading-[24px] tracking-[3%] text-white'>Perfume</h1>
                                     </div>
                                     <h1 className='  font-[Poppins] font-[400] text-[14px] leading-[21px] tracking-[0%] text-white'>GUCCI INTENSE OUD EDP</h1>
-
-                                    <div className="group  transition duration-300 cursor-pointer ">
-                                        <button className="  cursor-pointer flex  gap-[8px]">
-                                            <p className='text-white  font-[Poppins] font-[500] cursor-pointer text-[16px] leading-[24px]'>Shop Now</p>
-                                            <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
-                                        </button>
-                                        <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                                    </div>
+                                    <Link href="/allProduct">
+                                        <div className="group  transition duration-300 cursor-pointer ">
+                                            <button className="  cursor-pointer flex  gap-[8px]">
+                                                <p className='text-white  font-[Poppins] font-[500] cursor-pointer text-[16px] leading-[24px]'>Shop Now</p>
+                                                <Image src="/assets/icons/rightArrow.svg" alt="" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
+                                            </button>
+                                            <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
+                                        </div></Link>
 
 
 

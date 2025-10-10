@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const banners = [
     {
@@ -29,13 +30,13 @@ export default function Banner() {
                         <h1 className='  font-[Poppins] font-[600] text-[48px] leading-[60px] tracking-[4%] text-white'>Up to 10% off Voucher</h1>
                     </div>
 
-                ))} <div className="group  transition duration-300    cursor-pointer">
+                ))} <Link href="/allProduct"><div className="group  transition duration-300    cursor-pointer">
                     <button className=" cursor-pointer flex  gap-[8px]">
                         <p className='text-white  font-[Poppins] font-[400] text-[16px] leading-[24px]'>Shop Now</p>
                         <Image alt="" src="/assets/icons/rightArrow.svg" className="duration-300 group-hover:translate-x-4" width={24} height={24} />
                     </button>
                     <span className="block max-w-0 group-hover:max-w-[125px] transition-all duration-500 h-0.5  bg-white"></span>
-                </div>
+                </div></Link>
 
             </div>
             <div className='pt-[16px]'>

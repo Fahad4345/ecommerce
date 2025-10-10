@@ -7,6 +7,7 @@ import Guardwrapper from '../../../../Components/Guardwrapper';
 import Loader from '../../../../Components/Guardwrapper';
 import { MyContext } from './../../../../context/MyContext';
 import cancelOrder from '../../../../Api1/Order/CancelOrder';
+import { updateOrderStatus } from '../../../../Api1/Order/UpdateStatus';
 
 
 
@@ -16,11 +17,12 @@ export default function OrdersDashboard() {
     const [error, setError] = useState('');
     const [filter, setFilter] = useState('all');
     const [expandedOrder, setExpandedOrder] = useState(null);
-    const handleAcceptOrder = (orderId) => {
+    const handleAcceptOrder = async (orderId) => {
+        await updateOrderStatus(orderId, "Confirmed")
         setOrders((prevOrders) => {
             return prevOrders.map((order) => {
                 if (order._id === orderId) {
-                    // Create a fake local status change (for UI only)
+
                     return { ...order, orderStatus: "Confirmed" };
                 }
                 return order;
@@ -31,7 +33,7 @@ export default function OrdersDashboard() {
         setOrders((prevOrders) => {
             return prevOrders.map((order) => {
                 if (order._id === orderId) {
-                    // Just update locally to Cancelled
+
                     return { ...order, orderStatus: "Cancelled" };
                 }
                 return order;
@@ -48,6 +50,7 @@ export default function OrdersDashboard() {
 
 
                 setOrders(data);
+                console.log("Orders", data);
 
             } catch (err) {
                 console.log(err)
@@ -108,8 +111,9 @@ export default function OrdersDashboard() {
     };
 
     if (loading) {
-        return (
-            <Loader />
+        return (<>
+            <AdminNavBar />
+            <Loader /></>
         );
     }
 
