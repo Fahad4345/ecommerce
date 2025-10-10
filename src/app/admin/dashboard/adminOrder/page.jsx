@@ -222,13 +222,13 @@ export default function OrdersDashboard() {
                                                     ) : (
                                                         <>
                                                             <button
-                                                                onClick={(e) => { handleDeclineOrder(order._id); e.preventDefault(); e.stopPropagation }}
+                                                                onClick={(e) => { handleDeclineOrder(order._id); e.preventDefault(); e.stopPropagation(); }}
                                                                 className='bg-[#DB4444] text-white px-[20px] py-[5px] rounded-[4px]'
                                                             >
                                                                 Decline
                                                             </button>
                                                             <button
-                                                                onClick={(e) => { handleAcceptOrder(order._id); e.preventDefault(); e.stopPropagation }}
+                                                                onClick={(e) => { handleAcceptOrder(order._id); e.preventDefault(); e.stopPropagation(); }}
                                                                 className='bg-green-500 text-white px-[20px] py-[5px] rounded-[4px]'
                                                             >
                                                                 Accept
