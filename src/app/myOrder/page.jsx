@@ -41,6 +41,7 @@ function MyOrdersPage() {
             if (!confirmed) return;
 
             const response = await cancelOrder(orderId);
+            console.log("Cancel response:", response);
 
             if (response?.success) {
                 setOrders((prev) =>
