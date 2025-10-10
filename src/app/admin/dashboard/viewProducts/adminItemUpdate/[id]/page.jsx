@@ -12,6 +12,7 @@ import AdminNavBar from '../../../../../../Components/AdminNavBar';
 import Loader from '../../../../../../Components/loader';
 import Guardwrapper from '../../../../../../Components/Guardwrapper';
 import { API_BASE_URL } from '../../../../../../Api1/apiUrl';
+import { fetchWithAuth } from '../../../../../../Api1/fetchWithAuth';
 
 export default function ProductDetail() {
 
@@ -34,7 +35,7 @@ export default function ProductDetail() {
     const allSizes = ["Sm", "Md", "Lg", "Xl"];
     const updateItem = async (id, updatedData) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/item/Update/${id}`, {
+            const response = await fetchWithAuth(`/item/Update/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,6 +50,7 @@ export default function ProductDetail() {
             }
 
             const data = await response.json();
+
             return data;
         } catch (error) {
             console.error('Error updating item:', error);
@@ -133,6 +135,7 @@ export default function ProductDetail() {
             if (response) {
                 showToast('Item updated successfully!', 'success');
                 const product = await getItem(id);
+                router.push("/viewProducts")
                 setItem(product.item);
             }
         } catch (error) {
