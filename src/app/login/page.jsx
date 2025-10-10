@@ -41,9 +41,9 @@ export default function Login() {
                     },
                     body: JSON.stringify({ email: FormData.email })
                 });
-                if (res.ok) {
-                    showToast("Password reset email sent successfully", 'success');
-                }
+
+                showToast("Password reset email sent successfully", 'success');
+
             }
             catch (error) {
                 console.error("Error:", error);
