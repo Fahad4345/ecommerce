@@ -2,12 +2,11 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react";
 import Image from 'next/image'
-import { Camera, Phone, Computer, GamePad, HeadPhone, Watch } from "./svg/Svg";
+import { Camera, Phone, Computer, GamePad, HeadPhone, Watch, User } from "./svg/Svg";
 import { GetDataByCategory } from "../Api1/getData"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
-
 
 
 const Category = [
@@ -31,14 +30,11 @@ const Category = [
         Icon: GamePad
     }, {
         category: "Men Fashion",
-        Icon: Phone
+        Icon: User
     },
     {
         category: "Women Fashion",
-        Icon: Phone
-    }, {
-        category: "Medicine",
-        Icon: Phone
+        Icon: User
     },
 ]
 
