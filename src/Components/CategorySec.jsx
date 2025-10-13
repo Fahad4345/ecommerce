@@ -55,7 +55,7 @@ export default function CategorySec({ onItemFetch }) {
                 if (SelectedCategory) {
                     data = await GetDataByCategory(SelectedCategory);
                 } else {
-                    // Fetch all products when no category selected
+
                     data = await GetDataByCategory();
                 }
                 onItemFetch?.(data.item);

@@ -116,7 +116,7 @@ export default function AddItemForm() {
             formData.sizes.forEach((s) => formDataToSend.append("sizes", s));
             formData.image.forEach((file) => formDataToSend.append("images", file));
 
-            // 🚫 DO NOT manually set Content-Type — browser sets it automatically for FormData
+
             const response = await fetchWithAuth(`/item/Insert`, {
                 method: "POST",
                 body: formDataToSend,

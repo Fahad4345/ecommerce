@@ -6,7 +6,7 @@ import Loader from "./loader";
 export default function Guardwrapper({ children }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ new loading state
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     console.log("📌 LocalStorage user:", storedUser);
@@ -33,11 +33,11 @@ export default function Guardwrapper({ children }) {
   }, [user, loading, router]);
 
   if (loading) {
-    return <Loader />; // prevent flicker
+    return <Loader />; 
   }
 
   if (!user || user.role !== "admin") {
-    return null; // block children if not admin
+    return null; 
   }
 
   return <>{children}</>;

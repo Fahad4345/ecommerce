@@ -15,11 +15,11 @@ export default function AdminUsersDashboard() {
             try {
                 const users = await AdminAllUsers();
 
-                // ✅ Fetch order counts in parallel
+
                 const usersWithOrderCounts = await Promise.all(
                     users.map(async (user) => {
                         try {
-                            const data = await fetchOrders(user._id); // ← await added
+                            const data = await fetchOrders(user._id);
                             return {
                                 ...user,
                                 orderCount: Array.isArray(data) ? data.length : 0

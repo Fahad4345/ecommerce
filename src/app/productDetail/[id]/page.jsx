@@ -35,7 +35,7 @@ export default function ProductDetail() {
 
     const { id } = useParams();
     const [item, setItem] = useState(null);
-    const [mainImage, setMainImage] = useState(""); // Added mainImage state
+    const [mainImage, setMainImage] = useState("");
     const dispatch = useDispatch();
     const handleDecrement = () => setQuantity(prev => Math.max(1, prev - 1));
     const handleIncrement = () => setQuantity(prev => prev + 1);

@@ -73,7 +73,6 @@ export default function AllProduct() {
         fetchAllProducts();
     }, [fromViewAll, categories]);
 
-
     useEffect(() => {
         const performSearch = async () => {
             if (searchQuery && searchQuery.trim() && fromViewAll !== "true") {
@@ -83,63 +82,31 @@ export default function AllProduct() {
 
                 try {
                     const query = searchQuery.toLowerCase().trim();
-                    const categoryMappings = {
-                        phone: "Phones",
-                        phones: "Phones",
-                        mobile: "Phones",
-                        computer: "Computers",
-                        computers: "Computers",
-                        laptop: "Computers",
-                        pc: "Computers",
-                        smartwatch: "SmartWatch",
-                        watch: "SmartWatch",
-                        watches: "SmartWatch",
-                        camera: "Camera",
-                        cameras: "Camera",
-                        headphone: "HeadPhones",
-                        headphones: "HeadPhones",
-                        earphone: "HeadPhones",
-                        earphones: "HeadPhones",
-                        gaming: "Gaming",
-                        game: "Gaming",
-                        games: "Gaming",
-                        gamepad: "Gaming",
-                    };
+                    let allSearchResults = [];
 
-                    let targetCategory = categories.find(
-                        (cat) => cat.toLowerCase() === query
-                    );
-                    if (!targetCategory) targetCategory = categoryMappings[query];
 
-                    if (targetCategory) {
-                        const data = await GetDataByCategory(targetCategory);
-                        setProducts(data?.item || []);
-                    } else {
-                        let allSearchResults = [];
-                        for (const category of categories) {
-                            try {
-                                const data = await GetDataByCategory(category);
-                                if (data?.item && Array.isArray(data.item)) {
-                                    const filtered = data.item.filter(
-                                        (product) =>
-                                            product.name?.toLowerCase().includes(query) ||
-                                            product.description?.toLowerCase().includes(query) ||
-                                            category.toLowerCase().includes(query)
-                                    );
-                                    allSearchResults.push(...filtered);
-                                }
-                            } catch (error) {
-                                console.error(`Error searching in ${category}:`, error);
+                    for (const category of categories) {
+                        try {
+                            const data = await GetDataByCategory(category);
+                            if (data?.item && Array.isArray(data.item)) {
+
+                                const filtered = data.item.filter((product) =>
+                                    product.name?.toLowerCase().includes(query)
+                                );
+                                allSearchResults.push(...filtered);
                             }
+                        } catch (error) {
+                            console.error(`Error searching in ${category}:`, error);
                         }
-
-
-                        const uniqueResults = allSearchResults.filter(
-                            (product, index, self) =>
-                                index === self.findIndex((p) => p._id === product._id)
-                        );
-                        setProducts(uniqueResults);
                     }
+
+
+                    const uniqueResults = allSearchResults.filter(
+                        (product, index, self) =>
+                            index === self.findIndex((p) => p._id === product._id)
+                    );
+
+                    setProducts(uniqueResults);
                 } catch (error) {
                     console.error("Error performing search:", error);
                     setProducts([]);
@@ -151,6 +118,7 @@ export default function AllProduct() {
 
         if (searchQuery && fromViewAll !== "true") performSearch();
     }, [searchQuery, fromViewAll, categories]);
+
 
 
     const handleProductsFetch = (fetchedProducts) => {

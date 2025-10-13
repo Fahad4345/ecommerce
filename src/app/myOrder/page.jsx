@@ -111,7 +111,7 @@ function MyOrdersPage() {
         );
     }
 
-    // ✅ Orders UI
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
             <Navbar ShowCart ShowProfile ShowWishlist />
@@ -167,10 +167,10 @@ function MyOrdersPage() {
                                 </div>
                             </div>
 
-                            {/* BODY */}
+
                             <div className="p-8">
                                 <div className="grid md:grid-cols-2 gap-6 mb-8">
-                                    {/* Payment Details */}
+
                                     <div className="space-y-2">
                                         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
                                             Payment Details
@@ -194,7 +194,7 @@ function MyOrdersPage() {
                                         </div>
                                     </div>
 
-                                    {/* Order Summary */}
+
                                     <div className="space-y-2">
                                         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
                                             Order Summary
@@ -226,7 +226,7 @@ function MyOrdersPage() {
                                     </div>
                                 </div>
 
-                                {/* Items List */}
+
                                 <div className="mb-8">
                                     <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center space-x-2">
                                         <span>📦</span>
@@ -273,7 +273,7 @@ function MyOrdersPage() {
                                     </div>
                                 </div>
 
-                                {/* Cancel Button */}
+
                                 {order.orderStatus.toLowerCase() !== "cancelled" && (
                                     <div className="pt-6 border-t border-gray-200">
                                         <button
