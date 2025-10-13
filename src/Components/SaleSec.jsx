@@ -164,10 +164,10 @@ export default function SaleSection({
                             {product.name}
                         </h3>
                         <div className="flex items-center gap-2">
-                            <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">
+                            <span className=" line-through text-gray-400 font-[Poppins] font-[500] text-[16px] leading-[24px]">
                                 ${product.price}
                             </span>
-                            <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px] leading-[24px]">
+                            <span className="text-red-600 font-[Poppins] font-[500] text-[16px] leading-[24px]">
                                 ${product.discountPrice}
                             </span>
                         </div>
@@ -241,6 +241,7 @@ export default function SaleSection({
                     modules={[Navigation]}
                     slidesPerView={slidesPerView}
                     spaceBetween={30}
+                    loop={true}
                     onBeforeInit={(swiper) => {
                         swiperRef.current = swiper;
                     }}

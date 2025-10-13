@@ -173,11 +173,11 @@ export default function BestProduct({ products }) {
                                     <h3 className="font-[500] font-[Poppins] text-[16px]">{product.name}</h3>
 
                                     <div className="flex items-center gap-2">
-                                        <span className="text-red-600 font-[Poppins] font-[500] text-[16px]">
+                                        <span className=" line-through text-gray-400 font-[Poppins] font-[500] text-[16px]">
                                             ${product.price}
                                         </span>
                                         {product.discountPrice && (
-                                            <span className="line-through text-gray-400 font-[Poppins] font-[500] text-[16px]">
+                                            <span className="  text-red-600 font-[Poppins] font-[500] text-[16px]">
                                                 ${product.discountPrice}
                                             </span>
                                         )}

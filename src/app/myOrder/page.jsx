@@ -21,10 +21,11 @@ function MyOrdersPage() {
                     return;
                 }
 
-                setUserId(storedUser._id);
+                setUserId(storedUser._id || []);
 
                 const data = await fetchOrders(storedUser._id);
-                setOrders(data || []);
+                console.log("Fetched orders:", data);
+                setOrders(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Failed to fetch orders:", err);
             } finally {

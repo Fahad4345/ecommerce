@@ -7,7 +7,7 @@ import ReduxProvider from "../store/reduxProvider";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import MyProvider from "./../context/Myprovider";
-import SessionWrapper from "./../Components/SessionWrapper";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,12 +39,12 @@ export default function RootLayout({ children }) {
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"
-        />
+        />{" "}
         <ReduxProvider>
           <MyProvider>
             <Header />
 
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow"> {children}</main>
 
             <Toaster position="top-center" reverseOrder={false} />
             <Footer />

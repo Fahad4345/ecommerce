@@ -1,6 +1,5 @@
-import { API_BASE_URL } from "./../apiUrl";
-import { showToast } from "../../Components/toast";
 import { fetchWithAuth } from "../fetchWithAuth";
+
 export async function UpdateCart(itemId, color, size, quantity) {
   try {
     const token = localStorage.getItem("accessToken");
@@ -13,9 +12,13 @@ export async function UpdateCart(itemId, color, size, quantity) {
       },
       body: JSON.stringify({ itemId, color, quantity, size }),
     });
-    const data = await res.json();
-    showToast("Cart updated successfully", "success");
-    return data;
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "Failed to update cart");
+    }
+
+    return await res.json();
   } catch (err) {
     console.error("UpdateCart error:", err.message);
     throw err;

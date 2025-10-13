@@ -14,7 +14,7 @@ export const deleteCartItem = async (itemId) => {
     });
 
     if (!res.ok) throw new Error("Failed to delete item");
-    showToast("Item Deleted!", "success");
+
     const data = await res.json();
 
     return data.cart;

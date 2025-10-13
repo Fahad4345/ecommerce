@@ -13,7 +13,7 @@ import { MyContext } from "../../context/MyContext";
 import { deleteCartItem } from './../../Api1/Cart/deleteCart';
 import { Package, User, CreditCard, Clock, CheckCircle, XCircle, RefreshCw, Truck, MapPin, Mail, Phone } from 'lucide-react';
 import Loader from '../../Components/loader';
-import showToast from '../../Components/loader';
+import { showToast } from '../../Components/toast';
 
 export default function Cart() {
     const { setcartLength, cartLength } = useContext(MyContext);
@@ -21,6 +21,8 @@ export default function Cart() {
     const router = useRouter();
     const [cart, setCart] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [deletedItems, setDeletedItems] = useState([]);
+    const [deletingId, setDeletingId] = useState(null);
     let Subtotal;
 
     const subtotal = (price, quantity) => {
@@ -62,17 +64,17 @@ export default function Cart() {
         }
     }
 
-    const handleDeleteCartItem = async (itemId) => {
-        try {
-            await deleteCartItem(itemId);
+    const handleDeleteCartItem = (itemId) => {
+        // remove from UI only
+        const updatedCart = cart.filter(item => item.itemId._id !== itemId);
+        setCart(updatedCart);
 
-            const updatedCart = cart.filter(item => item.itemId._id !== itemId);
-            setCart(updatedCart);
-            setcartLength(updatedCart.length);
-            localStorage.setItem("CartLength", updatedCart.length.toString());
-        } catch (error) {
-            console.error("Failed to delete cart item:", error);
-        }
+        // keep track of deleted items to remove later
+        setDeletedItems(prev => [...prev, itemId]);
+
+        // update cart length for UI
+        setcartLength(updatedCart.length);
+        localStorage.setItem("CartLength", updatedCart.length.toString());
     };
 
     useEffect(() => {
@@ -128,7 +130,10 @@ export default function Cart() {
                     cart.map((item, index) => (
                         <div key={index} className='relative'>
                             <div
-                                onClick={() => handleDeleteCartItem(item.itemId._id)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteCartItem(item.itemId._id);
+                                }}
                                 className='w-[30px] h-[30px] rounded-full bg-[#DB4444] absolute top-0 right-[-10px] flex justify-center items-center text-[14px] text-white cursor-pointer hover:bg-[#c93d3d] z-10'
                             >
                                 X
@@ -205,26 +210,37 @@ export default function Cart() {
                     <button
                         className='font-[500] text-[16px] leading-[24px] tracking-[0%] font-[Poppins] border-[1px] border-[#00000080] px-[48px] py-[16px] rounded-[4px] cursor-pointer hover:bg-gray-50'
                         onClick={async () => {
-                            if (!Array.isArray(cart) || cart.length === 0) {
+                            if (!Array.isArray(cart) || (cart.length === 0 && deletedItems.length === 0)) {
                                 showToast("Your cart is empty", "error");
                                 return;
                             }
 
                             try {
+                                setIsLoading(true);
+                                console.log("Updating cart...");
 
+                                // 1️⃣ Update all existing items
                                 await Promise.all(
                                     cart.map((item) =>
                                         UpdateCart(item.itemId?._id, item.color, item.size, item.quantity)
                                     )
                                 );
 
+                                // 2️⃣ Delete all marked-for-deletion items
+                                if (deletedItems.length > 0) {
+                                    await Promise.all(deletedItems.map((id) => deleteCartItem(id)));
+                                    setDeletedItems([]); // reset after sync
+                                }
+
+                                console.log("✅ All items synced — now showing toast");
                                 showToast("Cart updated successfully", "success");
                             } catch (error) {
                                 console.error("Failed to update cart:", error);
                                 showToast("Failed to update cart", "error");
+                            } finally {
+                                setIsLoading(false);
                             }
                         }}
-
                     >
                         Update Cart
                     </button>

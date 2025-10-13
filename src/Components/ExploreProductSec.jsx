@@ -113,6 +113,7 @@ export default function ExploreProduct({ products }) {
             <Swiper
                 modules={[Navigation]}
                 slidesPerView={4}
+                loop={true}
                 spaceBetween={30}
                 onBeforeInit={(swiper) => {
                     swiperRef.current = swiper;

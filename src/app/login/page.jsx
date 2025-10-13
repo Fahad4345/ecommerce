@@ -145,7 +145,7 @@ export default function Login() {
                     <GoogleSignInButton disabled={loading} />
 
 
-                    <div className='flex flex-row gap-[87px] justify-center items-center'>
+                    <div className='flex flex-row  justify-between  items-center'>
 
 
                         <button
@@ -156,7 +156,7 @@ export default function Login() {
                                 : 'bg-[#DB4444] hover:bg-[#c53030]'
                                 }`}
                         >
-                            {loading ? "Logging in..." : "Login"}
+                            {loading ? "Logging in" : "Login"}
                         </button>
 
                         < button onClick={handleForgetPassword}>
