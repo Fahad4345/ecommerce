@@ -91,6 +91,7 @@ export default function CategorySec({ onItemFetch }) {
             <Swiper
                 modules={[Navigation]}
                 slidesPerView={6}
+                loop={true}
                 spaceBetween={30}
                 onBeforeInit={(swiper) => {
                     swiperRef.current = swiper;
