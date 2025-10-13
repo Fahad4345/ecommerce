@@ -27,7 +27,7 @@ async function refreshAccessToken() {
 
 export async function fetchWithAuth(url, options = {}) {
   let token = localStorage.getItem("accessToken");
-
+  console.log("Token", token);
   // ✅ Detect if the request body is FormData
   const isFormData = options.body instanceof FormData;
 
@@ -62,6 +62,7 @@ export async function fetchWithAuth(url, options = {}) {
         credentials: "include",
       });
     }
+    console.log("New Token from refresh:", newToken);
   }
 
   return response;
