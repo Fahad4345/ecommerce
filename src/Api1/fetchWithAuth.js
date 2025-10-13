@@ -28,7 +28,7 @@ async function refreshAccessToken() {
 export async function fetchWithAuth(url, options = {}) {
   let token = localStorage.getItem("accessToken");
   console.log("Token", token);
-  // ✅ Detect if the request body is FormData
+
   const isFormData = options.body instanceof FormData;
 
   const headers = {
@@ -40,10 +40,9 @@ export async function fetchWithAuth(url, options = {}) {
   let response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
     headers,
-    credentials: "include", // send cookies if needed
+    credentials: "include",
   });
 
-  // 🔄 Handle token refresh if expired
   if (response.status === 401 || response.status === 403) {
     console.log("Access token expired, trying refresh...");
 

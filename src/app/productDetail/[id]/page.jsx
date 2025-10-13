@@ -253,7 +253,7 @@ export default function ProductDetail() {
                                     if (Cartitem) {
                                         UpdateCart(Cartitem.itemId._id, selectedColor, size, quantity);
                                         router.push("/cart")
-                                        dispatch(clearCart());
+
                                     } else {
                                         InsertCart(item._id, size, selectedColor, quantity);
                                         router.push("/cart");
