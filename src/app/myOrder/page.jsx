@@ -136,7 +136,7 @@ function MyOrdersPage() {
                             key={order._id}
                             className="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                         >
-                            {/* HEADER */}
+
                             <div className="border-b border-gray-200 p-8 bg-gradient-to-r from-white to-blue-50 rounded-t-2xl">
                                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
                                     <div className="space-y-2">
@@ -161,7 +161,7 @@ function MyOrdersPage() {
                                         >
                                             {order.orderStatus}
                                         </span>
-                                        <div className="text-3xl font-bold text-gray-800 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                                        <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                                             ${order.total.toFixed(2)}
                                         </div>
                                     </div>
