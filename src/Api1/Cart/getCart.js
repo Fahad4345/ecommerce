@@ -8,7 +8,6 @@ export async function GetCart() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     });

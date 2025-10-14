@@ -62,6 +62,7 @@ export default function ProductDetail() {
         e.stopPropagation();
         const user = localStorage.getItem("user");
         if (user) {
+            console.log("If Running");
             try {
                 await InsertCart(productId);
 
@@ -79,6 +80,7 @@ export default function ProductDetail() {
             }
         }
         else {
+            console.log("elseRunning");
             showToast("Login to Add", "error")
         }
     };
@@ -255,8 +257,15 @@ export default function ProductDetail() {
                                         router.push("/cart")
 
                                     } else {
-                                        InsertCart(item._id, size, selectedColor, quantity);
-                                        router.push("/cart");
+                                        if (user) {
+                                            InsertCart(item._id, size, selectedColor, quantity);
+                                            router.push("/cart");
+                                        }
+                                        else {
+                                            showToast("Login to add", "error");
+                                            router.push("/login");
+                                        }
+
                                     }
                                 }}
                                 className='px-[42px] py-[10px] font-[500] text-[16px] cursor-pointer font-[Poppins] leading-[24px] bg-[#DB4444] tracking-[0px] text-white rounded-[4px]'

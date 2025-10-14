@@ -25,6 +25,5 @@ export async function InsertCart(itemId, size, color, quantity) {
       throw err;
     }
   } else {
-    showToast("Login to Add", "error");
   }
 }
