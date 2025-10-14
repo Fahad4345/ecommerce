@@ -54,7 +54,7 @@ export async function fetchWithAuth(url, options = {}) {
     if (!hasRedirected) {
       hasRedirected = true;
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     }
     return new Response(null, { status: 401 });
   }
