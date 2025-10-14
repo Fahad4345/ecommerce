@@ -6,6 +6,7 @@ export async function GetDataByCategory(Category) {
 
     const res = await fetchWithAuth(url, {
       method: "GET",
+      noAuth: true,
     });
     const data = await res.json();
     const items = Array.isArray(data) ? data : data.items || [];

@@ -7,6 +7,7 @@ export async function SendEmail(name, email, message) {
 
     const res = await fetchWithAuth(`/email/SendEmail`, {
       method: "POST",
+      noAuth: true,
       headers: {
         "Content-Type": "application/json",
       },

@@ -7,6 +7,7 @@ export async function GetDataByCategory(Category) {
       : `/item/GetItem`;
     const res = await fetchWithAuth(url, {
       method: "GET",
+      noAuth: true,
     });
     const data = await res.json();
     console.log(" Get Data", data);

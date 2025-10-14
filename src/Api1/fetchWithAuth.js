@@ -5,9 +5,7 @@ let refreshPromise = null;
 let hasRedirected = false;
 
 async function refreshAccessToken() {
-  if (isRefreshing) {
-    return refreshPromise;
-  }
+  if (isRefreshing) return refreshPromise;
 
   isRefreshing = true;
   refreshPromise = (async () => {
@@ -31,7 +29,7 @@ async function refreshAccessToken() {
       }
 
       return null;
-    } catch (err) {
+    } catch {
       localStorage.removeItem("accessToken");
       return null;
     } finally {
@@ -44,9 +42,15 @@ async function refreshAccessToken() {
 }
 
 export async function fetchWithAuth(url, options = {}) {
-  if (hasRedirected) {
-    return new Response(null, { status: 401 });
+  // ✅ Allow public APIs
+  if (options.noAuth) {
+    return fetch(`${API_BASE_URL}${url}`, {
+      ...options,
+      credentials: "include",
+    });
   }
+
+  if (hasRedirected) return new Response(null, { status: 401 });
 
   let token = localStorage.getItem("accessToken");
 
@@ -54,7 +58,6 @@ export async function fetchWithAuth(url, options = {}) {
     if (!hasRedirected) {
       hasRedirected = true;
       localStorage.clear();
-      window.location.href = "/";
     }
     return new Response(null, { status: 401 });
   }
