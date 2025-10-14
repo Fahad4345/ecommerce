@@ -2,60 +2,37 @@ import { API_BASE_URL } from "../Api1/apiUrl";
 
 let isRefreshing = false;
 let refreshPromise = null;
-let refreshAttempts = 0;
-const MAX_REFRESH_ATTEMPTS = 3;
+let hasRedirected = false;
 
 async function refreshAccessToken() {
-  if (isRefreshing && refreshPromise) {
-    console.log("⏳ Waiting for existing refresh...");
+  if (isRefreshing) {
     return refreshPromise;
   }
 
   isRefreshing = true;
   refreshPromise = (async () => {
     try {
-      console.log("🔄 Refreshing access token...");
       const res = await fetch(`${API_BASE_URL}/auth/RefreshToken`, {
         method: "POST",
         credentials: "include",
       });
 
-      console.log("📡 Refresh response status:", res.status);
-
       if (!res.ok) {
-        console.error("❌ Refresh token failed:", res.status);
-        const errorText = await res.text();
-        console.error("Error details:", errorText);
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
         return null;
       }
 
       const data = await res.json();
-      console.log("📦 Refresh response data:", data);
-
       const newToken = data.accessToken || data.Access_Token;
 
       if (newToken) {
-        console.log(
-          "✅ New token received:",
-          newToken.substring(0, 20) + "..."
-        );
         localStorage.setItem("accessToken", newToken);
         return newToken;
-      } else {
-        console.error(
-          "❌ No token in response. Response keys:",
-          Object.keys(data)
-        );
-        localStorage.removeItem("accessToken");
-        window.location.href = "/login";
-        return null;
       }
+
+      return null;
     } catch (err) {
-      console.error("❌ Error refreshing token:", err);
       localStorage.removeItem("accessToken");
-      window.location.href = "/login";
       return null;
     } finally {
       isRefreshing = false;
@@ -67,42 +44,53 @@ async function refreshAccessToken() {
 }
 
 export async function fetchWithAuth(url, options = {}) {
+  if (hasRedirected) {
+    return new Response(null, { status: 401 });
+  }
+
   let token = localStorage.getItem("accessToken");
 
+  if (!token) {
+    if (!hasRedirected) {
+      hasRedirected = true;
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+    return new Response(null, { status: 401 });
+  }
+
   const isFormData = options.body instanceof FormData;
-
-  const makeRequest = (authToken) => {
-    const headers = {
-      ...options.headers,
-      Authorization: `Bearer ${authToken}`,
-      ...(isFormData ? {} : { "Content-Type": "application/json" }),
-    };
-
-    return fetch(`${API_BASE_URL}${url}`, {
-      ...options,
-      headers,
-      credentials: "include",
-    });
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
   };
 
-  let response = await makeRequest(token);
+  let response = await fetch(`${API_BASE_URL}${url}`, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
 
   if (response.status === 401 || response.status === 403) {
-    console.log("🔑 Token expired, refreshing...");
-
     const newToken = await refreshAccessToken();
 
     if (newToken) {
-      console.log("🔄 Retrying request with new token");
-
-      response = await makeRequest(newToken);
-
-      if (response.ok) {
-        console.log("✅ Request successful after refresh");
-      }
+      response = await fetch(`${API_BASE_URL}${url}`, {
+        ...options,
+        headers: {
+          ...options.headers,
+          Authorization: `Bearer ${newToken}`,
+          ...(isFormData ? {} : { "Content-Type": "application/json" }),
+        },
+        credentials: "include",
+      });
     } else {
-      console.error("❌ Failed to refresh token, redirecting to login");
-      window.location.href = "/login";
+      if (!hasRedirected) {
+        hasRedirected = true;
+        localStorage.clear();
+        window.location.href = "/login";
+      }
     }
   }
 

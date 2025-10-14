@@ -1,12 +1,14 @@
 Ecommerce:
 Integrated :
 
-- Fix the refresh token functionality
-- Added approval for admin Correctly running for cash but oncard it get approved autmatically
+- Fix the Refresh Token Functionality
+- Added Loop in Swiper
+- Adjusted Add to Cart and Update Cart
 - Adjusted UI
 
 - Next:
-- Approval of admin for Orders
+- Languages integration
+- Cancelation Page
 
-Loom : (hhttps://www.loom.com/share/142e3446ba7c4e449913aba5aa17c204?sid=ad54dd13-867a-44b4-b2e2-077ac66420b2)
+Loom : (https://www.loom.com/share/58a2ba66fa6c41bca18008a3e8e720ff?sid=a97afb70-d070-4af8-8fa0-11c620ce1fd8)
 Preview : (https://ecommerce-three-delta-52.vercel.app)
