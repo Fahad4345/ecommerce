@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from 'react'
 import Link from 'next/link'
+import Navbar from '../../Components/NavBar';
 
 export default function page() {
     useEffect(() => {
