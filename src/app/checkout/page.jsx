@@ -8,14 +8,16 @@ import { API_BASE_URL } from "./../../Api1/apiUrl";
 import Loader from "../../Components/loader";
 import { MyContext } from "../../context/MyContext";
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
+    const router = useRouter();
     const [selected, setSelected] = useState(false);
     const [cart, setCart] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const { user } = useContext(MyContext);
+    const { user, refreshCartLength } = useContext(MyContext);
 
     const [firstName, setFirstName] = useState("");
     const [company, setCompany] = useState("");
@@ -133,6 +135,8 @@ export default function CheckoutPage() {
                     localStorage.removeItem("CartItems");
                     localStorage.removeItem("CartLength");
                     resetForm();
+                    refreshCartLength();
+                    router.push("/")
                 } else {
                     throw new Error("Failed to place order");
                 }

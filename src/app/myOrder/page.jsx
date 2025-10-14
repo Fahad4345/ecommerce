@@ -44,13 +44,13 @@ function MyOrdersPage() {
             const response = await cancelOrder(orderId);
             console.log("Cancel response:", response);
 
-            if (response?.success) {
-                setOrders((prev) =>
-                    prev.map((o) =>
-                        o._id === orderId ? { ...o, orderStatus: "Cancelled" } : o
-                    )
-                );
-            }
+
+            setOrders((prev) =>
+                prev.map((o) =>
+                    o._id === orderId ? { ...o, orderStatus: "Cancelled" } : o
+                )
+            );
+
         } catch (err) {
             console.error("Failed to cancel order:", err);
         }

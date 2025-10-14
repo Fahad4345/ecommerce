@@ -2,7 +2,7 @@ import React from 'react'
 import Banner from './Banner'
 import Link from 'next/link'
 
-const Categories = ["Phones", "Computers", "Camera", "HeadPhones", "Gaming", "Woman Fashion", "Men Fashion", "Medicine", "SmartWatch"]
+const Categories = ["Phones", "Computers", "Camera", "HeadPhones", "Gaming", "Woman Fashion", "Men Fashion", "SmartWatch"]
 
 
 
