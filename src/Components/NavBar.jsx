@@ -49,7 +49,7 @@ export default function Navbar({ ShowWishlist = false, ShowCart = false, ShowPro
             }
 
             try {
-                const res = await fetchWithAuth(`/item/SearchItem/?search=${encodeURIComponent(searchQuery)}`);
+                const res = await fetchWithAuth(`/item/SearchItem/?search=${encodeURIComponent(searchQuery)}`, { method: "GET", noAuth: true });
                 const data = await res.json();
                 setSuggestions(data.items || []);
                 setIsDropdownVisible(true);
