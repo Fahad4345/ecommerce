@@ -4,6 +4,7 @@ export default async function getItem(id) {
   try {
     const res = await fetchWithAuth(`/item/GetOneItem/${id}`, {
       method: "GET",
+      noAuth: true,
 
       headers: {
         "Content-Type": "application/json",
